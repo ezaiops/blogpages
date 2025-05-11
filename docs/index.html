@@ -15,39 +15,49 @@
       flex-direction: column;
       min-height: 100vh;
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 40px 20px;
-      text-align: center;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      border-radius: 8px;
-      margin-top: 80px;
-      margin-bottom: 40px;
+
+    header {
+      padding: 20px 40px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      text-align: left;
     }
-    h1 {
-      font-size: 2.5em;
+
+    .site-title {
+      font-size: 1.8em;
+      font-weight: bold;
       color: #2c3e50;
-      margin-bottom: 0.3em;
+      margin: 0;
     }
+
     .slogan {
-      font-size: 1em;
-      color: #666;
-      margin-bottom: 2em;
+      font-size: 0.85em;
+      color: #777;
+      margin-top: 5px;
     }
+
+    .main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
     .notice {
-      font-size: 1.3em;
+      font-size: 1.8em;
       color: #444;
-      margin: 2em 0;
     }
+
     footer {
       text-align: center;
       font-size: 0.95em;
       color: #777;
-      margin-top: auto;
       padding-bottom: 20px;
+      background-color: white;
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.04);
     }
+
     footer p {
       margin: 0.3em 0;
     }
@@ -55,10 +65,12 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>智维小站</h1>
-    <p class="slogan">记录思考，分享技术，积累价值<br>Thinking, Sharing, Growing</p>
+  <header>
+    <h1 class="site-title">智维小站</h1>
+    <p class="slogan">记录思考，分享技术，积累价值 / Thinking, Sharing, Growing</p>
+  </header>
 
+  <div class="main">
     <p class="notice">本站正在建设中，敬请期待。</p>
   </div>
 
