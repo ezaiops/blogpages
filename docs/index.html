@@ -72,17 +72,33 @@
       font-size: 0.92rem;
     }
     nav.top-nav a:first-child { margin-left: 0; }
-    nav.top-nav a.lang {
+    .lang-switch {
+      display: inline-flex;
       margin-left: 22px;
-      padding: 3px 10px;
-      background: #eef4fc;
-      color: var(--accent);
+      padding: 2px;
+      background: #f3f4f6;
       border-radius: 12px;
+      gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0;
+      padding: 3px 12px;
       font-size: 0.78rem;
       font-weight: 600;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      border-radius: 10px;
+      line-height: 1.5;
     }
-    nav.top-nav a.lang:hover { text-decoration: none; background: #d9e8fa; }
+    nav.top-nav .lang-switch a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    nav.top-nav .lang-switch a:hover:not(.active) {
+      color: var(--primary);
+      background: #e8eaed;
+      text-decoration: none;
+    }
 
     main { max-width: 860px; margin: 0 auto; padding: 40px 24px 60px; }
 
@@ -249,7 +265,9 @@
 
     @media (max-width: 600px) {
       .site-header-inner { flex-direction: column; align-items: flex-start; }
-      nav.top-nav a { margin-left: 0; margin-right: 16px; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
       .hero h2 { font-size: 1.45rem; }
       main { padding: 28px 20px 44px; }
     }
@@ -267,7 +285,10 @@
         <a href="#featured">当前专题</a>
         <a href="#topics">话题</a>
         <a href="#about">关于</a>
-        <a href="/en/" class="lang" hreflang="en">EN</a>
+        <div class="lang-switch">
+          <a href="/" class="active" aria-current="page">中文</a>
+          <a href="/en/" hreflang="en">EN</a>
+        </div>
       </nav>
     </div>
   </header>
