@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>轻松自动化笔记 · EZ AI Ops Tips</title>
-  <meta name="description" content="AI Agent 生产化路上的中文实战笔记 —— 从可观测性开始。DevSecOps / AIOps / LLMOps 深度内容。">
-  <meta property="og:title" content="轻松自动化笔记 · EZ AI Ops Tips">
-  <meta property="og:description" content="AI Agent 生产化路上的中文实战笔记 —— 从可观测性开始。">
+  <title>EZ AI Ops Tips · AI Agent & LLMOps Field Notes</title>
+  <meta name="description" content="Field notes on getting AI Agents to production — starting with observability. DevSecOps / AIOps / LLMOps deep-dives.">
+  <meta property="og:title" content="EZ AI Ops Tips · AI Agent & LLMOps Field Notes">
+  <meta property="og:description" content="Field notes on getting AI Agents to production — starting with observability.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ezaiops.com/">
-  <link rel="canonical" href="https://ezaiops.com/">
+  <meta property="og:url" content="https://ezaiops.com/en/">
+  <link rel="canonical" href="https://ezaiops.com/en/">
   <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/">
   <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/">
   <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/">
@@ -58,7 +58,7 @@
       color: var(--primary);
       letter-spacing: -0.01em;
     }
-    .brand .brand-en {
+    .brand .brand-cn {
       display: block;
       font-size: 0.78rem;
       color: var(--muted);
@@ -98,7 +98,7 @@
       line-height: 1.35;
       letter-spacing: -0.01em;
     }
-    .hero .hero-en {
+    .hero .hero-cn {
       color: var(--muted);
       font-size: 1rem;
       margin: 0 0 18px;
@@ -260,14 +260,14 @@
   <header class="site-header">
     <div class="site-header-inner">
       <div class="brand">
-        <h1>轻松自动化笔记</h1>
-        <span class="brand-en">EZ AI Ops Tips</span>
+        <h1>EZ AI Ops Tips</h1>
+        <span class="brand-cn">轻松自动化笔记</span>
       </div>
       <nav class="top-nav">
-        <a href="#featured">当前专题</a>
-        <a href="#topics">话题</a>
-        <a href="#about">关于</a>
-        <a href="/en/" class="lang" hreflang="en">EN</a>
+        <a href="#featured">Focus</a>
+        <a href="#topics">Topics</a>
+        <a href="#about">About</a>
+        <a href="/" class="lang" hreflang="zh-CN">中文</a>
       </nav>
     </div>
   </header>
@@ -275,95 +275,96 @@
   <main>
 
     <section class="hero">
-      <h2>AI Agent 生产化路上的中文实战笔记 —— 从可观测性开始。</h2>
-      <p class="hero-en">Making AI agents observable — and operations reliable.</p>
+      <h2>Field notes on getting AI Agents to production — starting with observability.</h2>
+      <p class="hero-cn">用中文与英文双语，把 AI × DevOps 的落地讲清楚。</p>
       <p class="hero-body">
-        本站聚焦 AI × DevOps/SRE 的交叉地带：用 AI 做运维，也用运维方法管理 AI。
-        写工具评测、写落地实录、写事故复盘，力求每一篇都是能上手的干货。
+        This site sits at the intersection of AI × DevOps/SRE — using AI to run operations,
+        and running AI systems with operational rigor. Tool reviews, deployment guides,
+        incident retrospectives — every post aims to be immediately actionable.
       </p>
     </section>
 
     <section id="featured">
-      <h3 class="section-title">当前专题</h3>
-      <p class="section-hint">冷启动阶段的主打方向，会持续更新到形成体系。</p>
+      <h3 class="section-title">Current Focus</h3>
+      <p class="section-hint">The launch pillar — updated until it forms a complete map.</p>
       <div class="featured">
         <span class="tag">SPOTLIGHT</span>
-        <h4>AI Agent 平台的可观测性：中文实战地图</h4>
+        <h4>AI Agent Observability — A Practical Field Guide</h4>
         <p>
-          Agent 应用 2026 年在爆发，但落地就会撞到 "我不知道 agent 在干什么" 这堵墙。
-          Traces、Fleet、Cost、Eval、Replay、Audit —— 本专题会从工具评测到生产实战，
-          系统整理这个赛道。中文互联网上第一份完整的路线图。
+          Agent applications are exploding in 2026, but production always hits the same wall:
+          "I don't know what my agent is actually doing." Traces, fleet, cost, eval, replay,
+          audit — this series maps the space from tool reviews to production deployments.
         </p>
         <ul class="article-list">
           <li>
-            <span class="title">什么是 AI Agent 可观测性：和传统 APM 的本质区别</span>
-            <span class="status">规划中</span>
+            <span class="title">What is AI Agent Observability, and how does it differ from traditional APM?</span>
+            <span class="status">Planned</span>
           </li>
           <li>
-            <span class="title">Langfuse 完整实战：自部署 + 接入 LangGraph</span>
-            <span class="status">规划中</span>
+            <span class="title">Langfuse in production: self-hosted + LangGraph integration</span>
+            <span class="status">Planned</span>
           </li>
           <li>
-            <span class="title">LangSmith vs Langfuse vs Phoenix：2026 年选哪个</span>
-            <span class="status">规划中</span>
+            <span class="title">LangSmith vs Langfuse vs Phoenix — the 2026 decision guide</span>
+            <span class="status">Planned</span>
           </li>
           <li>
-            <span class="title">OpenTelemetry GenAI 规范到底定了什么</span>
-            <span class="status">规划中</span>
+            <span class="title">The OpenTelemetry GenAI semantic conventions, explained</span>
+            <span class="status">Planned</span>
           </li>
           <li>
-            <span class="title">Agent 成本失控：我们怎么发现并砍掉 60% 的 token 花销</span>
-            <span class="status">规划中</span>
+            <span class="title">When agent token bills run wild — how we cut costs by 60%</span>
+            <span class="status">Planned</span>
           </li>
         </ul>
-        <a class="cta" href="#">查看专题全部内容 →</a>
+        <a class="cta" href="#">See the full series →</a>
       </div>
     </section>
 
     <section id="topics">
-      <h3 class="section-title">覆盖话题</h3>
-      <p class="section-hint">主线之外的四个持续更新方向。</p>
+      <h3 class="section-title">Topics</h3>
+      <p class="section-hint">Four ongoing streams beyond the main pillar.</p>
       <div class="topics-grid">
         <div class="topic-card">
-          <h5>Agent 可观测性</h5>
-          <p>Trace / Eval / Cost / Replay，工具评测与实战</p>
+          <h5>Agent Observability</h5>
+          <p>Traces / Eval / Cost / Replay — reviews and deployment</p>
         </div>
         <div class="topic-card">
-          <h5>LLM 推理与部署</h5>
-          <p>vLLM、SGLang、TGI、私有化模型服务</p>
+          <h5>LLM Inference &amp; Serving</h5>
+          <p>vLLM, SGLang, TGI, self-hosted models</p>
         </div>
         <div class="topic-card">
-          <h5>AI 编程 Agent</h5>
-          <p>Claude Code、Cursor、Codex 在真实工程流程中的使用</p>
+          <h5>AI Coding Agents</h5>
+          <p>Claude Code, Cursor, Codex in real engineering flows</p>
         </div>
         <div class="topic-card">
-          <h5>AIOps 观察</h5>
-          <p>行业动态、事故复盘、工具雷达、转型思考</p>
+          <h5>AIOps Watch</h5>
+          <p>Industry moves, incident write-ups, tool radar</p>
         </div>
       </div>
     </section>
 
     <section id="about">
-      <h3 class="section-title">关于本站</h3>
-      <p class="section-hint">编辑方针、内容来源、联系方式。</p>
+      <h3 class="section-title">About</h3>
+      <p class="section-hint">Editorial policy, sourcing, contact.</p>
       <div class="about">
         <p>
-          <strong>为什么存在。</strong>
-          AI Agent 与 LLMOps 的中文深度内容严重不足，
-          这个站的目标是补上这一块 —— 用工程师能看得懂、用得上的方式。
+          <strong>Why this exists.</strong>
+          The intersection of AI Agents and LLMOps is under-documented in both Chinese and
+          English — this site aims to fill that gap with content engineers can actually use.
         </p>
         <p>
-          <strong>写什么、不写什么。</strong>
-          写工具评测、部署实战、真实事故复盘、行业观察；
-          不写培训机构式的入门教程，不写没实操过的转载。
+          <strong>What we cover.</strong>
+          Tool reviews, deployment guides, real incident retrospectives, industry watch.
+          Not vendor whitepapers, not entry-level tutorials rehashed from docs.
         </p>
         <p>
-          <strong>内容来源。</strong>
-          原创为主。部分行业资讯由 AI 辅助整理，均经过人工审核与增补 ——
-          每篇文章都会标注来源和最后更新日期。
+          <strong>Content sourcing.</strong>
+          Original writing primarily. Some industry updates are AI-assisted syntheses,
+          all human-reviewed and annotated. Every post shows sources and last-updated date.
         </p>
         <p>
-          <strong>联系。</strong>
+          <strong>Contact.</strong>
           GitHub · <a href="https://github.com/ezaiops">ezaiops</a>
         </p>
       </div>
