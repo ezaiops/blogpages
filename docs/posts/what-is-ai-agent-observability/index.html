@@ -146,6 +146,18 @@
     .article-sources ul { list-style: none; padding: 0; margin: 0; }
     .article-sources li { margin: 6px 0; line-height: 1.6; }
 
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
     .post-nav {
       margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center;
@@ -415,6 +427,13 @@
           <li><a href="https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-agent-spans.md" rel="noopener">OpenTelemetry GenAI Semantic Conventions — Agent Spans</a></li>
           <li><a href="https://langfuse.com/docs/observability/overview" rel="noopener">Langfuse — Observability Overview</a></li>
         </ul>
+      </aside>
+
+      <aside class="article-license">
+        <strong>版权声明</strong><br>
+        © 2026 <a href="https://ezaiops.com/">轻松自动化笔记 · EZ AI Ops Tips</a>。本文首发于本站。<br>
+        原文链接:<a class="canonical" href="https://ezaiops.com/posts/what-is-ai-agent-observability/">https://ezaiops.com/posts/what-is-ai-agent-observability/</a><br>
+        欢迎全文转载,请保留作者署名并注明原文链接,勿删改内容;商业使用请先联系。
       </aside>
 
     </article>
