@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What Is AI Agent Observability? · EZ AI Ops Tips</title>
+  <meta name="description" content="Part 1 of the AI Agent Observability series. When software starts making its own decisions, why does the worldview behind two decades of monitoring suddenly stop being enough?">
+  <meta property="og:title" content="What Is AI Agent Observability? Why Traditional APM Can't See That the Agent Got It Wrong">
+  <meta property="og:description" content="Part 1 of the AI Agent Observability series. Why traditional APM cannot see when the agent gets it wrong.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/en/posts/what-is-ai-agent-observability/">
+  <meta property="article:published_time" content="2026-07-03">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/en/posts/what-is-ai-agent-observability/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/what-is-ai-agent-observability/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/what-is-ai-agent-observability/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/what-is-ai-agent-observability/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "What Is AI Agent Observability? Why Traditional APM Can't See That the Agent Got It Wrong",
+    "description": "Part 1 of the AI Agent Observability series.",
+    "datePublished": "2026-07-03",
+    "dateModified": "2026-07-03",
+    "inLanguage": "en",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/en/posts/what-is-ai-agent-observability/"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-cn { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 0.92em;
+    }
+
+    .article-sources {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.92rem; color: var(--muted);
+    }
+    .article-sources h4 {
+      margin: 0 0 12px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-sources ul { list-style: none; padding: 0; margin: 0; }
+    .article-sources li { margin: 6px 0; line-height: 1.6; }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/en/" class="brand-link">
+          <h1>EZ AI Ops Tips</h1>
+          <span class="brand-cn">轻松自动化笔记</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/en/">Home</a>
+        <a href="/en/#featured">Focus</a>
+        <a href="/en/#about">About</a>
+        <div class="lang-switch">
+          <a href="/posts/what-is-ai-agent-observability/" hreflang="zh-CN">中文</a>
+          <a href="/en/posts/what-is-ai-agent-observability/" class="active" aria-current="page">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent Observability · Part 1</span>
+        <h1>What Is AI Agent Observability? Why Traditional APM Can't See That the Agent "Got It Wrong"</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-03">July 3, 2026</time>
+          <span class="dot">·</span>
+          <span>15 min read</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>This is the first article in the <em>AI Agent Observability</em> series. We won't talk about tools or code yet. Instead, we'll answer a more basic question: <strong>when software starts "making its own decisions," why does the worldview behind two decades of monitoring suddenly stop being enough?</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>1. A Story First: An Alert That Never Came at 3 A.M.</h2>
+
+        <blockquote>
+          <p>The following is a fictional scenario — but a thoroughly realistic one today.</p>
+        </blockquote>
+
+        <p>Imagine you run a production system. At 3 a.m., your phone stays silent.</p>
+
+        <p>The dashboard is a wall of green: services up, response time 200 ms, error rate 0%, CPU and memory healthy. By every standard that operations teams have used for the last twenty years, this system is running <strong>flawlessly</strong>.</p>
+
+        <p>And yet, that very night, your newly launched AI support assistant confidently told more than three hundred users about a <strong>refund policy that does not exist</strong>. It didn't throw an error. It didn't time out. It didn't crash. To the server, every single one of those replies was a clean, successful request.</p>
+
+        <p>You only found out the next morning — from the complaints.</p>
+
+        <p>That's where this whole series begins. <strong>Traditional monitoring told you "the system isn't broken," while completely failing to tell you "the system got it wrong."</strong> For the first time in the history of software, those two things have come apart.</p>
+
+        <p>And that gap is exactly what AI Agent observability exists to fill:</p>
+
+        <blockquote>
+          <p>Traditional APM asks — <strong>is the system broken?</strong></p>
+          <p>AI Agent observability asks — <strong>did the agent get it right?</strong></p>
+        </blockquote>
+
+        <p>The former watches machine state; the latter watches behavioral quality. The former answers "is it fast, did it error, can it cope"; the latter answers "why did it do that, was it correct, and can it be continuously improved."</p>
+
+        <hr>
+
+        <h2>2. An Analogy for Everyone</h2>
+
+        <p>If you don't write code, this analogy is all you need:</p>
+
+        <ul>
+          <li><strong>Traditional APM (Application Performance Monitoring)</strong> is like the dashboard in a car: speed, fuel level, engine temperature, warning lights. It monitors <strong>how well the machine itself is running</strong>.</li>
+          <li><strong>AI Agent observability</strong> is like the driving instructor sitting in the passenger seat: the car is fine, there's plenty of fuel — but <strong>why did you turn at that intersection? Did you see that red light? Is this really the fastest route to the airport?</strong></li>
+        </ul>
+
+        <p>The dashboard cares about the <em>condition of the car</em>. The instructor cares about <strong>whether you're driving correctly</strong>.</p>
+
+        <p>Traditional software is the car: you press the gas, it moves, and the same action always produces the same result — so a dashboard is enough. But an AI Agent is that driver who makes its own judgments, picks its own routes, and occasionally, with great confidence, turns the wrong way. <strong>A dashboard alone falls far short.</strong></p>
+
+        <hr>
+
+        <h2>3. So, What Is an AI Agent?</h2>
+
+        <p>Before we talk about <em>how to observe it</em>, we need to be clear about <em>what's being observed</em>.</p>
+
+        <p>A traditional program is a <strong>hard-coded flow</strong>: <code>if A then do B, else do C</code>. Engineers spell out every step, and the program faithfully executes it.</p>
+
+        <p>An AI Agent is different. You give it a <strong>goal</strong> ("book me the cheapest flight to Shanghai tomorrow"), and it <strong>breaks down the task, makes judgments, and calls tools</strong> on its own (check flights, compare prices, place the order), stepping toward the goal. How it gets there isn't fully written out in advance by a human — it's something the model "figures out" at runtime.</p>
+
+        <p>This brings one revolutionary — and troublesome — property:</p>
+
+        <blockquote>
+          <p><strong>The same input can produce different outputs.</strong></p>
+        </blockquote>
+
+        <p>More precisely: for the first time, the <strong>core business decision path</strong> is being generated dynamically, at runtime, by a probabilistic model. This isn't the incidental non-determinism of traditional distributed systems — the kind that comes from concurrency, networks, or randomized algorithms. It's part of how an agent <strong>fundamentally works</strong>.</p>
+
+        <p>This isn't a bug. It's the nature of AI. And every observability challenge grows out of it.</p>
+
+        <p>One caveat, though: <strong>this doesn't mean an agent is ungovernable — it means we can no longer govern it with error codes, logs, and resource metrics alone.</strong> It needs a different way of being observed.</p>
+
+        <hr>
+
+        <h2>4. The Fundamental Difference: Five Broken Assumptions</h2>
+
+        <p>Traditional APM rests on a handful of assumptions that are simply taken for granted. AI Agents break them one by one.</p>
+
+        <h3>1. From "is the system healthy?" to "is the decision right?"</h3>
+
+        <p>The core signals APM and SRE teams rely on are <strong>latency, traffic, errors, and saturation</strong> (Google SRE's "four golden signals"); in service monitoring, these are often distilled into the <strong>RED method</strong>: Rate, Errors, Duration. They all answer the same question: <em>"Can the system still handle the load?"</em></p>
+
+        <p>But for an AI Agent, a single call can have <strong>normal latency, no errors, and healthy resources — and still be wrong</strong>. The 3 a.m. story is exactly that case.</p>
+
+        <p>So observability has to answer a question APM never needed to: <strong>did it get this one right?</strong> And "right" is usually not black-and-white — it's a quality distribution: was the answer <strong>accurate, complete, and free of fabrication?</strong></p>
+
+        <h3>2. From determinism to non-determinism</h3>
+
+        <p>The open-source observability platform Langfuse puts its finger on the core issue in one line: AI is <strong>"inherently non-deterministic,"</strong> and without dedicated tooling, debugging it is "more like guesswork."</p>
+
+        <p>The entire methodology of traditional monitoring is built on "same input → same output": when something breaks, you replay it to reproduce. But replay an AI Agent, and it may hand you a <strong>different</strong> answer. The old debugging paradigm doesn't hold up from the foundation.</p>
+
+        <h3>3. From "tracing calls" to "tracing reasoning"</h3>
+
+        <p>Traditional APM traces a <strong>call chain</strong>: a request goes from service A to service B to the database, and each hop takes so many milliseconds.</p>
+
+        <p>An AI Agent needs its <strong>reasoning chain — its behavior chain — traced.</strong> Note that observability can't actually read the model's neurons or explain what it was "thinking"; what it <em>can</em> do is record the <strong>externally visible evidence</strong>: given what context did the model choose this path? What documents did it retrieve? What arguments did it pass to a tool, and what came back? In a multi-step task, at <strong>which step</strong> did it start going off the rails? (In other words, observability gives you <em>behavioral evidence</em>, not an <em>inner monologue</em>.)</p>
+
+        <p>Worth noting — <strong>both use the same underlying technology.</strong> The industry standard OpenTelemetry is describing these new signals through its "GenAI semantic conventions": model calls, token usage, tool calls, and the key context around an agent invocation. In several implementations and examples we can already see span semantics like <code>invoke_agent</code> (invoke an agent) and <code>execute_tool</code> (execute a tool) — we'll unpack the exact fields and their maturity in Part 3. Traditional APM never had a concept like "invoke an agent."</p>
+
+        <p><strong>In other words: observability isn't out to overthrow APM — it packs an entirely new vocabulary about the "thinking process" onto APM's skeleton.</strong></p>
+
+        <h3>4. From "resource utilization" to "token economics"</h3>
+
+        <p>Traditional APM watches CPU, memory, and connection pools. An AI Agent has to watch a whole new set of cost metrics: <strong>how many tokens were consumed, how much each call cost, how much of the context window was used, whether the cache was hit.</strong></p>
+
+        <p>An agent stuck in a loop, calling the same tool over and over, might <strong>never spike the CPU</strong> — yet burn hundreds of dollars in API fees overnight. This kind of "quiet runaway" is something APM probes simply cannot perceive.</p>
+
+        <p>Which means agent observability isn't just a reliability question — it's a <strong>unit-economics</strong> question: how many tokens, how many dollars, and how many tool calls did one task actually cost — and <strong>was it worth it?</strong></p>
+
+        <h3>5. From "crashes and timeouts" to "semantic failures"</h3>
+
+        <p>Traditional failures are explicit: the service died, the request timed out, memory leaked. But an AI Agent has an entire class of <strong>brand-new, silent failure modes</strong>:</p>
+
+        <ul>
+          <li><strong>Hallucination</strong> — confidently stating false information (that support bot from the opening);</li>
+          <li><strong>Infinite loops</strong> — calling the same tool repeatedly, unable to stop;</li>
+          <li><strong>Tool misuse</strong> — wrong arguments, wrong format, wrong tool entirely;</li>
+          <li><strong>Lost context</strong> — halfway through a multi-step task, forgetting what it was doing;</li>
+          <li><strong>Retrieval poisoning</strong> — pulling the wrong documents, so everything downstream is wrong;</li>
+          <li><strong>Jailbreaks / prompt injection</strong> — being manipulated by users into saying or doing what it shouldn't.</li>
+        </ul>
+
+        <p><strong>These failures rarely show up in the form APM is best at catching.</strong> Even when some of them eventually surface as higher latency or a rising error rate (a runaway loop, for instance, drives up call volume and cost), APM can usually only tell you "something is wrong" — not <em>which reasoning step, which tool choice, or which stretch of context</em> the agent actually went astray on.</p>
+
+        <hr>
+
+        <h2>5. One Table to See the Division of Labor</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>Traditional APM</th>
+              <th>AI Agent Observability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Core question</strong></td>
+              <td>Is the request fast? Did it error? Can the system cope?</td>
+              <td>Did the agent get it right? Why did it decide this way?</td>
+            </tr>
+            <tr>
+              <td><strong>Primary subject</strong></td>
+              <td>Services, endpoints, resources, call chains</td>
+              <td>Agent runs, tool calls, retrieval, memory, reasoning paths</td>
+            </tr>
+            <tr>
+              <td><strong>Failure modes</strong></td>
+              <td>Crashes, timeouts, rising error rate, resource saturation</td>
+              <td>Hallucination, tool misuse, lost context, infinite loops, jailbreaks</td>
+            </tr>
+            <tr>
+              <td><strong>Core signals</strong></td>
+              <td>Latency, traffic, errors, saturation</td>
+              <td>Quality, token cost, tool correctness, retrieval relevance, safety</td>
+            </tr>
+            <tr>
+              <td><strong>Value boundary</strong></td>
+              <td>Keep the system running reliably</td>
+              <td>Keep the agent's behavior trustworthy, explainable, improvable</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>The single most important sentence — and the core conclusion of this article:</p>
+
+        <blockquote>
+          <p><strong>AI Agent observability isn't a replacement for APM; it's the layer above it.</strong> In a real production system, you need both: APM keeps the machines and services from crashing, while observability keeps the agent's "mind" trustworthy. They're <strong>two floors of the same building</strong>, not an either/or.</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>6. What This Series Will Cover Next</h2>
+
+        <p>This piece is the entry point. I want to take "AI Agent observability" all the way from <strong>why</strong> to <strong>how</strong>. What's planned:</p>
+
+        <ul>
+          <li><strong>② The Three Pillars: Trace, Metrics, Evaluation</strong> — What three kinds of data do you actually collect to observe an agent? And why does "Evaluation" become a first-class third pillar of agent observability — how is it different from APM's SLOs, synthetic monitoring, and user-experience metrics?</li>
+          <li><strong>③ Decoding the OpenTelemetry GenAI Semantic Conventions</strong> — What does a single agent invocation actually get recorded as, in the standard? What lives inside spans like <code>invoke_agent</code> and <code>execute_tool</code>?</li>
+          <li><strong>④ Scoring "Right vs. Wrong": LLM-as-a-Judge in Practice</strong> — When correctness is no longer black-and-white, how do we use one AI to judge another? Can we trust it? When does it fail?</li>
+          <li><strong>⑤ Catching Hallucinations, Loops, and Cost Runaways</strong> — How those silent failures actually get detected and alerted on.</li>
+          <li><strong>⑥ A Tool-Selection Map</strong> — Langfuse, LangSmith, Arize Phoenix, and the "upward growth" of incumbent APM vendors like Datadog and New Relic — how do you actually choose?</li>
+          <li><strong>⑦ From Zero: Putting a "Coach" on a Real Agent</strong> — An end-to-end, hands-on build.</li>
+        </ul>
+
+        <hr>
+
+        <h2>Closing</h2>
+
+        <p>The software industry spent twenty years perfecting the art of "monitoring a deterministic machine."</p>
+
+        <p>Now we're beginning to monitor something that <strong>thinks, makes mistakes, and will — with a straight face — make things up.</strong></p>
+
+        <p>The age of the dashboard isn't over. But a new role has stepped onto the stage: the <strong>coach</strong> in the passenger seat, watching every decision the AI makes.</p>
+
+        <p>This series is about introducing that coach to you.</p>
+
+        <p>And it won't stay at the level of concepts. Ahead, we'll break AI Agent observability into three throughlines — Trace, Metrics, Evaluation — then land on the OpenTelemetry GenAI semantic conventions, on detecting hallucinations / loops / cost runaways, and on wiring up a real agent end to end. The goal isn't to build yet another monitoring dashboard, but to answer a far more practical question: <strong>how does an organization know that an agent in production is both running reliably and getting things right.</strong></p>
+
+        <p><strong>Next up, we start with the Three Pillars.</strong></p>
+
+      </div>
+
+      <aside class="article-sources">
+        <h4>Sources</h4>
+        <ul>
+          <li><a href="https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-agent-spans.md" rel="noopener">OpenTelemetry GenAI Semantic Conventions — Agent Spans</a></li>
+          <li><a href="https://langfuse.com/docs/observability/overview" rel="noopener">Langfuse — Observability Overview</a></li>
+        </ul>
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/en/">← Back to home</a>
+      <span class="dim">Next: The Three Pillars · coming soon</span>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>

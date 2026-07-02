@@ -196,6 +196,10 @@
       color: var(--text);
       font-size: 0.98rem;
     }
+    .featured ul.article-list li a.title:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
     .featured ul.article-list li .status {
       color: var(--muted);
       font-size: 0.8rem;
@@ -203,6 +207,10 @@
       padding: 2px 8px;
       border-radius: 8px;
       white-space: nowrap;
+    }
+    .featured ul.article-list li .status.published {
+      color: #047857;
+      background: #d1fae5;
     }
     .featured .cta-soon {
       color: var(--muted);
@@ -318,8 +326,8 @@
         </p>
         <ul class="article-list">
           <li>
-            <span class="title">What is AI Agent Observability, and how does it differ from traditional APM?</span>
-            <span class="status">Planned</span>
+            <a class="title" href="/en/posts/what-is-ai-agent-observability/">What is AI Agent Observability, and how does it differ from traditional APM?</a>
+            <span class="status published">Published</span>
           </li>
           <li>
             <span class="title">Langfuse in production: self-hosted + LangGraph integration</span>

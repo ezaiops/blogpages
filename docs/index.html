@@ -196,6 +196,10 @@
       color: var(--text);
       font-size: 0.98rem;
     }
+    .featured ul.article-list li a.title:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
     .featured ul.article-list li .status {
       color: var(--muted);
       font-size: 0.8rem;
@@ -203,6 +207,10 @@
       padding: 2px 8px;
       border-radius: 8px;
       white-space: nowrap;
+    }
+    .featured ul.article-list li .status.published {
+      color: #047857;
+      background: #d1fae5;
     }
     .featured .cta-soon {
       color: var(--muted);
@@ -317,8 +325,8 @@
         </p>
         <ul class="article-list">
           <li>
-            <span class="title">什么是 AI Agent 可观测性：和传统 APM 的本质区别</span>
-            <span class="status">规划中</span>
+            <a class="title" href="/posts/what-is-ai-agent-observability/">什么是 AI Agent 可观测性:为什么传统 APM 看不见"做错了"</a>
+            <span class="status published">已发布</span>
           </li>
           <li>
             <span class="title">Langfuse 完整实战：自部署 + 接入 LangGraph</span>

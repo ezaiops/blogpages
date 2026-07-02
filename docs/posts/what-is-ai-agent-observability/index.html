@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>什么是 AI Agent 可观测性:为什么传统 APM 看不见"做错了" · EZ AI Ops Tips</title>
+  <meta name="description" content="AI Agent 可观测性系列第 1 篇。当软件开始"自己做决定",过去二十年那套监控系统的世界观,为什么突然不够用了。">
+  <meta property="og:title" content="什么是 AI Agent 可观测性:为什么传统 APM 看不见"做错了"">
+  <meta property="og:description" content="AI Agent 可观测性系列第 1 篇。当软件开始自己做决定,传统 APM 为什么不够用。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/posts/what-is-ai-agent-observability/">
+  <meta property="article:published_time" content="2026-07-03">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/posts/what-is-ai-agent-observability/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/what-is-ai-agent-observability/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/what-is-ai-agent-observability/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/what-is-ai-agent-observability/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "什么是 AI Agent 可观测性:为什么传统 APM 看不见\"做错了\"",
+    "description": "AI Agent 可观测性系列第 1 篇。当软件开始自己做决定,传统 APM 为什么不够用。",
+    "datePublished": "2026-07-03",
+    "dateModified": "2026-07-03",
+    "inLanguage": "zh-CN",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/posts/what-is-ai-agent-observability/"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-en { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+
+    .article-sources {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.92rem; color: var(--muted);
+    }
+    .article-sources h4 {
+      margin: 0 0 12px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-sources ul { list-style: none; padding: 0; margin: 0; }
+    .article-sources li { margin: 6px 0; line-height: 1.6; }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <h1>轻松自动化笔记</h1>
+          <span class="brand-en">EZ AI Ops Tips</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/">首页</a>
+        <a href="/#featured">专题</a>
+        <a href="/#about">关于</a>
+        <div class="lang-switch">
+          <a href="/posts/what-is-ai-agent-observability/" class="active" aria-current="page">中文</a>
+          <a href="/en/posts/what-is-ai-agent-observability/" hreflang="en">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent 可观测性系列 · 第 1 篇</span>
+        <h1>什么是 AI Agent 可观测性:为什么传统 APM 看不见"做错了"?</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-03">2026 年 7 月 3 日</time>
+          <span class="dot">·</span>
+          <span>约 15 分钟阅读</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>这是《AI Agent 可观测性》系列的第一篇。我们先不谈工具、不谈代码,而是回答一个更根本的问题:<strong>当软件开始"自己做决定",我们过去那套监控系统的世界观,为什么突然不够用了。</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>一、先讲个故事:一个凌晨三点的报警</h2>
+
+        <blockquote>
+          <p>下面是一个虚构、但在今天非常现实的场景。</p>
+        </blockquote>
+
+        <p>假设你负责一个线上系统。凌晨三点,你的手机没有响。</p>
+
+        <p>监控大盘上一片绿色:服务在线、响应时间 200 毫秒、错误率 0%、CPU 和内存都很健康。按照过去二十年所有运维的标准,这套系统<strong>完美运行</strong>。</p>
+
+        <p>但就在这一夜,你们那个刚上线的 AI 客服助手,一本正经地告诉了三百多个用户一条<strong>根本不存在的退款政策</strong>。它没有报错、没有超时、没有崩溃。每一次回答,在服务器眼里都是一次干净漂亮的成功请求。</p>
+
+        <p>第二天你才从客诉里知道这件事。</p>
+
+        <p>这就是全文的起点。<strong>传统监控告诉你"系统没坏",却完全没能告诉你"系统做错了"。</strong>这两件事,第一次在软件的历史上被彻底分开了。</p>
+
+        <p>而这,正是 AI Agent 可观测性要补上的那一块:</p>
+
+        <blockquote>
+          <p>传统 APM 关心的是——<strong>系统有没有坏</strong>。</p>
+          <p>AI Agent 可观测性关心的是——<strong>Agent 有没有做对</strong>。</p>
+        </blockquote>
+
+        <p>前者看机器状态,后者看行为质量;前者回答"快不快、错没错、扛不扛得住",后者回答"为什么这么做、是否做对、能否被持续改进"。</p>
+
+        <hr>
+
+        <h2>二、给所有人的一个类比</h2>
+
+        <p>如果你不写代码,用这个类比就够了:</p>
+
+        <ul>
+          <li><strong>传统 APM(应用性能监控)</strong>,像是给一辆车装的仪表盘:时速多少、油量多少、水温高不高、发动机有没有报警灯。它监控的是<strong>这台机器本身运转得好不好</strong>。</li>
+          <li><strong>AI Agent 可观测性</strong>,则像是坐在一位新手司机旁边的教练:车没坏,油也够,但——<strong>你为什么在这个路口拐弯?你看到那个红灯了吗?你这条路线是去机场最快的方式吗?</strong></li>
+        </ul>
+
+        <p>仪表盘关心的是"车况",教练关心的是"<strong>你开得对不对</strong>"。</p>
+
+        <p>传统软件是车:你踩油门它就走,同样的操作永远同样的结果,所以只需要仪表盘。而 AI Agent 是那个会自己判断、自己选路、偶尔还会自信地开错方向的司机——<strong>光有仪表盘,远远不够。</strong></p>
+
+        <hr>
+
+        <h2>三、那么,什么是 AI Agent?</h2>
+
+        <p>在讲"怎么观测"之前,得先说清楚被观测的东西。</p>
+
+        <p>传统程序是<strong>写死的流程</strong>:<code>如果 A 就做 B,否则做 C</code>。工程师把每一步都规定好了,程序只是忠实执行。</p>
+
+        <p>AI Agent(智能体)不一样。你给它一个<strong>目标</strong>("帮我订一张明天去上海最便宜的机票"),它会自己<strong>拆解任务、做出判断、调用工具</strong>(查航班、比价格、下订单),一步步逼近目标。中间怎么走,不完全由人预先写死,而是模型在运行时"想"出来的。</p>
+
+        <p>这带来一个革命性的、也是麻烦的特性:</p>
+
+        <blockquote>
+          <p><strong>同样的输入,可能得到不同的输出。</strong></p>
+        </blockquote>
+
+        <p>更准确地说:软件的<strong>核心业务决策路径</strong>,第一次开始由概率模型在运行时动态生成。这不是传统分布式系统里那种由并发、网络或随机算法带来的偶发不确定性,而是 Agent 工作方式<strong>本身</strong>的一部分。</p>
+
+        <p>这不是 bug,这是 AI 的本质。而所有的观测难题,都从这里长出来。</p>
+
+        <p>但要强调一句:<strong>这并不意味着 Agent 不可治理,而是意味着我们不能再只依赖传统的错误码、日志和资源指标去治理它</strong>——需要换一套观测方式。</p>
+
+        <hr>
+
+        <h2>四、本质区别:五个被打破的旧假设</h2>
+
+        <p>传统 APM 建立在几个默认成立的假设上。AI Agent 把它们逐个打破了。</p>
+
+        <h3>1. 从"系统健不健康"到"决策对不对"</h3>
+
+        <p>传统 APM 与 SRE 常用的核心信号是<strong>延迟、流量、错误率、饱和度</strong>(Google SRE 的"四个黄金信号");在服务监控里,也常被简化成 <strong>RED 方法</strong>:请求速率(Rate)、错误率(Errors)、耗时(Duration)。这套指标回答的都是同一个问题——"系统还扛得住吗?"</p>
+
+        <p>但对 AI Agent,一次调用可以<strong>延迟正常、没有报错、资源健康,答案却是错的</strong>。开篇那个凌晨三点的故事,正是这种情况。</p>
+
+        <p>所以可观测性必须回答一个 APM 从不需要回答的问题:<strong>它这次做得对吗?</strong>而"对不对"往往不是非黑即白,而是一个质量分布——回答得<strong>准不准、全不全、有没有胡编</strong>。</p>
+
+        <h3>2. 从"确定性"到"非确定性"</h3>
+
+        <p>开源可观测性平台 Langfuse 一句话点破了要害:AI 是 <strong>"天生非确定的"(inherently non-deterministic)</strong>,没有专门的工具,调试起来"更像是在猜"。</p>
+
+        <p>传统监控的整个方法论,都建立在"相同输入 → 相同输出"之上:出了问题,重放一遍就能复现。而 AI Agent 你重放一遍,它可能给你一个<strong>不一样的</strong>答案。旧的排障范式,从地基上就不成立了。</p>
+
+        <h3>3. 从"看调用链"到"看推理链"</h3>
+
+        <p>传统 APM 追踪的是<strong>调用链</strong>:请求从服务 A 到服务 B 再到数据库,每一跳花了多少毫秒。</p>
+
+        <p>AI Agent 需要追踪的是<strong>推理链 / 行为链</strong>。注意,可观测性并不能真的读懂模型内部的神经元、解释它"脑子里"在想什么;它能做的,是把<strong>外部可见的证据</strong>记录下来:模型是在什么上下文下选择了这条路径?它检索到了哪些资料?调用工具时传了什么参数、拿回了什么?在多步任务里,它是在<strong>哪一步</strong>开始跑偏的?(换句话说,可观测性给的是"行为证据",不是"内心独白"。)</p>
+
+        <p>值得注意的是——<strong>这两者用的其实是同一套底层技术</strong>。业界标准 OpenTelemetry 正在通过 "GenAI 语义约定"描述这类新信号:模型调用、Token 使用、工具调用,以及 Agent 调用过程中的关键上下文。在一些实现和示例里,我们已经能看到类似 <code>invoke_agent</code>(调用一个智能体)、<code>execute_tool</code>(执行一个工具)这样的 span 语义——具体字段和成熟度,我们会在第三篇专门拆解。而传统 APM 里,从来没有"调用一个智能体"这种概念。</p>
+
+        <p><strong>换句话说:可观测性不是要推翻 APM,而是在它的骨架上,装进了一套全新的、关于"思考过程"的语义。</strong></p>
+
+        <h3>4. 从"资源利用率"到"Token 经济学"</h3>
+
+        <p>传统 APM 盯的是 CPU、内存、连接池。AI Agent 要盯的是一组全新的成本指标:<strong>消耗了多少 Token、每次调用花了多少钱、上下文窗口占用了多少、缓存命中了没有。</strong></p>
+
+        <p>一个陷入死循环、反复调用同一个工具的 Agent,可能<strong>不会让 CPU 飙升</strong>,却能在一夜之间烧掉你几百美元的 API 账单。这种"安静的失控",是 APM 探针根本感知不到的。</p>
+
+        <p>这也意味着,Agent 可观测性不只是稳定性问题,更是<strong>单位经济性(unit economics)</strong>问题:完成一次任务到底花了多少 Token、多少钱、多少次工具调用——以及,<strong>这一次到底值不值</strong>。</p>
+
+        <h3>5. 从"崩溃与超时"到"语义性失控"</h3>
+
+        <p>传统故障是显性的:服务挂了、超时了、内存泄漏了。而 AI Agent 有一整类<strong>全新的、静悄悄的失败模式</strong>:</p>
+
+        <ul>
+          <li><strong>幻觉</strong>——自信地说出错误信息(就是开篇那位客服);</li>
+          <li><strong>死循环</strong>——反复调用同一个工具,停不下来;</li>
+          <li><strong>工具用错</strong>——参数错了、格式错了、调错了工具;</li>
+          <li><strong>上下文丢失</strong>——多步任务走到一半,忘了自己在干嘛;</li>
+          <li><strong>检索污染</strong>——找错了资料,导致后面全盘皆错;</li>
+          <li><strong>被越狱 / 提示注入</strong>——被用户诱导,说出或做出不该做的事。</li>
+        </ul>
+
+        <p>这些失败,<strong>往往不会以传统 APM 最擅长捕获的形式出现</strong>。即使某些场景最终表现为延迟升高或错误率上升(比如死循环会推高调用次数和成本),APM 通常也只能告诉你"系统异常了",却很难解释 Agent 究竟是在<strong>哪一步推理、哪一次工具选择、或哪一段上下文使用</strong>上走偏的。</p>
+
+        <hr>
+
+        <h2>五、一张表看懂两者的分工</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>维度</th>
+              <th>传统 APM</th>
+              <th>AI Agent 可观测性</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>核心问题</strong></td>
+              <td>请求快不快?错没错?系统扛得住吗?</td>
+              <td>Agent 做得对不对?为什么这么决策?</td>
+            </tr>
+            <tr>
+              <td><strong>主要对象</strong></td>
+              <td>服务、接口、资源、调用链</td>
+              <td>Agent 运行、工具调用、检索、记忆、推理路径</td>
+            </tr>
+            <tr>
+              <td><strong>失败形态</strong></td>
+              <td>崩溃、超时、错误率升高、资源打满</td>
+              <td>幻觉、工具误用、上下文丢失、死循环、越狱</td>
+            </tr>
+            <tr>
+              <td><strong>核心信号</strong></td>
+              <td>延迟、流量、错误率、饱和度</td>
+              <td>质量、Token 成本、工具正确性、检索相关性、安全性</td>
+            </tr>
+            <tr>
+              <td><strong>价值边界</strong></td>
+              <td>保障系统稳定运行</td>
+              <td>保障 Agent 行为可信、可解释、可改进</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>最关键的一句话,也是本文的核心结论:</p>
+
+        <blockquote>
+          <p><strong>AI Agent 可观测性不是 APM 的替代品,而是它的"上层"。</strong>在一个真实的生产系统里,两者缺一不可:APM 保证机器和服务不崩,可观测性保证智能体的"脑子"靠谱。它们是<strong>上下两层楼</strong>,不是二选一。</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>六、这个系列,接下来会聊什么</h2>
+
+        <p>这篇是入口。我想把"AI Agent 可观测性"这件事,从<strong>为什么</strong>,一路讲到<strong>怎么做</strong>。后续计划包括:</p>
+
+        <ul>
+          <li><strong>② 三大支柱:Trace、Metrics、Evaluation</strong> —— 观测一个智能体,到底要收集哪三类数据?为什么"评估(Evaluation)"会成为 Agent 可观测性的第三根柱子——它和传统 APM 里的 SLO、合成监控(Synthetic Monitoring)、用户体验指标又有什么不同?</li>
+          <li><strong>③ OpenTelemetry GenAI 语义约定拆解</strong> —— 一次智能体调用,在标准里到底被记成了什么样?<code>invoke_agent</code>、<code>execute_tool</code> 这些 span 里都装了什么?</li>
+          <li><strong>④ 如何给"对不对"打分:LLM-as-a-Judge 实战</strong> —— 当对错不再非黑即白,我们怎么用一个 AI 去评判另一个 AI?它靠谱吗?会翻车吗?</li>
+          <li><strong>⑤ 抓住幻觉、死循环和成本失控</strong> —— 那些静悄悄的失败,具体怎么被发现、被报警。</li>
+          <li><strong>⑥ 工具选型地图</strong> —— Langfuse、LangSmith、Arize Phoenix,和 Datadog、New Relic 这些老牌 APM 厂商的"向上生长",到底该怎么选。</li>
+          <li><strong>⑦ 从零搭一套:给一个真实 Agent 装上"教练"</strong> —— 一个端到端的动手实践。</li>
+        </ul>
+
+        <hr>
+
+        <h2>结语</h2>
+
+        <p>软件行业花了二十年,把"监控一台确定的机器"这件事做到了极致。</p>
+
+        <p>而现在,我们要开始监控一个<strong>会思考、会犯错、还会一本正经胡说八道的东西</strong>。</p>
+
+        <p>仪表盘的时代没有结束,但一个新的角色登场了——那位坐在副驾、盯着 AI 每一个决定的<strong>教练</strong>。</p>
+
+        <p>这个系列,就是想把这位教练,介绍给你。</p>
+
+        <p>这个系列不会只停留在概念层面。后面我会把 AI Agent 可观测性拆成 Trace、Metrics、Evaluation 三条主线,再落到 OpenTelemetry GenAI 语义约定、幻觉 / 死循环 / 成本失控的检测,以及一个真实 Agent 的端到端接入。目标不是再造一个监控大盘,而是回答一个更实际的问题:<strong>企业怎么知道一个 Agent 在生产环境里,既跑得稳,又做得对。</strong></p>
+
+        <p><strong>下一篇,我们从"三大支柱"开始。</strong></p>
+
+      </div>
+
+      <aside class="article-sources">
+        <h4>参考来源</h4>
+        <ul>
+          <li><a href="https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-agent-spans.md" rel="noopener">OpenTelemetry GenAI Semantic Conventions — Agent Spans</a></li>
+          <li><a href="https://langfuse.com/docs/observability/overview" rel="noopener">Langfuse — Observability Overview</a></li>
+        </ul>
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/">← 返回首页</a>
+      <span class="dim">下一篇:三大支柱 · 敬请期待</span>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>
