@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agent 可观测性的三大支柱:Trace、Metrics、Evaluation · EZ AI Ops Tips</title>
+  <meta name="description" content="AI Agent 可观测性系列第 2 篇。看见它做了什么,量化它跑得怎样,判断它做得对不对——Trace / Metrics / Evaluation 的分工与闭环。">
+  <meta property="og:title" content="AI Agent 可观测性的三大支柱:Trace、Metrics、Evaluation">
+  <meta property="og:description" content="AI Agent 可观测性系列第 2 篇。三大支柱的分工与闭环:看见、量化、判断。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/">
+  <meta property="article:published_time" content="2026-07-04">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/three-pillars-trace-metrics-evaluation/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "AI Agent 可观测性的三大支柱:Trace、Metrics、Evaluation",
+    "description": "AI Agent 可观测性系列第 2 篇。三大支柱的分工与闭环。",
+    "datePublished": "2026-07-04",
+    "dateModified": "2026-07-04",
+    "inLanguage": "zh-CN",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/"
+    },
+    "isPartOf": {
+      "@type": "CreativeWorkSeries",
+      "name": "AI Agent 可观测性系列"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-en { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 0.92em;
+    }
+    .article-body pre {
+      background: #1f2937; color: #e5e7eb; padding: 16px 20px; margin: 22px 0;
+      border-radius: 8px; overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.88rem; line-height: 1.8;
+    }
+    .article-body pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .article-body sup.footnote-ref {
+      font-size: 0.72rem; margin: 0 2px; vertical-align: super;
+    }
+    .article-body sup.footnote-ref a {
+      color: var(--accent); text-decoration: none; padding: 0 3px;
+      border: 1px solid #dbeafe; border-radius: 4px; background: #f0f7ff;
+      font-weight: 600;
+    }
+    .article-body sup.footnote-ref a:hover { background: #dbeafe; }
+
+    .article-footnotes {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .article-footnotes h4 {
+      margin: 0 0 14px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-footnotes ol { padding-left: 22px; margin: 0; }
+    .article-footnotes li { margin: 10px 0; line-height: 1.7; }
+    .article-footnotes .back {
+      color: var(--accent); margin-left: 6px;
+      font-family: ui-monospace, monospace; text-decoration: none;
+    }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+      .article-body pre { font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <h1>轻松自动化笔记</h1>
+          <span class="brand-en">EZ AI Ops Tips</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/">首页</a>
+        <a href="/#featured">专题</a>
+        <a href="/#about">关于</a>
+        <div class="lang-switch">
+          <a href="/posts/three-pillars-trace-metrics-evaluation/" class="active" aria-current="page">中文</a>
+          <a href="/en/posts/three-pillars-trace-metrics-evaluation/" hreflang="en">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent 可观测性系列 · 第 2 篇</span>
+        <h1>AI Agent 可观测性的三大支柱:Trace、Metrics、Evaluation</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-04">2026 年 7 月 4 日</time>
+          <span class="dot">·</span>
+          <span>约 18 分钟阅读</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>看见它做了什么,量化它跑得怎样,判断它做得对不对。</p>
+        </blockquote>
+
+        <blockquote>
+          <p>这是《AI Agent 可观测性》系列的第二篇。<a href="/posts/what-is-ai-agent-observability/">上一篇</a>我们回答了"为什么传统 APM 不够";这一篇要回答:<strong>到了 Agent 时代,为什么光有日志、指标和链路还不够——那我们到底该观测什么。</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>一、从"系统没坏"到"Agent 做对了吗"</h2>
+
+        <p>上一篇的结论是一句话:<strong>传统 APM 看得见"系统有没有坏",却不一定看得见"Agent 有没有做对"。</strong></p>
+
+        <p>那么很自然的下一个问题就来了——</p>
+
+        <blockquote>
+          <p>如果一个 Agent 的失败,不一定表现为错误码、超时或宕机,我们到底该观测<strong>什么</strong>?</p>
+        </blockquote>
+
+        <p>答案不是多加几行日志,也不是再堆几个大盘。要把这件事讲清楚,得先把"观测什么"拆成三类<strong>互相不能替代</strong>的问题:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>你想知道的</th>
+              <th>对应的能力</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Agent 这一次到底<strong>做了什么</strong>?</td>
+              <td><strong>Trace(轨迹)</strong></td>
+            </tr>
+            <tr>
+              <td>大量运行<strong>整体表现如何</strong>?</td>
+              <td><strong>Metrics(指标)</strong></td>
+            </tr>
+            <tr>
+              <td>输出的内容<strong>到底对不对</strong>?</td>
+              <td><strong>Evaluation(评估)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>这就是本文要讲的<strong>三大支柱</strong>。用一句话记住它们的分工:</p>
+
+        <blockquote>
+          <p><strong>Trace 记录行为,Metrics 量化运行,Evaluation 判断质量。</strong></p>
+        </blockquote>
+
+        <h3>先做两个诚实的说明</h3>
+
+        <p><strong>第一,"三大支柱"是本文的讲解框架,不是官方术语。</strong></p>
+
+        <p>OpenTelemetry 官方并不用 "pillars(支柱)"这个词,它用的是 <strong>signals(信号)</strong>——当前支持的是 Traces、Metrics、Logs、Baggage,另有 Events、Profiles 等还在开发或提案阶段<sup class="footnote-ref"><a href="#fn-otel-signals" id="fnref-otel-signals-1">[1]</a></sup>。所以严格地说:<strong>"三大支柱"是本文为了讲清 Agent 可观测性而搭的工程框架;在 OpenTelemetry 语境里,Traces、Metrics、Logs 这些叫遥测信号(telemetry signals)。</strong>后面我们说"支柱",指的都是这个框架意义上的。</p>
+
+        <p><strong>第二,把 Trace / Metrics / Evaluation 列为三大支柱,不等于把 Logs 扔了。</strong></p>
+
+        <p>细心的读者会发现:传统常说的"三大"是 Logs / Metrics / Traces,怎么到了这里,Logs 换成了 Evaluation?</p>
+
+        <p>这不是说日志在 Agent 系统里不重要。<strong>日志仍然是审计、异常记录、安全追踪和排障的底层证据</strong>——而且在 LLM 场景里,很多平台会把 tracing 组织成"每次请求的结构化记录",记录 prompt、模型回复、token 用量、延迟,以及中间的工具与检索步骤<sup class="footnote-ref"><a href="#fn-langfuse-tracing" id="fnref-langfuse-tracing-1">[2]</a></sup>。</p>
+
+        <p>准确的说法是:</p>
+
+        <blockquote>
+          <p><strong>Logs 仍是底层证据;Trace / Metrics / Evaluation 是本文用来组织 Agent 可观测性的上层框架。</strong></p>
+        </blockquote>
+
+        <p>我们把重点放在这三件事上,是因为它们对应了 Agent 时代三个最关键、也最容易被传统监控漏掉的问题。下面逐个展开。</p>
+
+        <hr>
+
+        <h2>二、一个贯穿全文的例子:退款客服 Agent</h2>
+
+        <p>为了不让三大支柱停留在抽象概念,我们用一个虚构、但很现实的例子,贯穿后面三节。</p>
+
+        <blockquote>
+          <p><strong>用户:我上周被重复扣费了,帮我退款。</strong></p>
+        </blockquote>
+
+        <p>一个 Agent 处理这句话,一次运行(run)大致会经历:</p>
+
+        <ol>
+          <li>理解用户意图(这是一个"退款请求");</li>
+          <li>检索退款政策(能不能退、怎么退);</li>
+          <li>查询订单系统(确认确实重复扣费);</li>
+          <li>判断是否符合退款条件;</li>
+          <li>调用退款接口(<code>refund API</code>);</li>
+          <li>生成给用户的回复;</li>
+          <li>被评估系统判断:这次到底有没有真正把事办对。</li>
+        </ol>
+
+        <p>记住这七步。接下来:</p>
+
+        <ul>
+          <li><strong>Trace</strong> 负责看清"这一次"每一步发生了什么;</li>
+          <li><strong>Metrics</strong> 负责看"很多次这样的退款"整体表现如何;</li>
+          <li><strong>Evaluation</strong> 负责判断"这一次"回答和处理是否真的正确。</li>
+        </ul>
+
+        <hr>
+
+        <h2>三、Trace ｜ 事实层:看见一次 Agent Run 的行为链</h2>
+
+        <p>三大支柱里,Trace 是<strong>事实层</strong>——它记录一次 Agent run 到底怎么走的。没有它,后面的一切判断都没有落脚点。</p>
+
+        <h3>1. 结构像 APM,但语义重心变了</h3>
+
+        <p>Agent 的 trace 复用了 APM 那套 trace / span 结构,但<strong>装的东西换了</strong>:</p>
+
+        <blockquote>
+          <p><strong>APM trace 追踪的是:请求穿过了哪些服务。</strong></p>
+          <p><strong>Agent trace 追踪的是:Agent 为完成目标,采取了哪些行为。</strong></p>
+        </blockquote>
+
+        <p>APM 的 span 里关心的是"服务 A 调服务 B、耗时多少、有没有报错";Agent 的 span 里则要关注 prompt、模型回复、token 用量、工具调用、检索步骤这些<strong>行为语义</strong>。</p>
+
+        <blockquote>
+          <p>⚠️ 需要提醒:prompt 和模型回复常常包含用户数据、PII 或商业敏感信息。在真实生产环境里,这些内容通常要按安全策略<strong>采样、脱敏、截断,或只记录摘要 / 引用 ID</strong>,而不是无条件全量明文落库。</p>
+        </blockquote>
+
+        <h3>2. 它是一棵"行为树"</h3>
+
+        <p>还是用退款的例子。一次运行的 trace,大致长这样:</p>
+
+        <pre><code>Agent Run: refund_request
+├── 用户输入
+├── 意图理解
+├── 检索:退款政策
+├── 工具调用:query_order(查订单)
+├── 工具调用:create_refund(发起退款)
+├── 模型回复:生成给用户的话术
+└── 评估结果:这次算成功吗?</code></pre>
+
+        <p>这棵树让你第一次能<strong>回放</strong>一次 Agent 运行:它在第几步检索了什么、调了哪个工具、传了什么参数、拿回什么结果、在哪一步开始跑偏。</p>
+
+        <p>(这里只给示意结构,不上真实字段。一条 trace 在标准里到底该记哪些字段,是下一篇的主题。)</p>
+
+        <h3>3. 呼应上一篇:行为证据,不是内心独白</h3>
+
+        <p>上一篇我们强调过一句话,这里要再说一遍,因为它是理解 Trace 的关键:</p>
+
+        <blockquote>
+          <p><strong>Trace 让我们看到 Agent 的行为证据,而不是读懂模型的"内心独白"。</strong></p>
+        </blockquote>
+
+        <p>可观测性读不懂神经元里在想什么;它能做的,是把<strong>外部可见的行为</strong>——选了哪条路、用了什么上下文、调了什么工具——完整记录下来。判断"对不对",是第三根支柱 Evaluation 的事;Trace 只负责把"发生了什么"如实摆在你面前。</p>
+
+        <blockquote>
+          <p>🔗 下一篇讲 OpenTelemetry GenAI 语义约定时,我们会看这些行为证据<strong>如何被标准化地记录</strong>。</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>四、Metrics ｜ 趋势层:量化性能、成本、稳定性和行为</h2>
+
+        <p>Trace 适合看<strong>单次</strong>问题;但你不可能一条条翻 trace。要看"很多次退款整体表现如何",就需要 Metrics——把海量运行聚合成趋势。</p>
+
+        <p>Agent 的指标可以分成<strong>三层</strong>,比简单的"新指标 vs 旧指标"更清楚:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>类型</th>
+              <th>指标示例</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>继承自 APM</strong></td>
+              <td>端到端延迟、吞吐、错误率、资源饱和度</td>
+              <td>仍然要,用来判断服务本身是否稳定</td>
+            </tr>
+            <tr>
+              <td><strong>被 Agent 改造</strong></td>
+              <td>延迟拆成模型延迟 / 工具延迟 / 检索延迟、重试次数</td>
+              <td>还是运行指标,但要<strong>拆到 Agent 的每一步</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Agent 原生新增</strong></td>
+              <td>Token 用量、每次运行成本、工具调用次数、循环步数、检索命中率与相关性评分的聚合、上下文占用</td>
+              <td>用来盯<strong>成本、行为异常和质量风险</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <blockquote>
+          <p>注意:像"检索相关性"这类质量信号,通常先由规则、模型评估或人工标注<strong>产生分数</strong>,再被<strong>聚合</strong>成 Metrics 来看趋势——它其实跨在 Metrics 与 Evaluation 之间。</p>
+        </blockquote>
+
+        <p>中间那一层特别值得注意。以延迟为例:传统 APM 的 latency 是"单次 API 响应耗时",一个数就够了;但一次退款任务可能包含多次模型调用、多次工具调用、检索和重试,所以 Agent 的延迟必须<strong>拆开</strong>——到底慢在模型、慢在工具,还是慢在检索?不拆,你就只知道"慢",不知道"为什么慢"。</p>
+
+        <p>这一节直接承接上一篇的<strong>单位经济性(unit economics)</strong>:</p>
+
+        <blockquote>
+          <p>在 Agent 系统里,一次任务的成本不只来自 CPU 和内存,还来自 token、模型调用、工具调用、检索和重试。所以 Metrics 不只是稳定性指标,<strong>也是单位经济性指标</strong>。</p>
+        </blockquote>
+
+        <p>放回退款的例子,Metrics 要能回答这些问题:</p>
+
+        <ul>
+          <li>平均一次退款任务,调了几个工具?</li>
+          <li>p95 端到端耗时是多少?最慢的是哪个工具?</li>
+          <li>每次退款平均烧多少 token、多少钱?</li>
+          <li>有没有出现"循环步数"异常升高——某些请求 Agent 反复兜圈子?</li>
+        </ul>
+
+        <p>(OpenTelemetry 把 Metrics 定义为"运行时捕获的度量"<sup class="footnote-ref"><a href="#fn-otel-signals" id="fnref-otel-signals-2">[1]</a></sup>;Langfuse 也明确建议追踪成本与 token 用量<sup class="footnote-ref"><a href="#fn-langfuse-tracing" id="fnref-langfuse-tracing-2">[2]</a></sup>。这些是 Agent 指标体系的公开依据。)</p>
+
+        <hr>
+
+        <h2>五、Evaluation ｜ 判断层:它做得对吗?</h2>
+
+        <p>前两根支柱能告诉你 Agent <strong>跑得快不快、贵不贵、稳不稳</strong>。但它们都回答不了那个最要命的问题——就像第一篇提到的那个场景:一个客服 Agent 一本正经地编造了并不存在的退款政策,延迟正常、没有报错、资源健康,<strong>唯独答案是错的</strong>。</p>
+
+        <blockquote>
+          <p><strong>Metrics 告诉我们 Agent 跑得怎么样;Evaluation 才告诉我们它做得对不对。</strong></p>
+        </blockquote>
+
+        <p>这就是 Evaluation 的位置。这里要非常小心地说清楚它和传统手段的关系——<strong>它不是传统监控的替代品,而是 Agent 时代新增为"一等公民"的质量判断层。</strong></p>
+
+        <p>还要说清楚一点:<strong>Evaluation 不是"真理机器"。</strong>它在给定业务规则、参考答案、评分标准(rubric)或工具返回结果的前提下工作,把"对不对"变成一个<strong>可重复、可追踪、可回归</strong>的判断过程——而不是天然掌握绝对真相。</p>
+
+        <h3>1. 它和传统的"质量"手段有什么不同</h3>
+
+        <p>传统 APM / SRE 里其实早就有一堆和"质量、体验"相关的东西。Evaluation 不是要否定它们,而是补上它们够不着的地方:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>传统手段</th>
+              <th>衡量什么</th>
+              <th>和 Agent Evaluation 的区别</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SLO / SLI</td>
+              <td>服务目标是否达标</td>
+              <td>主要看可用性、延迟、错误率等<strong>服务表现</strong></td>
+            </tr>
+            <tr>
+              <td>合成监控(Synthetic Monitoring)</td>
+              <td>预设脚本能不能走通</td>
+              <td>适合<strong>确定性</strong>断言;开放式 LLM 输出往往没有唯一标准答案,难以只靠脚本判断质量</td>
+            </tr>
+            <tr>
+              <td>Apdex / RUM</td>
+              <td>用户体验或性能满意度</td>
+              <td>多是<strong>体验代理</strong>,不直接验证回答的事实对不对</td>
+            </tr>
+            <tr>
+              <td>业务 KPI</td>
+              <td>业务结果趋势</td>
+              <td>能衡量结果,但通常<strong>解释不了单次输出为什么错</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>它们大多衡量的是<strong>服务表现、用户体验或业务结果</strong>。而——</p>
+
+        <blockquote>
+          <p><strong>Agent Evaluation 衡量的是:一次输出、或一次任务的完成过程本身,是否正确、完整、相关、有据可依、符合政策和安全要求。</strong></p>
+        </blockquote>
+
+        <h3>2. 评估有哪几种</h3>
+
+        <p>Evaluation 不是只有一种打分方式。按退款客服的例子,可以分成五类:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>评估类型</th>
+              <th>评估什么</th>
+              <th>退款案例中的例子</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>规则评估(Rule-based)</strong></td>
+              <td>格式、字段、禁词、schema</td>
+              <td>回复里是否带上了退款单号</td>
+            </tr>
+            <tr>
+              <td><strong>代码评估(Code-based)</strong></td>
+              <td>可程序化验证的结果</td>
+              <td><code>refund API</code> 是否真的返回成功</td>
+            </tr>
+            <tr>
+              <td><strong>LLM 当裁判(LLM-as-a-Judge)</strong></td>
+              <td>语义质量、完整性、相关性</td>
+              <td>回复是否清楚解释了退款条件</td>
+            </tr>
+            <tr>
+              <td><strong>人工评审(Human Review)</strong></td>
+              <td>高风险、复杂业务判断</td>
+              <td>大额退款建议是否需人工复核</td>
+            </tr>
+            <tr>
+              <td><strong>多轮评估(Multi-turn)</strong></td>
+              <td>多轮任务是否真正完成</td>
+              <td>用户最后有没有拿到正确处理结果</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>(以 Langfuse 的评估文档为例,它把 LLM-as-a-Judge、人工标注、自定义评估流程组合起来,用于衡量质量、语气、事实准确性、完整性等维度<sup class="footnote-ref"><a href="#fn-langfuse-eval" id="fnref-langfuse-eval-1">[3]</a></sup>。)</p>
+
+        <blockquote>
+          <p>🔗 第四篇我们会专门讲 <strong>LLM-as-a-Judge</strong>:它怎么打分、什么时候可靠、什么时候会翻车。</p>
+        </blockquote>
+
+        <h3>3. 评估是"闭环的入口"</h3>
+
+        <p>最后一点最关键。Evaluation 的价值,<strong>不只是给一次回答打个分</strong>:</p>
+
+        <blockquote>
+          <p>它把失败样本沉淀成<strong>数据集</strong>,把线上暴露的问题转化为<strong>离线可回归的测试</strong>。</p>
+        </blockquote>
+
+        <p>也就是说,评估既可以在线上对真实 trace 打分,也可以在发布前离线跑;有价值的例子会被收集成数据集,用来做实验、对比改动、防止下次发布把已经修好的东西又改坏<sup class="footnote-ref"><a href="#fn-langfuse-eval" id="fnref-langfuse-eval-2">[3]</a></sup>。这一点,为下一节的"闭环"埋好了伏笔。</p>
+
+        <hr>
+
+        <h2>六、三者如何形成闭环:观测的终点不是大盘</h2>
+
+        <p>到这里,三根支柱都讲完了。但它们真正的威力,不在于各自单独存在,而在于<strong>串成一个回路</strong>:</p>
+
+        <pre><code>Metrics 发现趋势         (退款成功率突然掉了 / 成本翻倍)
+      ↓
+Trace  定位到具体运行     (是哪一批请求、卡在了哪一步)
+      ↓
+Evaluation 判断对错       (这些输出到底该不该算失败)
+      ↓
+失败样本进入 Dataset      (沉淀成可复现的测试集)
+      ↓
+改 Prompt / 工具 / 模型 / 流程
+      ↓
+下一轮继续观测           (验证改动是否真的变好)</code></pre>
+
+        <p>这就是为什么说,<strong>Agent 可观测性的终点不是一个好看的大盘,而是一个持续改进的闭环。</strong></p>
+
+        <p>本篇最该记住的一句话:</p>
+
+        <blockquote>
+          <p><strong>没有 Trace,线上失败的 Evaluation 往往缺少过程证据;没有 Metrics,Trace 缺少全局视角;没有 Evaluation,可观测性只能说明"发生了什么",不能说明"做得好不好"。</strong></p>
+        </blockquote>
+
+        <p>三根支柱,缺一根,回路就断了。</p>
+
+        <hr>
+
+        <h2>七、落地建议:如果从零开始,先采什么</h2>
+
+        <blockquote>
+          <p>⚠️ 这一节是<strong>经验建议,不是行业标准</strong>。如果你要从零给一个 Agent 搭可观测性,可以按这个顺序<strong>逐步补齐</strong>,而不是一开始就全上。</p>
+        </blockquote>
+
+        <table>
+          <thead>
+            <tr>
+              <th>阶段</th>
+              <th>建议采集</th>
+              <th>目的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Day 1</strong></td>
+              <td><code>trace_id / session_id</code>、agent 名称与版本、模型名、prompt 版本、输入/输出 token、延迟、工具名/参数/结果/错误、最终回复、基础技术成功/失败标记(以及可选的业务成功/失败标记)</td>
+              <td>让一次运行<strong>能回放、能定位</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Week 1</strong></td>
+              <td>每次运行成本、重试次数、循环步数、检索 query 与命中文档、是否转人工、失败分类、简单评估分数</td>
+              <td>让<strong>趋势和失败模式</strong>可分析</td>
+            </tr>
+            <tr>
+              <td><strong>成熟阶段</strong></td>
+              <td>多轮任务评估、多 Agent 交接(handoff)轨迹、长期记忆读写、线上评估采样、trace 转数据集、CI 回归评估</td>
+              <td>进入<strong>持续改进闭环</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>原则只有一句:<strong>别追求一步到位,先让一次运行能被回放、能被打分,再慢慢往上加。</strong></p>
+
+        <hr>
+
+        <h2>八、结语:下一篇进入 OpenTelemetry GenAI 标准</h2>
+
+        <p>到这里,我们已经有了 AI Agent 可观测性的基本框架:</p>
+
+        <blockquote>
+          <p><strong>Trace 记录行为,Metrics 量化趋势,Evaluation 判断质量。</strong></p>
+        </blockquote>
+
+        <p>但还有一个问题没解决——<strong>这些信号,到底该用什么标准格式来表达?</strong></p>
+
+        <p>如果每个框架、每个平台、每个团队都自己定义字段,Agent 可观测性很快就会变成一堆<strong>新的数据孤岛</strong>:你在 A 平台记的 trace,换到 B 平台就读不懂。</p>
+
+        <p>所以下一篇,我们进入 <strong>OpenTelemetry GenAI 语义约定</strong>:一次 LLM 调用、一次工具调用、一次 agent invocation,在标准里到底应该长什么样。</p>
+
+        <p><strong>框架已经立好,下一篇,我们给它配上通用的"语言"。</strong></p>
+
+      </div>
+
+      <section class="article-footnotes" id="references">
+        <h4>参考与核验来源</h4>
+        <ol>
+          <li id="fn-otel-signals">
+            <a href="https://opentelemetry.io/docs/concepts/signals/" rel="noopener">OpenTelemetry — Signals</a>:OpenTelemetry 以 signals 组织遥测数据,当前支持 traces、metrics、logs、baggage(events、profiles 处于开发/提案阶段);并将 metrics 描述为"运行时捕获的度量"。
+            <a href="#fnref-otel-signals-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+          <li id="fn-langfuse-tracing">
+            <a href="https://langfuse.com/docs/observability/overview" rel="noopener">Langfuse — LLM Observability &amp; Application Tracing</a>:application tracing 会记录每次请求的结构化信息,含 prompt、模型回复、token 用量、延迟,以及中间的工具与检索步骤,并建议追踪成本与 token 用量。
+            <a href="#fnref-langfuse-tracing-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+          <li id="fn-langfuse-eval">
+            <a href="https://langfuse.com/docs/evaluation/overview" rel="noopener">Langfuse — Evaluation of LLM Applications</a>:evals 为 LLM 应用行为提供可复现的检查,可对线上 trace 打分、把有价值的样本沉淀成数据集、跑实验对比改动,并组合 LLM-as-a-Judge、人工标注与自定义评估流程。
+            <a href="#fnref-langfuse-eval-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+        </ol>
+      </section>
+
+      <aside class="article-license">
+        <strong>版权声明</strong><br>
+        © 2026 <a href="https://ezaiops.com/">轻松自动化笔记 · EZ AI Ops Tips</a>。本文首发于本站。<br>
+        原文链接:<a class="canonical" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/">https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/</a><br>
+        欢迎全文转载,请保留作者署名并注明原文链接,勿删改内容;商业使用请先联系。
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/posts/what-is-ai-agent-observability/">← 上一篇:什么是 AI Agent 可观测性</a>
+      <span class="dim">下一篇:OpenTelemetry GenAI 语义约定 · 敬请期待</span>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>
