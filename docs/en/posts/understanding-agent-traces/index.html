@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Understanding an Agent Trace: Decoding OpenTelemetry GenAI Semantics · EZ AI Ops Tips</title>
+  <meta name="description" content="Part 3 of the AI Agent Observability series. When LLM free will is injected into code, debugging starts with traces, not logs. Here's what a real agent behavior tree looks like.">
+  <meta property="og:title" content="Understanding an Agent Trace: Decoding OpenTelemetry GenAI Semantics">
+  <meta property="og:description" content="Part 3 of the AI Agent Observability series. Tearing open the black box to see what an agent's execution trace actually looks like.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/en/posts/understanding-agent-traces/">
+  <meta property="article:published_time" content="2026-07-06">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/en/posts/understanding-agent-traces/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/understanding-agent-traces/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/understanding-agent-traces/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/understanding-agent-traces/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Understanding an Agent Trace: Decoding OpenTelemetry GenAI Semantics",
+    "description": "Part 3 of the AI Agent Observability series. Tearing open the black box to see what an agent's execution trace actually looks like.",
+    "datePublished": "2026-07-06",
+    "dateModified": "2026-07-06",
+    "inLanguage": "en",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/en/posts/understanding-agent-traces/"
+    },
+    "isPartOf": {
+      "@type": "CreativeWorkSeries",
+      "name": "AI Agent Observability"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-cn { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+      color: #b91c1c;
+    }
+    .article-body pre {
+      background: #1f2937; color: #e5e7eb; padding: 16px 20px; margin: 22px 0;
+      border-radius: 8px; overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.88rem; line-height: 1.8;
+    }
+    .article-body pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .article-body sup.footnote-ref {
+      font-size: 0.72rem; margin: 0 2px; vertical-align: super;
+    }
+    .article-body sup.footnote-ref a {
+      color: var(--accent); text-decoration: none; padding: 0 3px;
+      border: 1px solid #dbeafe; border-radius: 4px; background: #f0f7ff;
+      font-weight: 600;
+    }
+    .article-body sup.footnote-ref a:hover { background: #dbeafe; }
+
+    .article-footnotes {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .article-footnotes h4 {
+      margin: 0 0 14px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-footnotes ol { padding-left: 22px; margin: 0; }
+    .article-footnotes li { margin: 10px 0; line-height: 1.7; }
+    .article-footnotes .back {
+      color: var(--accent); margin-left: 6px;
+      font-family: ui-monospace, monospace; text-decoration: none;
+    }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body pre { font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/en/" class="brand-link">
+          <h1>EZ AI Ops Tips</h1>
+          <span class="brand-cn">轻松自动化笔记</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/en/">Home</a>
+        <a href="/en/#featured">Focus</a>
+        <a href="/en/#about">About</a>
+        <div class="lang-switch">
+          <a href="/posts/understanding-agent-traces/" hreflang="zh-CN">中文</a>
+          <a href="/en/posts/understanding-agent-traces/" class="active" aria-current="page">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent Observability · Part 3</span>
+        <h1>Understanding an Agent Trace: Decoding OpenTelemetry GenAI Semantics</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-06">July 6, 2026</time>
+          <span class="dot">·</span>
+          <span>12 min read</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>You can't "catch the killer" by guessing. When LLM free will is injected into code, debugging no longer starts with logs — it starts with traces.</p>
+        </blockquote>
+
+        <blockquote>
+          <p>This is the third article in the <em>AI Agent Observability</em> series. <a href="/en/posts/three-pillars-trace-metrics-evaluation/">In the first two parts</a>, we established the Trace, Metrics, and Evaluation framework. Today, we're finally looking at the real thing: tearing open the black box to see what an agent's execution trace actually looks like.</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>1. A Story First: A "Flawless" Customer Complaint</h2>
+
+        <p>In the first week your refund support agent goes live, you receive an angry customer complaint:</p>
+
+        <blockquote>
+          <p><strong>User</strong>: "I asked for a refund three days ago. Your AI told me 'refund processed,' but I still haven't seen a dime!"</p>
+        </blockquote>
+
+        <p>As the owner, you immediately open your traditional APM dashboard and pull up that request using the <code>session_id</code>. The results make you frown:</p>
+
+        <ul>
+          <li>The HTTP gateway returned <code>200 OK</code>.</li>
+          <li>The order database had no slow queries or deadlocks.</li>
+          <li>Container CPU and memory were completely normal.</li>
+          <li>The error log was spotless.</li>
+        </ul>
+
+        <p>In the worldview of traditional monitoring, this was a <strong>perfect, healthy, flawless</strong> request. But the business transaction definitely failed — the money wasn't refunded.</p>
+
+        <p>To get to the bottom of it, you open your newly integrated Agent Observability platform and pull up the <strong>Trace</strong> for that request. The truth is immediately obvious.</p>
+
+        <hr>
+
+        <h2>2. The Crime Scene: An Agent Behavior Tree</h2>
+
+        <blockquote>
+          <p>💡 <strong>Setting boundaries first</strong>: For ease of understanding, the trace below has been anonymized and simplified. It's not raw JSON exported directly from a tool, but rather the <strong>core structure typically presented</strong> in an observability dashboard for a production-grade agent trace.</p>
+        </blockquote>
+
+        <p>In the observability dashboard, you see a "behavior tree" nested with multiple spans. This is the true execution path of that refund request:</p>
+
+        <pre><code>Trace: refund_agent_run (Total Duration: 3.2s)
+├── 🔵 chat.completions (Model: gpt-4o)          [800ms]
+│   ├── Prompt: "User requesting refund, order ID 12345..."
+│   └── Output: ToolCall(name="query_order")
+├── 🟢 execute_tool: query_order                 [150ms]
+│   ├── Input: {"order_id": "12345"}
+│   └── Output: {"status": "paid", "amount": 99.0}
+├── 🔵 chat.completions (Model: gpt-4o)          [1.1s]
+│   └── Output: ToolCall(name="create_refund")
+├── 🔴 execute_tool: create_refund               [50ms] ❌ ERROR
+│   ├── Input: {"order_id": "12345", "amount": "full"}
+│   └── Output: "TypeError: amount must be a number"
+└── 🔵 chat.completions (Model: gpt-4o)          [1.1s]
+    └── Output: "Your refund has been processed, please check your statement in 3 days." </code></pre>
+
+        <p><strong>You found the killer.</strong> This is a classic chain-reaction crash involving semantic failure and hallucination:</p>
+
+        <ol>
+          <li><strong>First model call</strong>: The agent performed well, deciding to check the order first (<code>query_order</code>).</li>
+          <li><strong>Second model call</strong>: The agent decided to issue the refund. But when assembling parameters, the LLM took liberties, filling the <code>amount</code> field with the string <code>"full"</code> instead of the number <code>99.0</code> required by the API.</li>
+          <li><strong>Tool execution error</strong>: The underlying <code>create_refund</code> tool was a strict Python function that promptly threw a type error.</li>
+          <li><strong>The fatal misstep</strong>: The LLM received the context of the tool error, but its subsequent generation <strong>failed to properly surface this failure</strong>. Instead, it hallucinated a reassuring response: "refund processed."</li>
+        </ol>
+
+        <p>This is why the HTTP status was 200, but the business failed.</p>
+
+        <blockquote>
+          <p><strong>Without a trace to record every prompt generated by the model, as well as the inputs and outputs of tool calls, bugs like this — occurring in the spaces between different LLM reasoning nodes — are fundamentally impossible to investigate.</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>3. Peeling the Onion: How OTel Expresses Agent Behavior</h2>
+
+        <p>You understand the tree above, but there's an engineering problem: <strong>If every framework defines its own custom data format, your monitoring dashboard won't be able to piece this tree together.</strong></p>
+
+        <p>This is why the industry needs the <strong>OpenTelemetry (OTel) GenAI semantic conventions</strong>. They provide a shared "lingua franca": enabling different frameworks, SDKs, and backends to use consistent semantics when describing model calls, tool calls, token usage, and errors.</p>
+
+        <p>To understand OTel's approach, we can simplify that failed tool call from above into a "pseudo-OTel span" structure.</p>
+
+        <blockquote>
+          <p>⚠️ <strong>Note</strong>: This is a teaching illustration that preserves the core structural relationships of Span / Attributes / Events. <strong>Do not copy these exact field names directly into production code.</strong> Real fields (like <code>gen_ai.tool.name</code> vs <code>tool.name</code>) will change based on OTel versions and specific instrumentation implementations. Always defer to the current spec and your library's documentation.</p>
+        </blockquote>
+
+        <pre><code>{
+  "name": "execute_tool create_refund",
+  "kind": "INTERNAL",
+  "context": {
+    "trace_id": "5b8e9f...",
+    "span_id": "9a1c3d..."
+  },
+  "attributes": {
+    "gen_ai.operation.name": "execute_tool",
+    "gen_ai.system": "example-agent-framework",
+    "tool.name": "create_refund",
+    "error.type": "TypeError"
+  },
+  "events": [
+    {
+      "name": "tool.input",
+      "attributes": {
+        "content": "{\"order_id\":\"12345\",\"amount\":\"full\"}"
+      }
+    },
+    {
+      "name": "tool.output",
+      "attributes": {
+        "content": "TypeError: amount must be a number"
+      }
+    }
+  ]
+}</code></pre>
+
+        <p>In this structure, there are a few core concepts:</p>
+
+        <ol>
+          <li><strong><code>gen_ai.operation.name</code></strong>: Defines what this step is doing. It's the skeleton of the entire analysis; common values include <code>chat</code> (model conversation) and <code>execute_tool</code>.</li>
+          <li><strong><code>Attributes</code></strong>: Static characteristics attached to this span. If it's a model call, this is also where crucial billing metrics live: <code>gen_ai.usage.input_tokens</code> and <code>output_tokens</code>.</li>
+          <li><strong><code>Events</code></strong>: Large blocks of text (like the JSON arguments of a tool call, or the long text generated by a model) are often unsuitable to stuff into attributes. Instead, they are attached to the span as timestamped events.</li>
+        </ol>
+
+        <hr>
+
+        <h2>4. A Minimalist Approach: Low-Intrusion Instrumentation, Not "Magic Zero-Intrusion"</h2>
+
+        <p>At this point, you might be worried: "Do I have to manually write <code>span.start()</code> and fill in all these JSON fields every time I call a model or write a tool function?"</p>
+
+        <p>The answer is: <strong>No. Increasingly, mainstream LLM/Agent frameworks can integrate with tracing via auto-instrumentation.</strong></p>
+
+        <p>Taking LangChain / LangGraph in Python as an example, the code below illustrates the integration approach:</p>
+
+        <pre><code># Example: Package and class names vary by version, always refer to your library's docs.
+# Note: It might be LangChainInstrumentor or LangchainInstrumentor
+
+from opentelemetry.instrumentation.langchain import LangchainInstrumentor
+
+# Enable the probe for "low-intrusion" tracing on business logic
+LangchainInstrumentor().instrument()
+
+# Then, continue writing your original Agent / Graph business logic
+from langgraph.graph import StateGraph
+# ...</code></pre>
+
+        <p>After configuring the environment (such as enabling sampling and redaction policies), the instrumentation usually intercepts model calls and certain tool calls under the hood, capturing tokens and latency, and sending them to the observability backend. <strong>The actual scope of capture depends on the SDK, version, and configurations you use.</strong></p>
+
+        <p>But <strong>this is not a cost-free "magic zero-intrusion" solution.</strong> When pushing it to production, you must navigate the three major pitfalls below.</p>
+
+        <hr>
+
+        <h2>5. The Production Survival Guide</h2>
+
+        <h3>1. PII, Data Privacy, and Content Capture Policies</h3>
+
+        <p>Regarding the probe configuration above, we must clear up a massive misconception: <strong>Do not assume instrumentation is secure by default.</strong></p>
+
+        <p>Default behaviors across different instrumentation libraries are inconsistent. Some implementations only capture metadata like model names and token consumption by default; but others (like <code>opentelemetry-instrumentation-langchain</code>) will capture complete prompts and model outputs by default.</p>
+
+        <blockquote>
+          <p>⚠️ <strong>Red Line Warning</strong>: Prompts and model replies frequently contain real user names, credit card numbers, and company secrets.</p>
+          <p><strong>Solution</strong>: In a production environment, you must explicitly verify the content capture toggles for your SDK/instrumentation (for example, configuring <code>TRACELOOP_TRACE_CONTENT=false</code>). If you want to see the tool arguments and prompt text we used to solve the case at the beginning of this article, you usually need to explicitly and safely enable that capture. And once enabled, before the data leaves your business servers, you must apply security policies to <strong>redact, truncate, or retain only data reference IDs</strong>. Sensitive info must never run naked in plaintext.</p>
+        </blockquote>
+
+        <h3>2. The High Cardinality Disaster</h3>
+
+        <p>Never take the prompt text you send to an LLM, or dynamically generated user IDs, and use them as the span <code>name</code> or set them directly as indexable <code>attributes</code>.</p>
+
+        <p>Once indexable attributes attain extremely high cardinality (an infinite number of discrete values), the observability backend's database will immediately explode, queries will crawl at a snail's pace, and your bill will skyrocket.</p>
+
+        <p><strong>Solution</strong>: Span names must be low-cardinality constants (e.g., <code>chat</code>, <code>create_refund</code>). Large blocks of text or dynamic content are much better suited to being placed in controlled events, external blob storage, or simply leaving a reference ID in the trace.</p>
+
+        <h3>3. Full Traces vs. Storage Costs</h3>
+
+        <p>Agent traces are often vastly larger than traditional API traces (containing multi-turn conversations, retrieved documents, and large JSON payloads returned by tools).</p>
+
+        <p>If all content is fully retained long-term, costs are prohibitive. A common practice in production is: <strong>retain 100% of failed requests, but sample successful requests</strong>. High-fidelity traces used for live troubleshooting are kept only for short periods, while only the failed samples that enter regression test suites (Datasets) are kept long-term.</p>
+
+        <hr>
+
+        <h2>6. Closing: You Can't Just Watch the Tapes</h2>
+
+        <p>With tracing, it's like we've acquired a <strong>high-definition security tape</strong> of the crime scene. Now, we know clearly that the "refund processed" message didn't mean the refund succeeded, but was rather a flawed confirmation reply following a tool failure.</p>
+
+        <p>However, this leads to a massive engineering challenge:</p>
+
+        <p><strong>We can't hire an army of people to visually inspect thousands of trace trees every day.</strong></p>
+
+        <p>Since LLMs can wrap errors in fluent natural language, could we use another model to act as an automated quality referee?</p>
+
+        <p>In the next article, we'll enter the most controversial — yet most powerful — third pillar of this framework: <strong>how to score "right or wrong" — from rules to LLM-as-a-Judge.</strong></p>
+
+      </div>
+
+      <section class="article-footnotes" id="references">
+        <h4>References &amp; verification</h4>
+        <ol>
+          <li id="fn-otel-repo">
+            <a href="https://github.com/open-telemetry/semantic-conventions-genai" rel="noopener">OpenTelemetry GenAI Semantic Conventions Repository</a>: The dedicated repository for standardizing spans, metrics, and events semantics in GenAI contexts.
+            <a href="#fnref-otel-repo-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-otel-blog">
+            <a href="https://opentelemetry.io/blog/2024/llm-observability/" rel="noopener">Inside the LLM Call: GenAI Observability with OpenTelemetry</a> (2024 reference): Official blog noting that prompt content and tool parameters are omitted by default in some scenarios; actual behavior depends on the specific instrumentation package.
+            <a href="#fnref-otel-blog-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-pypi-langchain">
+            <a href="https://pypi.org/project/opentelemetry-instrumentation-langchain/" rel="noopener">opentelemetry-instrumentation-langchain (PyPI)</a>: This instrumentation for tracing LangChain apps writes prompts, completions, and embeddings to span attributes by default; it can be disabled via <code>TRACELOOP_TRACE_CONTENT=false</code>.
+            <a href="#fnref-pypi-langchain-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+        </ol>
+      </section>
+
+      <aside class="article-license">
+        <strong>Copyright Notice</strong><br>
+        © 2026 <a href="https://ezaiops.com/en/">EZ AI Ops Tips · 轻松自动化笔记</a>. Originally published here.<br>
+        Canonical URL: <a class="canonical" href="https://ezaiops.com/en/posts/understanding-agent-traces/">https://ezaiops.com/en/posts/understanding-agent-traces/</a><br>
+        Full reposts permitted with author credit and a link back to the original — please do not modify the content. Commercial use requires prior permission.
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/en/posts/three-pillars-trace-metrics-evaluation/">← Previous: The Three Pillars</a>
+      <a href="#">Next: LLM-as-a-Judge in practice →</a>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>
