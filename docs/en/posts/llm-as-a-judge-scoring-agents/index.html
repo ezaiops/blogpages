@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Score "Right vs. Wrong": From Rules to LLM-as-a-Judge · EZ AI Ops Tips</title>
+  <meta name="description" content="AI Agent Observability Part 4. When your agent generates 30,000 traces a day, how do you automate quality scoring? Navigating the pitfalls of LLM judges.">
+  <meta property="og:title" content="How to Score Right vs. Wrong: From Rules to LLM-as-a-Judge">
+  <meta property="og:description" content="AI Agent Observability Part 4. Automating agent evaluation and avoiding the 6 crash modes of LLM judges.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/">
+  <meta property="article:published_time" content="2026-07-09">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/llm-as-a-judge-scoring-agents/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/llm-as-a-judge-scoring-agents/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to Score Right vs. Wrong: From Rules to LLM-as-a-Judge",
+    "description": "AI Agent Observability Part 4. Automating agent evaluation and avoiding the 6 crash modes of LLM judges.",
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "inLanguage": "en",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/"
+    },
+    "isPartOf": {
+      "@type": "CreativeWorkSeries",
+      "name": "AI Agent Observability"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-cn { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+      color: #b91c1c;
+    }
+    .article-body pre {
+      background: #1f2937; color: #e5e7eb; padding: 16px 20px; margin: 22px 0;
+      border-radius: 8px; overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.88rem; line-height: 1.8;
+    }
+    .article-body pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .article-body sup.footnote-ref {
+      font-size: 0.72rem; margin: 0 2px; vertical-align: super;
+    }
+    .article-body sup.footnote-ref a {
+      color: var(--accent); text-decoration: none; padding: 0 3px;
+      border: 1px solid #dbeafe; border-radius: 4px; background: #f0f7ff;
+      font-weight: 600;
+    }
+    .article-body sup.footnote-ref a:hover { background: #dbeafe; }
+
+    .article-sources {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .article-sources h4 {
+      margin: 0 0 14px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-sources ul { padding-left: 22px; margin: 0; }
+    .article-sources li { margin: 10px 0; line-height: 1.7; list-style-type: square; }
+    .article-sources a { color: var(--accent); font-weight: 500; }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+      .article-body pre { font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/en/" class="brand-link">
+          <h1>EZ AI Ops Tips</h1>
+          <span class="brand-cn">轻松自动化笔记</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/en/">Home</a>
+        <a href="/en/#featured">Focus</a>
+        <a href="/en/#about">About</a>
+        <div class="lang-switch">
+          <a href="/posts/llm-as-a-judge-scoring-agents/" hreflang="zh-CN">中文</a>
+          <a href="/en/posts/llm-as-a-judge-scoring-agents/" class="active" aria-current="page">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent Observability · Part 4</span>
+        <h1>How to Score "Right vs. Wrong": From Rules to LLM-as-a-Judge</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-09">July 9, 2026</time>
+          <span class="dot">·</span>
+          <span>15 min read</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>When your agent generates 30,000 traces a day, how do you judge whether it's actually getting things right?</p>
+        </blockquote>
+
+        <blockquote>
+          <p>This is Part 4 of the <em>AI Agent Observability</em> series. In <a href="/en/posts/understanding-agent-traces/">Part 3</a>, we used a trace to catch a "crime scene" where an LLM glossed over an error. But that leads to an engineering challenge: you can't possibly hire humans to eyeball 30,000 trace trees every day. Today, we tackle the core issue: <strong>how to automate the scoring of an agent's answers.</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>1. Opening Story: 30,000 Traces—How Do You Judge Them?</h2>
+
+        <p>Your Refund Support Agent has been running stably for a month. Traffic has grown, and it's now generating 30,000 traces a day.</p>
+
+        <p>As the system owner, you are deeply anxious:</p>
+        <ul>
+          <li><strong>Looking at the dashboard</strong>: Your APM panel shows normal latency, a healthy P99, and a 0% HTTP error rate.</li>
+          <li><strong>Looking at customer support</strong>: Human agents are still fielding dozens of angry complaints a day—"Your AI is speaking pure nonsense."</li>
+        </ul>
+
+        <p>The traditional way of debugging has completely broken down. You can't click through traces one by one; sampling only catches the tip of the iceberg; and those ghost requests—the ones that are "HTTP 200 but got the business logic wrong"—are hiding in a sea of normal data.</p>
+
+        <blockquote>
+          <p>A trace is only "behavioral evidence"; it can't stand up on its own and answer "is this right?"</p>
+        </blockquote>
+
+        <p>To solve this, we must build an entirely new capability layer: <strong>the Evaluation layer</strong>.</p>
+
+        <p>But don't make the mistake of thinking Evaluation is just paying for an LLM API call to score text. A true, production-grade evaluation system is a continuous spectrum running from deterministic assertions to semantic judgments.</p>
+
+        <hr>
+
+        <h2>2. The Three-Tier Structure of Evaluation: Deterministic, Programmatic, Semantic</h2>
+
+        <p>If your team starts out by using a large language model to evaluate every single log line, you will likely be crushed by exorbitant bills and agonizingly slow throughput.</p>
+
+        <p>A healthy agent evaluation system that can handle production pressure should be a layered funnel:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Evaluation Type</th>
+              <th>Characteristics</th>
+              <th>Example (Refund Agent)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Tier 1: Deterministic Eval</strong></td>
+              <td>Rules, Regex, JSON Schema</td>
+              <td><strong>Lightning fast, ultra-stable, practically free</strong></td>
+              <td>Does the reply contain a 10-digit refund ticket number? Is the amount a number?</td>
+            </tr>
+            <tr>
+              <td><strong>Tier 2: Programmatic Eval</strong></td>
+              <td>Code-based / API Assertions</td>
+              <td><strong>Verifies objective facts</strong></td>
+              <td>Did the <code>refund API</code> actually return a success code? Is the DB state updated?</td>
+            </tr>
+            <tr>
+              <td><strong>Tier 3: Semantic Eval</strong></td>
+              <td>LLM-as-a-Judge / Human Review</td>
+              <td><strong>Judges quality, completeness, and factuality</strong></td>
+              <td>Did the reply actually solve the user's pain point? Is the tone comforting? Are there hallucinations?</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>There is a supreme engineering discipline here:</p>
+
+        <blockquote>
+          <p><strong>If it can be solved with a rule or a code assertion, absolutely do not use a model to evaluate it.</strong></p>
+        </blockquote>
+
+        <p>Intercept low-level mistakes—like format errors or API failures—in Tiers 1 and 2. Only the gray areas—judging "is the tone right?" or "is this a hallucination?"—should be allowed to enter the most expensive tier: Tier 3.</p>
+
+        <hr>
+
+        <h2>3. LLM-as-a-Judge: The Core Tool for Semantic Evaluation</h2>
+
+        <p>In the funnel above, Tiers 1 and 2 can be handled by traditional monitoring. The real pain point lies in Tier 3: <strong>how do you automatically evaluate natural language?</strong></p>
+
+        <p>In the past, you either relied on human spot-checks (with dismal throughput) or rigid text-overlap algorithms like BLEU / ROUGE (which know nothing about semantics). It wasn't until the last two years that the industry found what is currently the most cost-effective solution: <strong>LLM-as-a-Judge (having one large language model act as a referee to score another).</strong></p>
+
+        <p>Its working mechanism can be summarized in one sentence:</p>
+
+        <blockquote>
+          <p><strong>Use another, more capable LLM with better instruction-following to score the agent's output based on a strict, structured Prompt.</strong></p>
+        </blockquote>
+
+        <p>Its engineering value is highly significant:</p>
+        <ol>
+          <li><strong>High Throughput</strong>: It can asynchronously cover tens of thousands of production traces every day.</li>
+          <li><strong>Structuring</strong>: It can compress sprawling natural language into an integer like <code>0-1</code> or <code>1-5</code>, making quality aggregatable and alertable.</li>
+          <li><strong>Explainability</strong>: Unlike traditional deep-learning black boxes, an LLM judge will attach detailed "Reasoning" alongside the output score.</li>
+        </ol>
+
+        <p>But if you bring this capability directly into production, you will likely encounter serious pitfalls. The reason is simple: it is not an objective, perfectly stable referee.</p>
+
+        <hr>
+
+        <h2>4. Is It Reliable? Six Crash Modes You Must Acknowledge</h2>
+
+        <p>"Using a model that hallucinates to judge another model that hallucinates—is that really reliable?"</p>
+
+        <p>This is a question every rigorous engineer asks. The answer is: <strong>It is not objective, it suffers from severe biases, and you must acknowledge and mitigate them.</strong></p>
+
+        <p>Extensive practice in both academia (e.g., LMSYS) and industry has proven that LLM Judges have six classic failure modes:</p>
+
+        <ol>
+          <li><strong>Position Bias</strong>: If asked to compare answer A and B, it often favors the one that appears first.</li>
+          <li><strong>Verbosity Bias</strong>: Judges are easily intimidated by long-winded answers, tending to give higher scores to lengthy replies even if a punchy, short answer is of higher quality.</li>
+          <li><strong>Self-Preference</strong>: If you use GPT to judge GPT, it will think the writing is brilliant; if you use Claude to judge Claude, it will also favor itself.</li>
+          <li><strong>Prompt Sensitivity</strong>: If you slightly tweak the wording or syntax of your grading rubric, the score distribution might drift entirely.</li>
+          <li><strong>Calibration Drift</strong>: When the underlying API model changes (e.g., upgrading from GPT-4 to GPT-4o), what used to be the standard for a "4" might shift across the board.</li>
+          <li><strong>High Variance on Single Scores</strong>: Even if the Prompt doesn't change, sampling, API-side non-determinism, or even minor model version bumps can cause the exact same input to score a 4 yesterday and a 5 today.</li>
+        </ol>
+
+        <hr>
+
+        <h2>5. Making the Judge Trustworthy: Six Engineering Techniques</h2>
+
+        <p>Since it has so many flaws, why is everyone still using it? Because we can use engineering techniques to put this "uncertainty" in a cage.</p>
+
+        <p>To make an LLM Judge trustworthy in a production environment, you need to implement these six points in your code:</p>
+
+        <h3>1. Refuse Ambiguity: Provide a Strict Rubric</h3>
+        <p>Never ask a judge, "Is this a good answer?" You must provide highly explicit, structured grading criteria that leave no room for arbitrary interpretation.</p>
+
+        <h3>2. Turn Off Creativity (Temperature = 0)</h3>
+        <p>A judge doesn't need imagination. When calling the evaluation model, be sure to set <code>temperature</code> to <code>0</code> or an extremely low value to reduce scoring variance caused by sampling randomness. However, absolute stability cannot be guaranteed due to API-side non-determinism and minor model version updates; this is exactly why calibration sets and consistency checks are needed.</p>
+
+        <h3>3. Demand Auditable Reasoning (Structured CoT)</h3>
+        <p>Do not have the Judge return only a raw score. Require the model to output its <code>reasoning</code> (a structured thought process) first, and output the <code>score</code> last. This "structured CoT" pattern not only significantly improves accuracy when following complex rules but also makes every decision auditable and traceable.</p>
+
+        <h3>4. Establish a Judge Calibration Set</h3>
+        <p>Fix a small set of "golden samples + human-graded known scores." You can start with around 50 high-quality samples. Every time you fine-tune your evaluation Prompt, or whenever the underlying judge model gets an API update, run these calibration samples first to ensure the judge's "ruler" hasn't bent.<br>
+        <strong>A calibration set is not a one-off asset.</strong> As business scenarios expand and models upgrade, the calibration set itself needs to be expanded and re-labeled. Otherwise, you'll be monitoring with a warped ruler.</p>
+
+        <h3>5. Allow the Judge to Abstain</h3>
+        <p>The most dangerous type of error a Judge makes is being forced to choose between two options when evidence is insufficient. Allow it to output <code>"score": "abstain"</code> (or set a third state bucket) so these borderline samples are sent straight to a human review queue. In mature systems, an Abstain is itself an extremely valuable monitoring signal.</p>
+
+        <h3>6. Dual-Model Cross Evaluation and Human Fallback</h3>
+        <p>For ultra-core business logic where budgets allow, have Judge A (e.g., GPT-4o) and Judge B (e.g., Claude 3.5 Sonnet) score simultaneously. If the scores align, trust them; if there's a massive divergence, send it straight to a human-in-the-loop review queue.</p>
+
+        <blockquote>
+          <p><strong>LLM-as-a-Judge is not the finish line, it is a triage desk: it decides which 300 of those 30,000 traces are actually worth a human's time to look at. And please note: the Judge must run asynchronously; it must never block the user's real-time request.</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>6. Landing in Production: Writing a Real Evaluation Script</h2>
+
+        <p>Talk is cheap, show me the code. Let's ground the "Rubric" and "Chain of Thought" mentioned above into a real Python script.</p>
+
+        <p>Addressing the failure case from Part 3—where the tool threw an error, but the final reply ignored the error and promised the refund was processed—we write an automated score for <strong>"Groundedness"</strong>:</p>
+
+<pre><code class="language-json">{
+  "system_prompt": "You are a strict QA auditor. You need to evaluate whether the AI agent's final reply is completely faithful to the return results of its underlying tools, and whether there is any Hallucination.\n\n【Rubric】\nPlease carefully compare the [Tool Trajectory] and the [Final Reply], and score based on the following criteria:\n- 1 point (Pass): Every factual statement in the final reply can find explicit support in the tool trajectory. No promises were made that contradict a tool error.\n- 0 points (Fail): The final reply contains information not returned by the tool trajectory, or it generated a 'success' confirmation despite a tool error (e.g., the tool failed, but the reply says the refund was processed).\n\n【Output Format】\nYou must return JSON. First, analyze the comparison step by step in the 'reasoning' field, and finally provide a 0 or 1 in the 'score' field."
+}</code></pre>
+
+        <p>Paired with a minimal offline-evaluation Python skeleton:</p>
+
+<pre><code class="language-python">import json
+from openai import OpenAI
+
+client = OpenAI()
+
+# Assign the JSON Prompt from above to a constant
+JUDGE_RUBRIC_PROMPT = """You are a strict QA auditor. You need to evaluate whether the AI agent's final reply is completely faithful to the return results of its underlying tools, and whether there is any Hallucination.
+... [See Rubric above] ...
+"""
+
+def evaluate_groundedness(trace_data):
+    """ Offline/asynchronous scoring for an Agent Trace """
+    user_input = trace_data["input"]
+    tools_output = trace_data["tools_trajectory"]
+    final_reply = trace_data["final_response"]
+
+    user_content = f"User Request: {user_input}\nTool Trajectory: {tools_output}\nFinal Reply: {final_reply}"
+
+    response = client.chat.completions.create(
+        model="gpt-4o",  # The judge model usually requires exceptionally high instruction following
+        temperature=0.0, # Evaluation must be stable and convergent; turn off creativity
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": JUDGE_RUBRIC_PROMPT},
+            {"role": "user", "content": user_content}
+        ]
+    )
+
+    return json.loads(response.choices[0].message.content)</code></pre>
+
+        <p>When you feed that buggy Trace from Part 3 into this script, it will intercept it flawlessly and output:<br>
+        <code>{"reasoning": "The tool trajectory explicitly threw a TypeError, but the final reply ignored the error and promised the refund was processed, indicating a severe contradiction.", "score": 0}</code>.</p>
+
+        <blockquote>
+          <p>💡 <strong>Best Practice</strong>: In production, when a Judge gives a 1 (Pass), it should also be required to explicitly list the specific snippets from the tool calls that support its conclusion in the <code>reasoning</code> field. Otherwise, a "1" is just an unaudited, blind thumbs-up.</p>
+        </blockquote>
+
+        <h3>Addendum: Privacy, Compliance, and Data Minimization Reminders</h3>
+
+        <p>Before production traces enter the evaluation pipeline, data classification, redaction, and minimization should be applied. Unnecessary PII, customer identifiers, order details, or original internal system responses should not be sent directly to an external Judge model. The Judge evaluation itself must also fall within your access controls, audit logs, and vendor data boundaries. Otherwise, Evaluation could flip from being a quality governance tool into a new vector for data leaks.</p>
+
+        <p>This forms the technical foundation for <strong>CI/CD Release Gates</strong> and <strong>Dataset Accumulation</strong> in enterprises:</p>
+        <ol>
+          <li><strong>Online Sampling</strong>: Run scoring asynchronously; low-score / high-risk traces automatically accumulate into a "failed test set."</li>
+          <li><strong>Offline Regression</strong>: When you try to modify a Prompt or switch models for a new release, run this batch of datasets in bulk first.</li>
+          <li><strong>Gate Blocking</strong>: If the average score of the new version drops, block the release immediately.</li>
+        </ol>
+
+        <p>This isn't a theoretical concept; this is a real production practice that can plug right into CI/CD.</p>
+
+        <hr>
+
+        <h2>7. Pitfalls and Red Lines: Don't Let the Judge Become a New Black Box</h2>
+
+        <p>Finally, a few red lines must be drawn, lest you treat the LLM Judge as a cure-all silver bullet.</p>
+
+        <h3>1. The Judge is also a model; it must also be observed</h3>
+        <p>It will also drift, make mistakes, and hallucinate. Your observability dashboard must reserve space for the Judge itself (e.g., monitoring the version of the Judge model API, the version iterations of the Judge Prompt, and the agreement rate of sampled human reviews).</p>
+
+        <h3>2. Never use a Judge to replace compliance decisions in high-risk businesses</h3>
+        <p>In highly sensitive scenarios like medical advice, financial credit, and legal compliance, an LLM Judge can only serve as an "initial screening filter"—it can never be the "final stamp of approval." Machines don't take the blame; only humans do.</p>
+
+        <h3>3. Avoid falling into the "Echo Chamber" effect</h3>
+        <p>If you let the working Agent and the referee Judge use exactly the same model lineage and identical underlying logic (even highly overlapping System Prompts), it will create an "illusory quality of self-reinforcement": the Judge will systematically let an entire class of errors slide while outputting stable, high scores, making the entire evaluation chain look healthy while it's actually flying blind.</p>
+
+        <hr>
+
+        <h2>8. Closing: From "Detecting Failures" to "Governing Agents"</h2>
+
+        <blockquote>
+          <p><strong>Evaluation isn't just about handing an Agent a score; it's about making the Agent governable.</strong></p>
+        </blockquote>
+
+        <p>Getting to this point:</p>
+        <ul>
+          <li><strong>Trace</strong> lets us replay the exact sequence of an accident out of a sea of requests;</li>
+          <li><strong>Metrics</strong> let us macroscopically quantify how much compute and how many Tokens the Agent burned;</li>
+          <li><strong>Evaluation</strong> attaches a yardstick of "Right vs. Wrong" to all this, moving the system from "running naked" into a verifiable, regression-able loop.</li>
+        </ul>
+
+        <p>Traditional monitoring keeps services from crashing, while Evaluation makes agents trustworthy. With Judge scores, your service health perspective is no longer just simple latency and error rates—<strong>Groundedness Rate and Policy Compliance Rate</strong> can enter your monitoring dashboards as auxiliary SLOs. As for whether they are suitable as hard, externally promised SLOs, we'll discuss that in a future piece.</p>
+
+        <p>But don't rush. Even with high Evaluation scores, there are still risks lurking in production that can instantly pierce your availability and cost limits: <strong>infinite loops, context explosions, unresponsive tools...</strong></p>
+
+        <p>In the next article, we will wade into the deep end from an operations perspective, looking at Part 5: <strong>How to Catch Hallucinations, Infinite Loops, and Cost Runaways — Alerting Practices from Signal to SLO</strong>.</p>
+
+      </div>
+
+      <section class="article-footnotes" id="sources">
+        <h4>SOURCES</h4>
+        <ul>
+          <li><a href="https://arxiv.org/abs/2306.05685" target="_blank" rel="noopener">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena (LMSYS)</a>: The classic academic paper and verification framework on LLM-as-a-Judge's position bias, verbosity bias, and self-enhancement.</li>
+          <li><a href="https://arxiv.org/abs/2305.17926" target="_blank" rel="noopener">Large Language Models are Not Fair Evaluators (Wang et al.)</a>: Systematically revealed the position/order bias of LLM judges under candidate ordering changes, and proposed mitigation methods including Multiple Evidence Calibration and Balanced Position Calibration.</li>
+          <li><a href="https://langfuse.com/docs/evaluation/overview" target="_blank" rel="noopener">Langfuse Evaluation of LLM Applications</a>: Industry-standard workflow practices on scoring online traces, accumulating datasets, and running offline regression experiments.</li>
+        </ul>
+      </section>
+
+      <aside class="article-license">
+        <strong>Copyright Notice</strong><br>
+        © 2026 <a href="https://ezaiops.com/en/">EZ AI Ops Tips · 轻松自动化笔记</a>. Originally published here.<br>
+        Canonical URL: <a class="canonical" href="https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/">https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/</a><br>
+        Full reposts permitted with author credit and a link back to the original — please do not modify the content. Commercial use requires prior permission.
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/en/posts/understanding-agent-traces/">← Previous: Understanding an Agent Trace</a>
+      <span class="dim">Next: Catching Hallucinations, Loops &amp; Runaways · coming soon →</span>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>
