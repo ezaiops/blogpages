@@ -449,6 +449,11 @@ def evaluate_groundedness(trace_data):
           <p>💡 <strong>Best Practice</strong>: In production, when a Judge gives a 1 (Pass), it should also be required to explicitly list the specific snippets from the tool calls that support its conclusion in the <code>reasoning</code> field. Otherwise, a "1" is just an unaudited, blind thumbs-up.</p>
         </blockquote>
 
+        <blockquote>
+          <p>📦 <strong>Open Source Companion Code</strong>: The complete code for the offline LLM judge mentioned above—which loads Trace data for semantic scoring using structured Prompts and parsing logic—is provided in our Demo repository. You can swap in your API Key and run it locally to see it in action:<br>
+          <a href="https://github.com/ezaiops/ai_agents_observability_demo/tree/main/04-llm-as-a-judge" target="_blank" rel="noopener">👉 GitHub: ezaiops/ai_agents_observability_demo/04-llm-as-a-judge</a></p>
+        </blockquote>
+
         <h3>Addendum: Privacy, Compliance, and Data Minimization Reminders</h3>
 
         <p>Before production traces enter the evaluation pipeline, data classification, redaction, and minimization should be applied. Unnecessary PII, customer identifiers, order details, or original internal system responses should not be sent directly to an external Judge model. The Judge evaluation itself must also fall within your access controls, audit logs, and vendor data boundaries. Otherwise, Evaluation could flip from being a quality governance tool into a new vector for data leaks.</p>

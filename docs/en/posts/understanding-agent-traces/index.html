@@ -386,6 +386,11 @@ from langgraph.graph import StateGraph
 
         <p>After configuring the environment (such as enabling sampling and redaction policies), the instrumentation usually intercepts model calls and certain tool calls under the hood, capturing tokens and latency, and sending them to the observability backend. <strong>The actual scope of capture depends on the SDK, version, and configurations you use.</strong></p>
 
+        <blockquote>
+          <p>📦 <strong>Open Source Companion Code</strong>: The runnable code that instruments a LangGraph Agent with an OTel probe and prints the real Trace JSON directly to the terminal is provided in our Demo repository. You can run it locally and observe how the instrumentation silently captures tool calls:<br>
+          <a href="https://github.com/ezaiops/ai_agents_observability_demo/tree/main/03-tracing-instrumentation" target="_blank" rel="noopener">👉 GitHub: ezaiops/ai_agents_observability_demo/03-tracing-instrumentation</a></p>
+        </blockquote>
+
         <p>But <strong>this is not a cost-free "magic zero-intrusion" solution.</strong> When pushing it to production, you must navigate the three major pitfalls below.</p>
 
         <hr>

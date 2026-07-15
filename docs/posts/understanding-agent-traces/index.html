@@ -386,6 +386,11 @@ from langgraph.graph import StateGraph
 
         <p>在完成环境配置（例如开启采样和脱敏策略）后，Instrumentation 通常可以在底层默默拦截模型调用和部分工具调用，捕获 Token 和耗时，并发送给可观测性后端。<strong>实际的捕获范围，取决于你所用的 SDK、版本以及受控配置。</strong></p>
 
+        <blockquote>
+          <p>📦 <strong>配套开源代码</strong>：本文中给 LangGraph Agent 挂载 OTel 探针，并在终端直接打印真实 Trace JSON 的可运行代码，已在我们的 Demo 仓库中提供。你可以本地运行并观察探针是如何静默捕获工具调用的：<br>
+          <a href="https://github.com/ezaiops/ai_agents_observability_demo/tree/main/03-tracing-instrumentation" target="_blank" rel="noopener">👉 GitHub: ezaiops/ai_agents_observability_demo/03-tracing-instrumentation</a></p>
+        </blockquote>
+
         <p>但这<strong>并不是毫无代价的“魔法零侵入”</strong>。当你把它推上生产环境时，必须越过下面这三个大坑。</p>
 
         <hr>

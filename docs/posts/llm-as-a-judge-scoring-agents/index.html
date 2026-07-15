@@ -449,6 +449,11 @@ def evaluate_groundedness(trace_data):
           <p>💡 <strong>最佳实践</strong>：在生产环境中，当 Judge 打 1 分（通过）时，也应要求它在 <code>reasoning</code> 里明确列出支撑结论的工具调用片段。否则，“1 分” 只是一个未被审计的盲目赞同。</p>
         </blockquote>
 
+        <blockquote>
+          <p>📦 <strong>配套开源代码</strong>：上述离线加载 Trace 数据进行语义打分的 LLM 裁判完整代码（带详细的结构化 Prompt 和解析逻辑），已在我们的 Demo 仓库中提供。你可以替换 API Key 本地直接运行体验：<br>
+          <a href="https://github.com/ezaiops/ai_agents_observability_demo/tree/main/04-llm-as-a-judge" target="_blank" rel="noopener">👉 GitHub: ezaiops/ai_agents_observability_demo/04-llm-as-a-judge</a></p>
+        </blockquote>
+
         <h3>补：隐私、合规与数据最小化提醒</h3>
 
         <p>生产 Trace 进入评估链路前，应先做数据分级、脱敏和最小化处理。不必要的 PII、客户标识、订单细节或内部系统响应原文，不应直接发送给外部 Judge 模型。Judge 评估本身也应纳入访问控制、审计日志和供应商数据边界内。否则，Evaluation 可能会从质量治理工具反过来变成新的数据泄漏面。</p>
