@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>如何抓住幻觉、死循环和成本失控：静悄悄的失败怎么报警 · EZ AI Ops Tips</title>
+  <meta name="description" content="AI Agent 可观测性系列第 5 篇。Agent 没报错，不代表它没失控：三类静默失败的告警实战，把 LLM 监控嫁接回 SRE 经典体系。">
+  <meta property="og:title" content="如何抓住幻觉、死循环和成本失控：静悄悄的失败怎么报警">
+  <meta property="og:description" content="AI Agent 可观测性系列第 5 篇。三类静默失败的告警实战，从 Trace 到 Signal 再到 SLO。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/posts/catching-silent-failures/">
+  <meta property="article:published_time" content="2026-07-15">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/posts/catching-silent-failures/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/catching-silent-failures/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/catching-silent-failures/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/catching-silent-failures/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "如何抓住幻觉、死循环和成本失控：静悄悄的失败怎么报警",
+    "description": "AI Agent 可观测性系列第 5 篇。三类静默失败的告警实战，从 Trace 到 Signal 再到 SLO。",
+    "datePublished": "2026-07-15",
+    "dateModified": "2026-07-15",
+    "inLanguage": "zh-CN",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/posts/catching-silent-failures/"
+    },
+    "isPartOf": {
+      "@type": "CreativeWorkSeries",
+      "name": "AI Agent 可观测性系列"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-en { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+      color: #b91c1c;
+    }
+    .article-body pre {
+      background: #1f2937; color: #e5e7eb; padding: 16px 20px; margin: 22px 0;
+      border-radius: 8px; overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.88rem; line-height: 1.8;
+    }
+    .article-body pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .article-body sup.footnote-ref {
+      font-size: 0.72rem; margin: 0 2px; vertical-align: super;
+    }
+    .article-body sup.footnote-ref a {
+      color: var(--accent); text-decoration: none; padding: 0 3px;
+      border: 1px solid #dbeafe; border-radius: 4px; background: #f0f7ff;
+      font-weight: 600;
+    }
+    .article-body sup.footnote-ref a:hover { background: #dbeafe; }
+
+    .article-footnotes {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .article-footnotes h4 {
+      margin: 0 0 14px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-footnotes ul { padding-left: 22px; margin: 0; }
+    .article-footnotes li { margin: 10px 0; line-height: 1.7; list-style-type: square; }
+    .article-footnotes a { color: var(--accent); font-weight: 500; }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+      .article-body pre { font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <h1>轻松自动化笔记</h1>
+          <span class="brand-en">EZ AI Ops Tips</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/">首页</a>
+        <a href="/#featured">专题</a>
+        <a href="/#about">关于</a>
+        <div class="lang-switch">
+          <a href="/posts/catching-silent-failures/" class="active" aria-current="page">中文</a>
+          <a href="/en/posts/catching-silent-failures/" hreflang="en">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent 可观测性系列 · 第 5 篇</span>
+        <h1>如何抓住幻觉、死循环和成本失控：静悄悄的失败怎么报警</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-15">2026 年 7 月 15 日</time>
+          <span class="dot">·</span>
+          <span>约 15 分钟阅读</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>Agent 没报错，不代表它没失控：三类静默失败的告警实战</p>
+        </blockquote>
+
+        <blockquote>
+          <p>这是《AI Agent 可观测性》系列的第五篇。在过去的四篇里，我们讲透了如何读一条 Trace，以及<a href="/posts/llm-as-a-judge-scoring-agents/">如何用 LLM 当裁判给回答打分</a>。但对于一个背着 KPI 的架构师或 SRE 来说，你不能天天盯着几万条 Trace 看。今天，我们要把前四篇积累的原始数据（Telemetry）降维聚合，变成<strong>可以触发告警（Alert）和标准处理流程（Runbook）的系统信号。</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>一、一次没有报错的失控</h2>
+
+        <blockquote>
+          <p>💡 <strong>先立边界</strong>：本文提及的退款客服、调用次数、Token 量及成本均为<strong>简化的合成工程示例</strong>，用于说明可观测性方法，并不对应任何真实客户的生产事故。</p>
+        </blockquote>
+
+        <p>让我们再回到那个极其棘手的退款客服 Agent 场景。上线第二个月，你在月底的复盘会上看到了三条非常不正常的运行记录：</p>
+
+        <ol>
+          <li><strong>第一笔请求</strong>：底层工具明明查不到订单，大模型为了“安抚”用户，硬生生回复了“退款已受理”。</li>
+          <li><strong>第二笔请求</strong>：大模型像魔怔了一样，连续用 <code>order_id="null"</code>, <code>"none"</code>, <code>"0"</code> 反复重试调用查询工具 15 次才作罢。</li>
+          <li><strong>第三笔请求</strong>：任务办成了，但因为 Agent 反复把全量知识库扔进上下文，导致一次请求烧掉了 8500 个 Input Token，成本是基准的 10 倍。</li>
+        </ol>
+
+        <p>在这三个案例里，系统可能仍然返回 <code>HTTP 200</code>，甚至没有触发传统 Error-Rate 告警；哪怕部分场景触发了延迟报警，传统 APM 也通常无法直接解释大模型的错误行为和业务结果。</p>
+
+        <p>这就是我们面临的最核心的工程痛点：<strong>Agent 系统的生产事故，不一定表现为 Error，它可能表现为错误的回答、无效的行为，或者悄悄上涨的单位成本。</strong></p>
+
+        <p>要抓住它们，我们必须把 SRE（站点可靠性工程）的那套经典体系，无缝嫁接到 AI 可观测性上。</p>
+
+        <hr>
+
+        <h2>二、从 Trace 到 Signal：不是所有图表都值得告警</h2>
+
+        <p>监控系统最怕的不是没数据，而是数据太多导致的“告警疲劳（Alert Fatigue）”。如果你把 LLM Judge 的每一个低分都配上电话告警，你的值班工程师（On-Call）迟早会崩溃。</p>
+
+        <p>要管好 Agent，必须建立一层严格的漏斗（从底向上）：</p>
+
+        <ul>
+          <li><strong>Telemetry（原始遥测）</strong>：我们收集上来的 Trace、Span、Event，这是<strong>证据</strong>。</li>
+          <li><strong>Signal（信号）</strong>：对故障有强解释力的观测事实组合（例如：工具报错 + 且回复判定成功 = 假成功信号）。</li>
+          <li><strong>SLI（服务质量指示器）</strong>：可以随着时间持续度量的指标（例如：假成功事件的发生率）。</li>
+          <li><strong>SLO（服务质量目标）</strong>：针对某项 SLI，希望在约定时间窗口内维持的内部目标（例如维持约定的退款任务忠实度及格率）。</li>
+          <li><strong>Alert（告警）</strong>：当预定义规则表明用户影响、业务风险或错误预算消耗达到需要响应的程度时，触发通知、工单或寻呼。</li>
+          <li><strong>Runbook（处理手册）</strong>：告警触发后，人应该看什么图表、执行什么脚本。</li>
+        </ul>
+
+        <blockquote>
+          <p>⚠️ 核心原则：<strong>并非每个 Trace 属性都值得成为 SLI，更不是每个 SLI 越界都要立即寻呼。</strong></p>
+        </blockquote>
+
+        <p>下面，我们就分别设计三个“探测器”，把前四篇讲到的 Raw Trace，变成上面漏斗中极具价值的 <strong>Signal（信号）</strong>。</p>
+
+        <blockquote>
+          <p>📦 <strong>配套开源代码</strong>：本文使用的规则检测器代码、合成 Trace 测试集（JSON）、指标计算示例以及 Prometheus 告警规则（YAML），均已整合在完整可运行的 Demo 仓库中。主 Demo 可在<strong>不调用 LLM API</strong> 的情况下完全离线运行；如需重新执行 Groundedness Judge 打分，则需另行配置本地模型或兼容 API：<a href="https://github.com/your-org/ai-agent-observability-labs/tree/main/05-signals-slos-alerts" target="_blank" rel="noopener">👉 GitHub: ai-agent-observability-labs/05-signals-slos-alerts</a></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>三、Signal 1：如何发现幻觉与“假成功”</h2>
+
+        <p>大模型最大的麻烦是会“包装错误”。在第一节的第一个案例中，我们怎么抓出它？</p>
+
+        <p>千万不要说“只要 LLM Judge 给这段文本打了低分，它就是幻觉，立刻告警”。这种单点判断极其脆弱。工业级的“假成功（False Success）”检测，必须是<strong>多维数据的交叉印证</strong>：</p>
+
+        <ol>
+          <li><strong>确定性规则</strong>：追踪到底层工具执行失败（Span <code>error=true</code>）。</li>
+          <li><strong>语义裁判（Judge）</strong>：第四篇里提到的 Groundedness（忠实度）裁判打分为 <code>Fail(0)</code>，即回复内容没有被工具结果支撑。</li>
+          <li><strong>业务核验</strong>：结合外部 DB 状态，退款流水确实未创建。</li>
+        </ol>
+
+        <p><em>（注：业务侧判断不需要调用昂贵的 LLM API。只要你的可观测性后端在收集 Trace 时关联了上述指标，用一段极简的规则就能离线或异步筛选出来。）</em></p>
+
+<pre><code class="language-python">def detect_false_success(trace: dict) -> bool:
+    """ 规则: 工具报错 + 忠实度判 0分 + 业务库未成功 """
+    has_tool_error = any(span.get("error") for span in trace.get("spans", []))
+    groundedness_failed = trace.get("evaluations", {}).get("groundedness_score") == 0.0
+    business_failed = trace.get("business_state", {}).get("db_refund_status") == "FAILED"
+
+    return has_tool_error and groundedness_failed and business_failed</code></pre>
+
+        <p><strong>Judge Fail 是一个高价值的风险信号，但必须结合工具状态和业务事实，才能较高置信地确认这是一次“假成功”事件；至于根因是模型生成、编排逻辑还是错误处理缺陷，还需要继续查看 Trace。</strong></p>
+
+        <hr>
+
+        <h2>四、Signal 2：如何识别无推进的死循环</h2>
+
+        <p>Agent 因为能够自主调用工具（Tool Calling），极易陷入“死循环”。但如何定义死循环？</p>
+
+        <blockquote>
+          <p>⚠️ <strong>死循环不是“步骤太多”，而是“步骤没有带来状态的推进”。</strong></p>
+        </blockquote>
+
+        <p>一个长任务可能需要调用 10 个不同的工具，这叫探索行为；<br>
+        一次合法的重试可能因为网络超时而在 3 秒后更换参数重调，这叫容错机制。</p>
+
+        <p>真正的死循环（Suspected Loop）特征是：<br>
+        <strong>相同的工具 + 相同或高度相似的参数 + 连续的 Error 报错 + 在同一个 Trace 窗口内反复出现 + 没有状态推进。</strong></p>
+
+        <p>下面提供一个<strong>最简化的候选循环探测器</strong>（仅检查同一工具连续失败）。<br>
+        <em>（注：它仅用于在后端的 Trace 流中低成本筛选疑似循环；真实的生产实现还应加上参数相似度归一化对比和状态推进校验，以防止误伤合理的错误探索机制。）</em></p>
+
+<pre><code class="language-python">def detect_loop(trace: dict, loop_threshold: int = 3) -> bool:
+    """ 简化版逻辑: 连续调用[同一个工具]，连续获得[error] """
+    consecutive_errors = 0
+    last_tool_name = None
+
+    for span in trace.get("spans", []):
+        if span.get("gen_ai.operation.name") == "execute_tool":
+            current_tool = span.get("gen_ai.tool.name")
+            is_error = span.get("error", False)
+
+            if current_tool == last_tool_name and is_error:
+                consecutive_errors += 1
+            else:
+                consecutive_errors = 1 if is_error else 0
+                last_tool_name = current_tool
+
+            if consecutive_errors >= loop_threshold:
+                return True
+    return False</code></pre>
+
+        <p>一旦上述逻辑在后端的<strong>异步观测流</strong>中判定为 True，它就应当作为高质量信号用于触发告警、复盘；如果该逻辑被前置运行在 Runtime Guardrail（运行时护栏）中，则可直接拦截请求并移交给人工客服（Handoff），及时止损。</p>
+
+        <hr>
+
+        <h2>五、Signal 3：如何识别成本失控</h2>
+
+        <p>前四篇我们提到，一次 Agent 运行会产生 <code>gen_ai.usage.input_tokens</code> 这样的底层属性（OpenTelemetry GenAI 标准）<sup class="footnote-ref"><a href="#fn-otel-blog" id="fnref-otel-blog-1">[1]</a></sup>。但仅仅把它画在图表上毫无意义。</p>
+
+        <p>成本失控的检测，需要分成三个层级向上聚合：</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>聚合层级</th>
+              <th>指标名称</th>
+              <th>解决的核心问题</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>单次 Span</strong></td>
+              <td><code>input/output tokens</code>, <code>model latency</code></td>
+              <td>查出哪一次模型调用最贵、最慢。</td>
+            </tr>
+            <tr>
+              <td><strong>单次 Agent 运行</strong></td>
+              <td><code>total tokens</code>, <code>tool calls</code>, <code>estimated cost</code></td>
+              <td>查出哪一条用户请求的交互最贵。</td>
+            </tr>
+            <tr>
+              <td><strong>业务大盘</strong></td>
+              <td><strong><code>Cost per Successful Task</code></strong></td>
+              <td><strong>花的钱，到底有没有换来业务成功？</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>记住，对于以任务完成为目标的 Agent 而言，<strong>Cost per Successful Task（有效任务的平均成本）</strong>是最值得优先观察的单位经济性指标之一。<br>
+        因为：低成本但大量任务失败（如疯狂拒答），毫无业务价值；如果单次消耗极高（几千 Tokens），但能把高净值的复杂客诉处理掉，这笔钱花得就不冤枉。</p>
+
+        <hr>
+
+        <h2>六、从指标到辅助 SLO</h2>
+
+        <p>有了上述三个坚实的 Signal，我们就可以把它推上 SRE 的大盘，建立 Agent 的辅助 SLO（服务等级目标）了。</p>
+
+        <p>以下是一个企业级的配置样例：</p>
+
+        <blockquote>
+          <p>💡 <strong>注意</strong>：下表纯为展示表达方式的虚构示例目标。具体阈值必须通过内部基线流量、风险容忍度和成本预算来校准。</p>
+        </blockquote>
+
+        <table>
+          <thead>
+            <tr>
+              <th>维度</th>
+              <th>SLI（服务质量指示器）</th>
+              <th>辅助 SLO（容忍度目标）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>覆盖</strong></td>
+              <td><strong>Groundedness Coverage Rate</strong><br><em>(已完成忠实度评估的高风险 eligible runs / 全部高风险 eligible runs)</em></td>
+              <td>至少 20% 的线上高危请求完成了异步测评</td>
+            </tr>
+            <tr>
+              <td><strong>质量</strong></td>
+              <td><strong>Groundedness Pass Rate</strong></td>
+              <td><code>pass / (pass + fail)</code> &gt; 99.0%</td>
+            </tr>
+            <tr>
+              <td><strong>异常</strong></td>
+              <td><strong>Abstain / Handoff Rate</strong></td>
+              <td>弃权转人工比率维持稳定，不发生持续上升异常</td>
+            </tr>
+            <tr>
+              <td><strong>行为</strong></td>
+              <td><strong>Loop-Free Run Rate</strong></td>
+              <td>99.9% 的请求不触发 Loop 检测器</td>
+            </tr>
+            <tr>
+              <td><strong>成本</strong></td>
+              <td><strong>Cost per Successful Task</strong></td>
+              <td>单次成功退款的 P95 成本不超过业务批准预算上限</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <blockquote>
+          <p><strong>红线提醒</strong>：这些指标目前只适合作为企业内部的<strong>发布门禁（Release Gate）</strong>或运营参考指标。在裁判系统足够稳定、人工校准率足够高之前，请勿将其作为对外商业承诺的 Hard SLO。</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>七、告警设计：避免 Agent 告警风暴</h2>
+
+        <p>在编写告警规则（如 Prometheus 伪代码格式）时，一定要遵循 SRE 的铁律：<strong>Page on symptoms, investigate causes（按最终症状寻呼，用 Trace 查原因）</strong><sup class="footnote-ref"><a href="#fn-sre-im" id="fnref-sre-im-1">[2]</a></sup>。</p>
+
+        <blockquote>
+          <p>⚠️ <strong>切记</strong>：千万不要把完整的 Prompt 文本，或者具有高基数的 <code>User_ID</code> 放进告警系统的 Metric Label（指标标签）里去聚合。高基数标签会显著增加时序序列数量，导致查询极慢并推高存储成本。告警通知中只应放置低基数维度、Trace ID 或受控的排障链接。</p>
+        </blockquote>
+
+        <p>我们通常设计三类告警：</p>
+
+        <blockquote>
+          <p>💡 <strong>提示</strong>：以下事件、窗口和阈值（如 $1、5% 等）继续使用虚构数字，仅用于演示告警分级与 PromQL 表达方式；真实生产阈值必须按 Use Case 的历史基线和最低样本量来校准。</p>
+        </blockquote>
+
+        <h3>1. 单次严重事件告警（立即寻呼）</h3>
+        <p>例如：越权工具调用、违反安全 Policy Judge、单次 Trace 费用异常超过 $1（防止破产）。</p>
+
+        <h3>2. 滑动窗口趋势告警（工作时间跟进）</h3>
+        <p>例如：在过去 15 分钟内，触发 <code>detect_loop</code>（死循环）的比例突增至 5% 以上。这往往不是大模型傻了，而是上游业务 API 宕机导致大模型疯狂重试。</p>
+
+        <p><em>（注意：以下仅为展示核心逻辑的 PromQL 概念片段，真实生产规则需加上 <code>for</code> 持续时间、合理的 label 分组，以及 <code>clamp_min</code> 防范低流量时分母过小引发误报<sup class="footnote-ref"><a href="#fn-prom" id="fnref-prom-1">[3]</a></sup>。）</em></p>
+
+<pre><code class="language-yaml">- alert: AgentLoopRateHigh
+  expr: |
+    sum(rate(agent_signal_suspected_loop_total[15m]))
+    /
+    clamp_min(sum(rate(agent_run_total[15m])), 0.001)
+    > 0.05
+  for: 10m
+  labels:
+    severity: warning
+  annotations:
+    summary: "Agent suspected-loop rate is elevated"
+    runbook_url: "https://internal.wiki/runbooks/agent-loop"</code></pre>
+
+        <h3>3. Burn-rate 燃烧率告警 vs. 成本预算消耗</h3>
+        <p>针对 <code>Groundedness Pass Rate</code> 这种明确的好/坏事件（二值判断），应当套用 Google SRE 经典的 <strong>Error-Budget Burn-Rate（错误预算燃烧率）</strong> 模型<sup class="footnote-ref"><a href="#fn-sre-slo" id="fnref-sre-slo-1">[4]</a></sup>：短窗口内急剧恶化触发高优告警，长窗口缓慢劣化则排入普通工单调查。<br>
+        但对于 <code>Cost per Successful Task</code>，更准确的做法是监控其<strong>成本预算消耗率（Cost Budget Consumption Rate）</strong> 或监控其相对于历史同版本基线的异常偏离，而不能直接硬套可靠性的错误预算公式。</p>
+
+        <hr>
+
+        <h2>八、Runbook 与改进闭环：告警的终点在哪里？</h2>
+
+        <p>当值班工程师（On-Call）在凌晨两点收到上面的 <code>AgentLoopRateHigh</code> 告警时，他绝不应该只看到一句干瘪的“出错了”。</p>
+
+        <p>每一条高质量的告警，必须附带一条 <strong>Runbook（处理手册链接）</strong><sup class="footnote-ref"><a href="#fn-sre-im" id="fnref-sre-im-2">[2]</a></sup>。</p>
+
+        <p>一个标准的 Agent 故障响应闭环应该长这样：</p>
+        <ol>
+          <li>点开告警通知，一键跳转到相关的 <strong>Trace ID</strong>。</li>
+          <li>依据 Trace，确定故障根因：是模型版本变化、Context 拼装异常、检索质量/知识源异常，还是底层业务工具宕机。</li>
+          <li>采取应急措施：执行回滚、临时禁用该工具、或者强制触发转人工（Handoff）。</li>
+          <li><strong>最核心的一步</strong>：将该失败 Trace 经过<strong>脱敏、最小化和人工确认后</strong>的关键输入轨迹，提取沉淀为可复现的 Dataset（回归测试用例）<sup class="footnote-ref"><a href="#fn-langfuse-eval" id="fnref-langfuse-eval-1">[5]</a></sup>。</li>
+          <li>下次尝试修复问题并通过发布门禁前，用离线 Evaluation 确认这个同类死循环没有再发生。</li>
+        </ol>
+
+        <p>告警的终点，绝不是让值班人员在手机上点掉一个“已知悉”的通知按钮。<br>
+        <strong>告警的终点，是把线上的静默失败，永远固化为下一次发布前无法逾越的自动化测试用例。</strong></p>
+
+        <p>到这一篇为止，关于 AI Agent 的核心可观测性理论已经全部搭建完毕。下一篇，我们将进入大家最喜闻乐见的环节：<strong>《AI Agent 可观测性（六）：工具选型地图》</strong>。</p>
+
+      </div>
+
+      <section class="article-footnotes" id="references">
+        <h4>参考与核验来源 / SOURCES</h4>
+        <ol>
+          <li id="fn-otel-blog">
+            <a href="https://opentelemetry.io/blog/2026/genai-observability/" target="_blank" rel="noopener">Inside the LLM Call: GenAI Observability with OpenTelemetry</a>：官方博客提供了模型调用、token 计数以及持续时长等底层遥测信号的标准化思路，并介绍了如何用它们来估算成本。
+            <a href="#fnref-otel-blog-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+          <li id="fn-sre-im">
+            <a href="https://sre.google/resources/practices-and-processes/incident-management-guide/" target="_blank" rel="noopener">Google Site Reliability Engineering: Incident Management</a>：支撑了“按症状寻呼、提供可操作的告警与 Playbooks（Runbook）”的核心运维哲学。
+            <a href="#fnref-sre-im-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+          <li id="fn-prom">
+            <a href="https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/" target="_blank" rel="noopener">Prometheus Alerting Rules</a>：监控领域的权威文档，介绍了 <code>expr</code>、<code>for</code> 以及 <code>annotations</code> 用于连接 Runbook 的结构化实践。
+            <a href="#fnref-prom-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+          <li id="fn-sre-slo">
+            <a href="https://sre.google/workbook/alerting-on-slos/" target="_blank" rel="noopener">Google SRE Workbook: Alerting on SLOs</a>：SRE 经典的错误预算与多级燃烧率告警设计（支持 error-budget burn-rate 逻辑）。
+            <a href="#fnref-sre-slo-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+          <li id="fn-langfuse-eval">
+            <a href="https://langfuse.com/docs/evaluation/overview" target="_blank" rel="noopener">Langfuse Evaluation of LLM Applications</a>：提供了如何将线上 Trace 的分数落地并转化为 Dataset 和回归实验的业界参考。
+            <a href="#fnref-langfuse-eval-1" class="back" aria-label="返回正文">↩</a>
+          </li>
+        </ol>
+      </section>
+
+      <aside class="article-license">
+        <strong>版权声明</strong><br>
+        © 2026 <a href="https://ezaiops.com/">轻松自动化笔记 · EZ AI Ops Tips</a>。本文首发于本站。<br>
+        原文链接：<a class="canonical" href="https://ezaiops.com/posts/catching-silent-failures/">https://ezaiops.com/posts/catching-silent-failures/</a><br>
+        欢迎全文转载，请保留作者署名并注明原文链接，勿删改内容；商业使用请先联系。
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/posts/llm-as-a-judge-scoring-agents/">← 上一篇：怎么给“对不对”打分</a>
+      <span class="dim">下一篇：工具选型地图 · 敬请期待 →</span>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>

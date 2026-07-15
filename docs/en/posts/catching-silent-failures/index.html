@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catching Hallucinations, Loops, and Cost Runaways: Alerting on Silent Failures · EZ AI Ops Tips</title>
+  <meta name="description" content="AI Agent Observability Part 5. Just because your agent didn't throw an error doesn't mean it hasn't gone off the rails. How to build real SRE alerts for LLMs.">
+  <meta property="og:title" content="Catching Hallucinations, Loops, and Cost Runaways: Alerting on Silent Failures">
+  <meta property="og:description" content="AI Agent Observability Part 5. Grafting the classic SRE framework onto AI observability.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/en/posts/catching-silent-failures/">
+  <meta property="article:published_time" content="2026-07-15">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/en/posts/catching-silent-failures/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/catching-silent-failures/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/catching-silent-failures/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/catching-silent-failures/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Catching Hallucinations, Loops, and Cost Runaways: Alerting on Silent Failures",
+    "description": "AI Agent Observability Part 5. Grafting the classic SRE framework onto AI observability.",
+    "datePublished": "2026-07-15",
+    "dateModified": "2026-07-15",
+    "inLanguage": "en",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/en/posts/catching-silent-failures/"
+    },
+    "isPartOf": {
+      "@type": "CreativeWorkSeries",
+      "name": "AI Agent Observability"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-cn { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+      color: #b91c1c;
+    }
+    .article-body pre {
+      background: #1f2937; color: #e5e7eb; padding: 16px 20px; margin: 22px 0;
+      border-radius: 8px; overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.88rem; line-height: 1.8;
+    }
+    .article-body pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .article-body sup.footnote-ref {
+      font-size: 0.72rem; margin: 0 2px; vertical-align: super;
+    }
+    .article-body sup.footnote-ref a {
+      color: var(--accent); text-decoration: none; padding: 0 3px;
+      border: 1px solid #dbeafe; border-radius: 4px; background: #f0f7ff;
+      font-weight: 600;
+    }
+    .article-body sup.footnote-ref a:hover { background: #dbeafe; }
+
+    .article-footnotes {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .article-footnotes h4 {
+      margin: 0 0 14px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-footnotes ol { padding-left: 22px; margin: 0; }
+    .article-footnotes li { margin: 10px 0; line-height: 1.7; }
+    .article-footnotes .back {
+      color: var(--accent); margin-left: 6px;
+      font-family: ui-monospace, monospace; text-decoration: none;
+    }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+      .article-body pre { font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/en/" class="brand-link">
+          <h1>EZ AI Ops Tips</h1>
+          <span class="brand-cn">轻松自动化笔记</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/en/">Home</a>
+        <a href="/en/#featured">Focus</a>
+        <a href="/en/#about">About</a>
+        <div class="lang-switch">
+          <a href="/posts/catching-silent-failures/" hreflang="zh-CN">中文</a>
+          <a href="/en/posts/catching-silent-failures/" class="active" aria-current="page">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent Observability · Part 5</span>
+        <h1>Catching Hallucinations, Loops, and Cost Runaways: Alerting on Silent Failures</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-15">July 15, 2026</time>
+          <span class="dot">·</span>
+          <span>15 min read</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>Just because your agent didn't throw an error doesn't mean it hasn't gone off the rails. Here are three silent failures and how to alert on them.</p>
+        </blockquote>
+
+        <blockquote>
+          <p>This is Part 5 of the <em>AI Agent Observability</em> series. Over the last four parts, we explored how to read a trace and <a href="/en/posts/llm-as-a-judge-scoring-agents/">how to use an LLM-as-a-Judge to score answers</a>. But for an architect or SRE carrying a KPI, you can't stare at tens of thousands of traces every day. Today, we will aggregate the raw data (Telemetry) accumulated in the first four parts into <strong>system signals that can trigger Alerts and standard operating procedures (Runbooks).</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>1. An Out-of-Control Agent with No Errors</h2>
+
+        <blockquote>
+          <p>💡 <strong>Establishing Boundaries First:</strong> The refund support scenarios, call counts, token volumes, and costs mentioned in this article are <strong>simplified, synthetic engineering examples</strong> used to illustrate observability methodologies. They do not correspond to any real customer production incidents.</p>
+        </blockquote>
+
+        <p>Let's return to that extremely thorny Refund Support Agent scenario. In its second month post-launch, the month-end review surfaced three deeply problematic agent runs:</p>
+
+        <ol>
+          <li><strong>The First Request:</strong> The underlying tool clearly couldn't find the order, but the large model returned an unsupported success confirmation, replying, "Your refund has been processed."</li>
+          <li><strong>The Second Request:</strong> The model couldn't find the order, and entered repeated retries, calling the query tool 15 times using <code>order_id="null"</code>, <code>"none"</code>, and <code>"0"</code> before finally stopping.</li>
+          <li><strong>The Third Request:</strong> The task was completed, but for a simple Q&A, the agent repeatedly dumped the entire irrelevant knowledge base into the context, burning 8,500 Input Tokens in a single request—making the cost 10 times the baseline.</li>
+        </ol>
+
+        <p>In a traditional APM dashboard, these three requests might all still return <code>HTTP 200</code>. They might not even trigger traditional Error-Rate alerts. Even if some triggered latency alerts, traditional APM usually cannot directly explain the model's erroneous behavior and the resulting business outcome.</p>
+
+        <p>This is the core engineering pain point we face: <strong>Production incidents in Agent systems often do not manifest as explicit Errors; instead, they show up as wrong answers, ineffective behavior, or quietly inflating unit costs.</strong></p>
+
+        <p>To catch them, we must seamlessly graft the classic Site Reliability Engineering (SRE) framework onto AI observability.</p>
+
+        <hr>
+
+        <h2>2. From Trace to Signal: Not Every Chart Deserves an Alert</h2>
+
+        <p>The biggest fear of a monitoring system isn't a lack of data; it's "Alert Fatigue" caused by too much data. If you attach a phone call alert to every low score from an LLM Judge, your On-Call engineers will eventually break down.</p>
+
+        <p>To manage Agents well, you must build a strict funnel (from the bottom up):</p>
+
+        <ul>
+          <li><strong>Telemetry:</strong> The Traces, Spans, and Events we collect. This is the <strong>evidence</strong>.</li>
+          <li><strong>Signal:</strong> A combination of observed facts that strongly explain a failure (e.g., Tool Error + Reply Judged as Success = False Success Signal).</li>
+          <li><strong>SLI (Service Level Indicator):</strong> A metric that can be continuously measured over time (e.g., the occurrence rate of False Success events).</li>
+          <li><strong>SLO (Service Level Objective):</strong> The internal target you hope to maintain for an SLI within an agreed time window.</li>
+          <li><strong>Alert:</strong> Triggers a notification, ticket, or page when a predefined condition indicates material user impact, business risk, or significant error-budget consumption.</li>
+          <li><strong>Runbook:</strong> The playbook detailing what charts a human should look at and what scripts they should execute after an alert triggers.</li>
+        </ul>
+
+        <blockquote>
+          <p>⚠️ Core Principle: <strong>Not every trace attribute is worth becoming an SLI, and certainly not every SLI breach requires an immediate page.</strong></p>
+        </blockquote>
+
+        <p>Below, we will design three "detectors" to turn the Raw Traces discussed in the first four parts into highly valuable <strong>Signals</strong> in the funnel above.</p>
+
+        <blockquote>
+          <p>📦 <strong>Open Source Companion Code</strong>: The rule detectors, synthetic Trace test sets (JSON), metric calculation examples, and Prometheus alert rules (YAML) covered in this article have been integrated into a fully runnable Demo repository. The core demo uses precomputed evaluation scores and can run <strong>without calling an LLM API</strong>; re-running the Groundedness Judge requires a separately configured local model or compatible API: <a href="https://github.com/your-org/ai-agent-observability-labs/tree/main/05-signals-slos-alerts" target="_blank" rel="noopener">👉 GitHub: ai-agent-observability-labs/05-signals-slos-alerts</a></p>
+        </blockquote>
+
+        <hr>
+
+        <h2>3. Signal 1: How to Detect Hallucinations and "False Successes"</h2>
+
+        <p>The biggest trouble with large models is their tendency to "package errors." In the first case of Section 1, how do we catch it?</p>
+
+        <p>Never say, "If the LLM Judge gives this text a low score, it's a hallucination; alert immediately." This single-point judgment is extremely fragile. Industrial-grade "False Success" detection requires <strong>cross-verification of multi-dimensional data</strong>:</p>
+
+        <ol>
+          <li><strong>Deterministic Rules:</strong> Track if the underlying tool execution failed (Span <code>error=true</code>).</li>
+          <li><strong>Semantic Judge:</strong> The Groundedness judge mentioned in Part 4 gives a <code>Fail(0)</code>, meaning the reply content is not supported by the tool's results.</li>
+          <li><strong>Business Verification:</strong> Combined with external DB state, the refund transaction was indeed not created.</li>
+        </ol>
+
+        <p><em>(Note: The business-side verification does not require calling an expensive LLM API. As long as your observability backend associates the above metrics when collecting Traces, a minimal Python rule can filter this out offline or asynchronously.)</em></p>
+
+<pre><code class="language-python">def detect_false_success(trace: dict) -> bool:
+    """ Rule: Tool Error + Groundedness Score 0 + DB Not Successful """
+    has_tool_error = any(span.get("error") for span in trace.get("spans", []))
+    groundedness_failed = trace.get("evaluations", {}).get("groundedness_score") == 0.0
+    business_failed = trace.get("business_state", {}).get("db_refund_status") == "FAILED"
+
+    return has_tool_error and groundedness_failed and business_failed</code></pre>
+
+        <p><strong>A Judge Fail is a high-value risk signal, but it must be combined with tool status and business facts to identify a "False Success" event with higher confidence; as for whether the root cause is model generation, orchestration logic, or flawed error handling, you still need to look at the Trace.</strong></p>
+
+        <hr>
+
+        <h2>4. Signal 2: How to Identify Infinite Loops with No State Progression</h2>
+
+        <p>Because Agents can autonomously invoke tools (Tool Calling), they easily fall into "infinite loops." But how do you define an infinite loop?</p>
+
+        <blockquote>
+          <p>⚠️ <strong>An infinite loop is not "too many steps"; it is "steps that bring no progression in state."</strong></p>
+        </blockquote>
+
+        <p>A long task might need to call 10 different tools; that's exploratory behavior.<br>
+        A legitimate retry might switch parameters and call again after 3 seconds due to a network timeout; that's a fault-tolerance mechanism.</p>
+
+        <p>The characteristics of a true Suspected Loop are:<br>
+        <strong>Same tool + Same or highly similar parameters + Consecutive Errors + Repeated within the same Trace window + No state progression.</strong></p>
+
+        <p>Below is a <strong>simplified candidate loop detector</strong> (it only checks for consecutive failures of the same tool).<br>
+        <em>(Note: It is only used to filter suspected loops at a low cost in the backend Trace stream; a true production implementation should also add parameter similarity normalization and state progression verification to avoid flagging reasonable error-exploration mechanisms.)</em></p>
+
+<pre><code class="language-python">def detect_loop(trace: dict, loop_threshold: int = 3) -> bool:
+    """ Simplified Logic: Consecutive calls to the [same tool], consecutive [errors] """
+    consecutive_errors = 0
+    last_tool_name = None
+
+    for span in trace.get("spans", []):
+        if span.get("gen_ai.operation.name") == "execute_tool":
+            current_tool = span.get("gen_ai.tool.name")
+            is_error = span.get("error", False)
+
+            if current_tool == last_tool_name and is_error:
+                consecutive_errors += 1
+            else:
+                consecutive_errors = 1 if is_error else 0
+                last_tool_name = current_tool
+
+            if consecutive_errors >= loop_threshold:
+                return True
+    return False</code></pre>
+
+        <p>Once the above logic evaluates to True in the backend's <strong>asynchronous observability stream</strong>, it should be used as a high-quality signal to trigger alerts and reviews; if this logic runs upfront in a Runtime Guardrail, it can directly intercept the request and Handoff to a human agent, cutting your losses immediately.</p>
+
+        <hr>
+
+        <h2>5. Signal 3: How to Identify Cost Runaways</h2>
+
+        <p>In the previous four parts, we mentioned that a single Agent run generates underlying attributes like <code>gen_ai.usage.input_tokens</code> (OpenTelemetry GenAI Standard)<sup class="footnote-ref"><a href="#fn-otel-blog" id="fnref-otel-blog-2">[1]</a></sup>. But simply charting this is meaningless.</p>
+
+        <p>Detecting cost runaways requires aggregating upwards across three levels:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Aggregation Level</th>
+              <th>Metric Name</th>
+              <th>Core Problem Solved</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Single Span</strong></td>
+              <td><code>input/output tokens</code>, <code>model latency</code></td>
+              <td>Finds out which model call is the most expensive or slowest.</td>
+            </tr>
+            <tr>
+              <td><strong>Single Agent Run</strong></td>
+              <td><code>total tokens</code>, <code>tool calls</code>, <code>estimated cost</code></td>
+              <td>Finds out which user interaction was the most expensive.</td>
+            </tr>
+            <tr>
+              <td><strong>Business Dashboard</strong></td>
+              <td><strong><code>Cost per Successful Task</code></strong></td>
+              <td><strong>Did the money spent actually buy business success?</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Remember, for Agents aimed at task completion, <strong>Cost per Successful Task (the average cost of an effective task)</strong> is one of the unit-economic metrics most worthy of prioritization.<br>
+        Why? Because low cost with massive task failures (like constantly refusing to answer) has zero business value; whereas if a single run consumes thousands of tokens but successfully resolves a high-net-worth, complex customer complaint, that money is well spent.</p>
+
+        <hr>
+
+        <h2>6. From Metrics to Auxiliary SLOs</h2>
+
+        <p>With the three solid Signals above, we can push them to the SRE dashboard and establish auxiliary SLOs (Service Level Objectives) for the Agent.</p>
+
+        <p>Below is an enterprise-grade configuration example:</p>
+
+        <blockquote>
+          <p>💡 <strong>Note</strong>: The table below is purely a fictional example intended to demonstrate how goals are expressed. Specific thresholds must be calibrated based on internal traffic baselines, risk tolerance, and cost budgets.</p>
+        </blockquote>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>SLI (Service Level Indicator)</th>
+              <th>Auxiliary SLO (Tolerance Target)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Coverage</strong></td>
+              <td><strong>Groundedness Coverage Rate</strong><br><em>(eligible high-risk runs that completed groundedness scoring / all eligible high-risk runs)</em></td>
+              <td>At least 20% of high-risk online requests complete asynchronous evaluation.</td>
+            </tr>
+            <tr>
+              <td><strong>Quality</strong></td>
+              <td><strong>Groundedness Pass Rate</strong></td>
+              <td><code>pass / (pass + fail)</code> &gt; 99.0%</td>
+            </tr>
+            <tr>
+              <td><strong>Anomaly</strong></td>
+              <td><strong>Abstain / Handoff Rate</strong></td>
+              <td>Maintain a stable human-handoff rate without continuous abnormal spikes.</td>
+            </tr>
+            <tr>
+              <td><strong>Behavior</strong></td>
+              <td><strong>Loop-Free Run Rate</strong></td>
+              <td>99.9% of requests do not trigger the Loop detector.</td>
+            </tr>
+            <tr>
+              <td><strong>Cost</strong></td>
+              <td><strong>Cost per Successful Task</strong></td>
+              <td>The P95 cost of a single successful refund does not exceed the approved business budget cap.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <blockquote>
+          <p><strong>Red Line Warning</strong>: These metrics are currently only suitable as <strong>Release Gates</strong> or operational reference metrics within the enterprise. Until the judge system is stable enough and the human calibration rate is high enough, do not blindly use them as Hard SLOs for external commercial commitments.</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>7. Alert Design: Avoiding Agent Alert Storms</h2>
+
+        <p>When writing alert rules (like in Prometheus pseudo-code), you must follow the iron law of SRE: <strong>Page on symptoms, investigate causes (page based on the final symptom, use Trace to find the cause)</strong><sup class="footnote-ref"><a href="#fn-sre-im" id="fnref-sre-im-3">[2]</a></sup>.</p>
+
+        <blockquote>
+          <p>⚠️ <strong>Remember</strong>: Never put the full Prompt text, or a high-cardinality <code>User_ID</code>, into the Metric Label of an alerting system for aggregation. High-cardinality labels will significantly increase the number of time series, causing excruciatingly slow queries and driving up storage costs. Alert notifications should only contain low-cardinality dimensions, the Trace ID, or controlled troubleshooting links.</p>
+        </blockquote>
+
+        <p>We typically design three types of alerts:</p>
+
+        <blockquote>
+          <p>💡 <strong>Tip</strong>: The events, windows, and thresholds below (like $1, 5%) continue to use fictional numbers purely to demonstrate alert tiering and PromQL expressions; true production thresholds must be calibrated against the historical baseline and minimum sample size of the Use Case.</p>
+        </blockquote>
+
+        <h3>1. Single Critical Event Alerts (Page Immediately)</h3>
+        <p>Examples: Unauthorized tool calls, violating a Safety Policy Judge, or a single Trace fee abnormally exceeding $1 (preventing bankruptcy).</p>
+
+        <h3>2. Sliding Window Trend Alerts (Follow up during Business Hours)</h3>
+        <p>Example: In the past 15 minutes, the proportion of requests triggering <code>detect_loop</code> spikes above 5%. This often isn't a model-only failure; it's the upstream business API going down, causing the model to enter repeated retries.</p>
+
+        <p><em>(Note: The following is just a conceptual PromQL snippet to demonstrate core logic; a real production rule requires a <code>for</code> duration, appropriate label grouping, and <code>clamp_min</code> to prevent false positives when the denominator is too small during low traffic<sup class="footnote-ref"><a href="#fn-prom" id="fnref-prom-2">[3]</a></sup>.)</em></p>
+
+<pre><code class="language-yaml">- alert: AgentLoopRateHigh
+  expr: |
+    sum(rate(agent_signal_suspected_loop_total[15m]))
+    /
+    clamp_min(sum(rate(agent_run_total[15m])), 0.001)
+    > 0.05
+  for: 10m
+  labels:
+    severity: warning
+  annotations:
+    summary: "Agent suspected-loop rate is elevated"
+    runbook_url: "https://internal.wiki/runbooks/agent-loop"</code></pre>
+
+        <h3>3. Burn-rate Alerts vs. Cost Budget Consumption</h3>
+        <p>For clear good/bad events (binary judgments) like <code>Groundedness Pass Rate</code>, you should apply Google SRE's classic <strong>Error-Budget Burn-Rate</strong> model<sup class="footnote-ref"><a href="#fn-sre-slo" id="fnref-sre-slo-2">[4]</a></sup>: a sharp deterioration within a short window triggers a high-priority alert, while slow degradation over a long window goes into a standard ticketing queue for investigation.<br>
+        However, for <code>Cost per Successful Task</code>, the more accurate approach is to monitor its <strong>Cost Budget Consumption Rate</strong> or its abnormal deviation against a historical baseline of the same version, rather than blindly applying the reliability error-budget formula.</p>
+
+        <hr>
+
+        <h2>8. Runbooks and the Improvement Loop: Where Do Alerts End?</h2>
+
+        <p>When an On-Call engineer gets the <code>AgentLoopRateHigh</code> alert above at 2 AM, they absolutely shouldn't just see a dry "Something went wrong."</p>
+
+        <p>Every high-quality alert must include a link to a <strong>Runbook (Standard Operating Procedure)</strong><sup class="footnote-ref"><a href="#fn-sre-im" id="fnref-sre-im-4">[2]</a></sup>.</p>
+
+        <p>A standard Agent incident response loop should look like this:</p>
+        <ol>
+          <li>Click the alert notification and jump directly to the relevant <strong>Trace ID</strong>.</li>
+          <li>Based on the Trace, determine the root cause: is it a model version change, an abnormal Context assembly, degraded retrieval quality/knowledge source issues, or an underlying business tool crash?</li>
+          <li>Take emergency action: Roll back, temporarily disable the tool, or force a Handoff to humans.</li>
+          <li><strong>The most critical step</strong>: Extract the key input trajectory of the failed Trace—<strong>after redaction, minimization, and human confirmation</strong>—and curate it into a reproducible Dataset item (Regression Test Case)<sup class="footnote-ref"><a href="#fn-langfuse-eval" id="fnref-langfuse-eval-2">[5]</a></sup>.</li>
+          <li>Before trying to fix the issue and passing the release gate next time, use offline Evaluation to confirm this same loop doesn't happen again.</li>
+        </ol>
+
+        <p>The endpoint of an alert is never merely having an on-call engineer dismiss an "Acknowledged" notification.<br>
+        <strong>The endpoint of an alert is to permanently solidify silent production failures into automated test cases that cannot be bypassed in the next release.</strong></p>
+
+        <p>Up to this point, the core observability theory for AI Agents has been fully constructed. In the next article, we will enter the segment everyone loves to read about most: <strong>AI Agent Observability (Part 6): The Tool Selection Landscape and End-to-End Architecture</strong>.</p>
+
+      </div>
+
+      <section class="article-footnotes" id="sources">
+        <h4>SOURCES</h4>
+        <ol>
+          <li id="fn-otel-blog">
+            <a href="https://opentelemetry.io/blog/2026/genai-observability/" target="_blank" rel="noopener">Inside the LLM Call: GenAI Observability with OpenTelemetry</a>: Official blog detailing standard ideas for underlying telemetry signals like model calls, token counts, and durations, and how to use them to estimate costs.
+            <a href="#fnref-otel-blog-2" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-sre-im">
+            <a href="https://sre.google/resources/practices-and-processes/incident-management-guide/" target="_blank" rel="noopener">Google Site Reliability Engineering: Incident Management</a>: Backs the core operations philosophy of "paging on symptoms, providing actionable alerts and Playbooks (Runbooks)."
+            <a href="#fnref-sre-im-3" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-prom">
+            <a href="https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/" target="_blank" rel="noopener">Prometheus Alerting Rules</a>: The authoritative document in the monitoring space, introducing the structured practices of <code>expr</code>, <code>for</code>, and <code>annotations</code> for linking Runbooks.
+            <a href="#fnref-prom-2" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-sre-slo">
+            <a href="https://sre.google/workbook/alerting-on-slos/" target="_blank" rel="noopener">Google SRE Workbook: Alerting on SLOs</a>: SRE's classic error budget and multi-burn-rate alerting design (supporting error-budget burn-rate logic).
+            <a href="#fnref-sre-slo-2" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-langfuse-eval">
+            <a href="https://langfuse.com/docs/evaluation/overview" target="_blank" rel="noopener">Langfuse Evaluation of LLM Applications</a>: Provides industry references on how to land scores from online traces and transform them into Datasets and regression experiments.
+            <a href="#fnref-langfuse-eval-2" class="back" aria-label="Back to text">↩</a>
+          </li>
+        </ol>
+      </section>
+
+      <aside class="article-license">
+        <strong>Copyright Notice</strong><br>
+        © 2026 <a href="https://ezaiops.com/en/">EZ AI Ops Tips · 轻松自动化笔记</a>. Originally published here.<br>
+        Canonical URL: <a class="canonical" href="https://ezaiops.com/en/posts/catching-silent-failures/">https://ezaiops.com/en/posts/catching-silent-failures/</a><br>
+        Full reposts permitted with author credit and a link back to the original — please do not modify the content. Commercial use requires prior permission.
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/en/posts/llm-as-a-judge-scoring-agents/">← Previous: How to Score Right vs. Wrong</a>
+      <span class="dim">Next: Tool Selection Landscape · coming soon →</span>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>
