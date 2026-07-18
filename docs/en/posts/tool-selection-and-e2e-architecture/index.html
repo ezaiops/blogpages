@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agent Observability (Part 6): Tool Selection Landscape and End-to-End Architecture · EZ AI Ops Tips</title>
+  <meta name="description" content="Part 6 of the AI Agent Observability series. Exploring the tool selection landscape and presenting an end-to-end reference architecture.">
+  <meta property="og:title" content="AI Agent Observability (Part 6): Tool Selection Landscape and End-to-End Architecture">
+  <meta property="og:description" content="Part 6 of the AI Agent Observability series. Exploring the tool selection landscape and presenting an end-to-end reference architecture.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/">
+  <meta property="article:published_time" content="2026-07-18">
+  <meta property="article:section" content="AI Agent Observability">
+  <link rel="canonical" href="https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/tool-selection-and-e2e-architecture/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/tool-selection-and-e2e-architecture/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "AI Agent Observability (Part 6): Tool Selection Landscape and End-to-End Architecture",
+    "description": "Part 6 of the AI Agent Observability series. Exploring the tool selection landscape and presenting an end-to-end reference architecture.",
+    "datePublished": "2026-07-18",
+    "dateModified": "2026-07-18",
+    "inLanguage": "en",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/en/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-en { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+    .article-body pre {
+      background: #f6f8fa; border: 1px solid var(--border);
+      padding: 16px; border-radius: 6px; overflow-x: auto;
+      font-size: 0.88rem; line-height: 1.5; margin: 20px 0;
+    }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.9em; padding: 2px 5px; background: #f1f3f5;
+      border-radius: 4px; color: #d73a49;
+    }
+    .article-body pre code {
+      background: none; padding: 0; color: var(--text); font-size: 1em;
+    }
+
+    .demo-box {
+      margin: 24px 0; padding: 20px;
+      background: #f0f7ff; border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem; color: #1e3a8a;
+    }
+    .demo-box strong { color: var(--accent); display: block; margin-bottom: 8px; font-size: 1.05rem; }
+    .demo-box a { color: #1d4ed8; font-weight: 600; word-break: break-all; }
+    .demo-box a:hover { color: #1e40af; }
+
+    .article-sources {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.92rem; color: var(--muted);
+    }
+    .article-sources h4 {
+      margin: 0 0 12px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-sources ul { list-style: none; padding: 0; margin: 0; }
+    .article-sources li { margin: 6px 0; line-height: 1.6; }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/en/" class="brand-link">
+          <h1>EZ AI Ops Tips</h1>
+          <span class="brand-en">Automation & Reliability</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/en/">Home</a>
+        <a href="/en/#featured">Series</a>
+        <a href="/en/#about">About</a>
+        <div class="lang-switch">
+          <a href="/posts/tool-selection-and-e2e-architecture/" hreflang="zh-CN">中文</a>
+          <a href="/en/posts/tool-selection-and-e2e-architecture/" class="active" aria-current="page">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Agent Observability · Part 6</span>
+        <h1>AI Agent Observability (Part 6): Tool Selection Landscape and End-to-End Architecture</h1>
+        <div class="article-meta">
+          <time datetime="2026-07-18">July 18, 2026</time>
+          <span class="dot">·</span>
+          <span>~25 min read</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>From Agent code to Trace, Metrics, Evaluation, SLO, Alert, and the continuous improvement loop. There are many tools on the market, but what truly matters isn't picking the "strongest platform." It's ensuring your telemetry is portable, quality is evaluable, alerts are actionable, and failures are regression-testable.</p>
+          <p>This is Part 6, the finale of the <em>AI Agent Observability</em> series. In the previous five parts, we broke down all the underlying concepts and engineering practices. Today, we will explore the tool selection landscape, and finally, present an end-to-end reference architecture that truly connects the entire lifecycle.</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>1. So Many Tools, Why Is the Loop Still Broken?</h2>
+
+        <p>If you follow the AgentOps space, you'll notice an explosion of observability tools over the past year. But many teams, after purchasing or building a pile of infrastructure, find themselves trapped in a classic "tool platter" disaster:</p>
+
+        <ul>
+          <li>A 500ms latency spike is spotted in the traditional APM.</li>
+          <li>The user's conversation Trace is stored in some open-source AI platform.</li>
+          <li>An offline Python script spits out a quality score (Score: 0).</li>
+          <li>An infinite-loop alert fires in Prometheus.</li>
+          <li>The failed Dataset test case lies in a directory of a completely different code repository.</li>
+        </ul>
+
+        <p><strong>Where is the problem? You have all the tools, but the data chain is completely broken.</strong></p>
+
+        <p>When an On-Call engineer receives an alert, they cannot smoothly pivot from Prometheus to the problematic Prompt using the same <code>trace_id</code>, nor can they seamlessly sink that error into a Dataset with one click.</p>
+
+        <p>Therefore, before evaluating any tool, we must recognize one fact: <strong>Excellent Agent Observability never hardcodes a specific SaaS vendor's SDK into the business logic.</strong></p>
+
+        <hr>
+
+        <h2>2. Don't Pick a Product Yet—Write Your Requirements Contract First</h2>
+
+        <p>Before picking an architecture, a Tech Lead should first ask themselves these core questions:</p>
+
+        <ol>
+          <li><strong>Agent Trace Debugging</strong>: Do you need to visualize tree-like execution trajectories, function inputs, and outputs?</li>
+          <li><strong>Metrics & Cost</strong>: Do you need to calculate Token consumption per request and estimate the cost of an effective task?</li>
+          <li><strong>Evaluation</strong>: Do you need built-in or external LLM-as-a-Judge to semantically score responses?</li>
+          <li><strong>Dataset & Regression</strong>: Can you directly settle online failure cases into regression test sets?</li>
+          <li><strong>Alert & Runbook</strong>: Can the platform integrate with your existing PagerDuty, Slack, or on-call systems?</li>
+          <li><strong>Data Portability</strong>: Does it support native OpenTelemetry (OTel) ingestion to prevent Vendor Lock-in?</li>
+          <li><strong>Privacy & RBAC</strong>: Is Prompt data allowed to leave the corporate intranet? Are there robust access controls?</li>
+        </ol>
+
+        <p>Different answers will lead you to three distinctly different tool landscapes below.</p>
+
+        <hr>
+
+        <h2>3. The Three Tool Landscapes (Not Ranked)</h2>
+
+        <blockquote>
+          <p>⚠️ <strong>Disclaimer</strong>: The feature descriptions below are based on a starting point for tool selection from public documentation at the time of writing (July 2026). Product capabilities, licensing, hosting options, and pricing are subject to change. This article does not constitute procurement advice; please verify with official documentation and complete your own security, compliance, and ops reviews before purchasing.</p>
+        </blockquote>
+
+        <h3>A. AI-Native / Agent-Native Platforms</h3>
+        <p><strong>Representatives</strong>: Langfuse, LangSmith, Arize Phoenix</p>
+        <ul>
+          <li><strong>Capabilities</strong>: These are engineering platforms designed specifically for LLMs. They offer the <strong>best and fastest onboarding experiences</strong> for visualizing Agent Traces (waterfall displays), online/offline Evaluation (built-in Prompt graders), and Dataset management.</li>
+          <li><strong>Differences</strong>:
+            <ul>
+              <li><strong>LangSmith</strong> has an extremely mature LLM lifecycle (Agent Engineering) experience, supporting code evaluation, multi-turn evaluation, and domain expert annotation. However, its self-hosting capabilities must be strictly verified against your enterprise's actual situation (do not assume "open source" means easily self-hostable).</li>
+              <li><strong>Langfuse</strong> and <strong>Arize Phoenix</strong> are open-source and highly OTel-friendly. Langfuse can act directly as an OTLP backend to ingest OTel Traces and map them to its own data model. Phoenix focuses more on rapid local startup and vendor-agnostic native OTel support.</li>
+            </ul>
+          </li>
+          <li><strong>Best For</strong>: AI R&D teams heavily focused on Prompt iteration, quality scoring, and rapid experimentation.</li>
+        </ul>
+
+        <h3>B. AI Observability in Full-Stack APM Platforms</h3>
+        <p><strong>Representatives</strong>: Datadog LLM Observability, New Relic AI Observability</p>
+        <ul>
+          <li><strong>Capabilities</strong>: A dimensional strike by legacy powerhouses. Their biggest advantage is <strong>"full-stack correlation"</strong>—the ability to link your LLM traces into a contextual timeline with your backend databases (DB), Redis, and infrastructure network status.</li>
+          <li><strong>Characteristics</strong>: They come with mature, enterprise-grade alerting, on-call systems, and extremely strict privacy data governance (PII Redaction). Datadog officially states its Traces can encompass LLM inference, tool calls, or dynamic Agent workflows, covering cost, quality, privacy, and safety views simultaneously.</li>
+          <li><strong>Best For</strong>: Mid-to-large organizations with mature enterprise APM infrastructure that do not wish to introduce new data silos for their AI business.</li>
+        </ul>
+
+        <h3>C. The Composable OTel-First DIY Stack</h3>
+        <p><strong>Example</strong>: OTel SDK → OTel Collector → Trace Backend + Prometheus + Grafana Alerting + Custom Eval Pipeline</p>
+        <ul>
+          <li><strong>Capabilities</strong>: You will absolutely never see any vendor's proprietary SDK in the business code; everything uses standard <code>opentelemetry-instrumentation</code>. Through the OTel Collector data router, you can dispatch data to different backends at any time.</li>
+          <li><strong>Pros & Cons</strong>: <strong>High level of control and clear data boundaries.</strong> The tradeoff is that the team must maintain the Collector themselves, and piece together the scoring scripts and dataset workflows manually (Evaluation and Dataset capabilities are not out-of-the-box).</li>
+          <li><strong>Best For</strong>: Platform engineering teams with strong internal R&D capabilities, strict compliance requirements, and mandates that data cannot leave the corporate network.</li>
+        </ul>
+
+        <hr>
+
+        <h2>4. A Reference Architecture with Replaceable Backends</h2>
+
+        <p>Since a "platter" leads to broken chains, what should a true enterprise-grade Agent observability pipeline look like?<br>
+        Combining the selection philosophies above, we recommend a modern reference architecture <strong>centered around OpenTelemetry as the core router</strong>:</p>
+
+<pre><code>       【Agent Application】 (LangGraph / OpenAI, etc.)
+         ├── LLM Calls / Tool Calls / Retrieval
+         └── Business Outcome
+                 │
+                 ▼
+【OpenTelemetry SDK / Instrumentation】 (Low invasion; independently configure Trace sampling, and apply redaction in the SDK or Collector)
+                 │
+                 ▼
+       【OpenTelemetry Collector】 (Telemetry data transit hub)
+                 ├── Traces pipeline
+                 ├── Metrics pipeline
+                 └── Logs pipeline
+                 │
+   ┌─────────────┼─────────────┐
+   ▼             ▼             ▼
+【Trace Backend】 【Prometheus】  【Logs Backend】
+(e.g., Phoenix) │             │
+   │             ▼             ▼
+   │      【Alertmanager】  【Log Alerts】
+   │             │             │
+   │             ▼             ▼
+   │        【PagerDuty】    【Slack】
+   │             │
+   ├── Trace view ├── Fire Alerts
+   ├── Evals      └── Runbooks
+   │
+   └─────────────┴─────────────┘
+                 ▼
+【Curated Dataset】 (Redacted, human-verified failure sets)
+                 ▼
+【Regression Eval】 (CI/CD Release Gates)</code></pre>
+
+        <p><strong>Why do we recommend this architecture?</strong><br>
+        By utilizing the OTel API/SDK, OTLP, and applicable semantic conventions, you can significantly reduce the coupling between the application's telemetry layer and any single backend vendor's SDK. When you need to replace a backend or add a new data source, the vast majority of changes occur at the OTel Collector layer, preserving maximum optionality.</p>
+
+        <hr>
+
+        <h2>5. End-to-End Hands-on: A Minimal Local Reference Architecture</h2>
+
+        <p>To fulfill this series' promise of being "actionable and runnable," the companion directory implements the local trace-routing subset of the reference architecture using Docker Compose in this series' companion open-source repository.</p>
+
+        <div class="demo-box">
+          <strong>Hands-on: End-to-End Local Architecture</strong>
+          <p>This demo spins up an OTel Collector and Arize Phoenix to demonstrate the complete routing of Traces from the application layer via OTLP to the visualization dashboard.</p>
+          <a href="https://github.com/ezaiops/ai_agents_observability_demo/tree/main/06-end-to-end-platform" target="_blank" rel="noopener">👉 GitHub: ezaiops/ai_agents_observability_demo/06-end-to-end-platform</a>
+        </div>
+
+        <blockquote>
+          <p><em>(Note: Arize Phoenix is chosen as the open-source backend in this demo solely to ensure the local experiment is lightweight. Subsequent extensions for Metrics, alerts, and datasets can be implemented via other open-source components in a production environment.)</em><br>
+          ⚠️ <strong>Production Security Disclaimer</strong>: For local, synthetic data, and isolated development environments only. Do not input real customer data, and do not deploy this stack to a LAN, the public internet, or any production environment.</p>
+        </blockquote>
+
+        <h3>1. Initiate a Request and Generate a Trace</h3>
+        <p>The application creates Spans using the OTel API/SDK and framework-specific instrumentation. When the Agent initiates a request, the instrumentation silently records the underlying path. The <code>OTLPSpanExporter</code> is solely responsible for transmitting the recorded Spans.</p>
+
+        <h3>2. OTel Collector Routing and Dispatch</h3>
+        <p>Upon receiving the telemetry data, the Collector routes it to the designated backends. In our local demo: Trace data is sent to the locally hosted Phoenix platform for waterfall visualization.</p>
+
+        <h3>3. Seeing the Data in the Local Dashboard</h3>
+        <p>Engineers can manually locate the request trace in Phoenix and inspect the execution structure, clearly identifying which Prompt triggered the issue.</p>
+
+        <blockquote>
+          <p>💡 <strong>Next Steps for a Production Environment</strong>:<br>
+          In a real enterprise deployment, you would also need to implement a <code>MeterProvider</code> and configure specific business alert rules in metrics backends like Prometheus. Additionally, reusable Spans from failed Traces should be selected, minimized of PII, human-confirmed, and pushed to a Dataset for automated regression in CI.</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>6. Pre-Production Checklist</h2>
+
+        <p>Before going to production, please review this checklist:</p>
+
+        <ul>
+          <li>Can the Trace ID propagate seamlessly across Agents, underlying tools, and monitoring backends?</li>
+          <li>Is the capture of Prompts/Reply content explicitly controlled (Opt-in)?</li>
+          <li>Is PII sensitive data redacted/truncated before exiting your network?</li>
+          <li>Are you certain that no high-cardinality attributes (like Prompt, User ID) enter your Metric Labels?</li>
+          <li>Are the Agent, Prompt, Model, Tool, and Rubric all tagged with version numbers?</li>
+          <li>Are Evaluation Coverage and Abstain Rates monitored in production?</li>
+          <li>Can alert notifications link directly to the specific Trace and corresponding Runbook with one click?</li>
+          <li>Does your Dataset only store redacted and minimized, human-verified curated cases?</li>
+          <li>Have backend Trace Sampling rates, retention periods, and monitoring cost budgets been finalized?</li>
+          <li>If you need to replace your monitoring SaaS in the future, have you verified a smooth migration via the OTel Collector?</li>
+        </ul>
+
+        <hr>
+
+        <h2>7. Series Conclusion: Observability is Not Just Seeing, but a Governance Loop</h2>
+
+        <p>By reaching this point, we have completed a difficult but crucial cognitive leap:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Part</th>
+              <th>Core Question Answered</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>①</td>
+              <td>Why can't traditional APM catch an Agent's "false success" errors?</td>
+            </tr>
+            <tr>
+              <td>②</td>
+              <td>What exactly constitutes Agent Observability? (Trace / Metrics / Evaluation)</td>
+            </tr>
+            <tr>
+              <td>③</td>
+              <td>How to see through the black box and read a real trace based on OTel semantics?</td>
+            </tr>
+            <tr>
+              <td>④</td>
+              <td>Quality: How to automate "Right vs. Wrong" scoring using LLM-as-a-Judge?</td>
+            </tr>
+            <tr>
+              <td>⑤</td>
+              <td>Reliability: How to turn silent failures into SRE alerts and Runbooks?</td>
+            </tr>
+            <tr>
+              <td>⑥</td>
+              <td>Architecture: How to build an end-to-end infrastructure free from vendor lock-in?</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>In this rapidly evolving AI era, more powerful foundation models are released every day, and new Agent frameworks are born daily. But as engineers, the underlying logic by which we safeguard the business has never changed.</p>
+
+        <p>Do not try to "see" all the data; instead, build a governance mechanism:</p>
+
+        <blockquote>
+          <p><strong>Trace makes problems replayable, Metrics make trends quantifiable, Evaluation makes quality judgeable, SLOs and Alerts make risks operable, and Datasets and Regression ensure failures are never repeated.</strong></p>
+        </blockquote>
+
+        <p>True observability is never just about "seeing" a few lines on a dashboard; its ultimate purpose is to build a <strong>governance system that can continuously judge, repair, and verify your intelligent agents.</strong></p>
+
+        <p>(End of Series)</p>
+
+      </div>
+
+      <aside class="article-sources">
+        <h4>References & Verification</h4>
+        <ul>
+          <li><a href="https://www.langchain.com/langsmith-platform" rel="noopener">LangSmith Platform</a></li>
+          <li><a href="https://langfuse.com/integrations/native/opentelemetry" rel="noopener">Langfuse OpenTelemetry Integration</a></li>
+          <li><a href="https://github.com/Arize-ai/phoenix" rel="noopener">Arize Phoenix</a></li>
+          <li><a href="https://docs.datadoghq.com/llm_observability/" rel="noopener">Datadog LLM Observability</a></li>
+        </ul>
+      </aside>
+
+      <aside class="article-license">
+        <strong>Copyright & License</strong><br>
+        © 2026 <a href="https://ezaiops.com/en/">EZ AI Ops Tips</a>. First published on this site.<br>
+        Canonical link: <a class="canonical" href="https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/">https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/</a><br>
+        You are welcome to repost the full article. Please retain the author's attribution and original link, and do not alter the content. Contact us for commercial use.
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/en/posts/catching-silent-failures/">← Prev: Catching Silent Failures</a>
+      <span class="dim">This is the final part of the series.</span>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+    </div>
+  </footer>
+
+</body>
+</html>
