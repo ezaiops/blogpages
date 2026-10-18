@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>关于本站 · EZ AI Ops Tips</title>
+  <meta name="description" content="轻松自动化笔记写什么：AI Agent 可观测性、评估、成本与运维的一手实践。写给正在把 Agent 送上生产的人。">
+  <meta property="og:title" content="关于本站">
+  <meta property="og:description" content="轻松自动化笔记写什么：AI Agent 可观测性、评估、成本与运维的一手实践。写给正在把 Agent 送上生产的人。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ezaiops.com/about/">
+  <link rel="canonical" href="https://ezaiops.com/about/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/about/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/about/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/about/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "关于本站 · EZ AI Ops Tips",
+    "description": "轻松自动化笔记写什么：AI Agent 可观测性、评估、成本与运维的一手实践。写给正在把 Agent 送上生产的人。",
+    "inLanguage": "zh-CN",
+    "dateModified": "2026-10-18",
+    "isPartOf": { "@type": "WebSite", "name": "EZ AI Ops Tips", "url": "https://ezaiops.com/" }
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-en { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+      color: #b91c1c;
+    }
+    .article-body pre {
+      background: #1f2937; color: #e5e7eb; padding: 16px 20px; margin: 22px 0;
+      border-radius: 8px; overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.88rem; line-height: 1.8;
+    }
+    .article-body pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .article-body sup.footnote-ref {
+      font-size: 0.72rem; margin: 0 2px; vertical-align: super;
+    }
+    .article-body sup.footnote-ref a {
+      color: var(--accent); text-decoration: none; padding: 0 3px;
+      border: 1px solid #dbeafe; border-radius: 4px; background: #f0f7ff;
+      font-weight: 600;
+    }
+    .article-body sup.footnote-ref a:hover { background: #dbeafe; }
+
+    .article-footnotes {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .article-footnotes h4 {
+      margin: 0 0 14px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-footnotes ol { padding-left: 22px; margin: 0; }
+    .article-footnotes li { margin: 10px 0; line-height: 1.7; }
+    .article-footnotes .back {
+      color: var(--accent); margin-left: 6px;
+      font-family: ui-monospace, monospace; text-decoration: none;
+    }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body pre { font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <h1>轻松自动化笔记</h1>
+          <span class="brand-en">EZ AI Ops Tips</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/">首页</a>
+        <a href="/#featured">专题</a>
+        <a href="/about/">关于</a>
+        <a href="https://tools.ezaiops.com/?lang=zh">工具</a>
+        <div class="lang-switch">
+          <a href="/about/" class="active" aria-current="page">中文</a>
+          <a href="/en/about/" hreflang="en">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">关于</span>
+        <h1>关于本站</h1>
+        <div class="article-meta">
+          <time datetime="2026-10-18">2026 年 10 月 18 日</time>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <p>这个站只写一件事：<strong>当 AI Agent 真正跑在生产里，你怎么知道它做对了、花了多少钱、卡在哪里。</strong>不是模型评测，不是提示词技巧，是可观测性、成本与运维——那些把 demo 推上线之后才会遇到的问题。</p>
+
+        <h2>写什么</h2>
+        <ul>
+          <li><strong>可观测性</strong>：Trace、Metrics、Evaluation 三大支柱怎么落到 Agent 上，为什么传统 APM 看不见"做错了"。</li>
+          <li><strong>Trace 的语义</strong>：一条 Agent 行为树到底长什么样，OpenTelemetry GenAI 语义约定怎么读。</li>
+          <li><strong>评估</strong>：从规则打分到 LLM-as-a-Judge，怎么给"对不对"一个可复现的分数。</li>
+          <li><strong>成本</strong>：token 花在哪、什么情况下会悄悄失控、自托管和 API 的账怎么算。</li>
+          <li><strong>选型</strong>：可观测性工具的实际版图，以及端到端落地时的取舍。</li>
+        </ul>
+
+        <h2>写给谁</h2>
+        <p>写给正在把 Agent 送上生产的人：需要向老板解释这个月账单为什么涨了三倍，需要回答"它昨天为什么答错了"，需要在几个方案之间做选择并承担后果。文章假设你会读日志、看得懂代码，但不假设你已经踩过所有坑。</p>
+
+        <h2>怎么写的</h2>
+        <p>尽量一手、可复现：能贴出真实的 trace 结构就不画示意图，能给出具体公式就不写"成本会显著上升"。涉及厂商能力与价格时，以官方文档为准并标注时间——这个领域的数字变化很快，一个半年前的结论可能已经不成立。</p>
+        <p>本站不接受付费软文，也不做带赞助的排序。如果将来出现赞助内容，会单独标注。</p>
+
+        <h2>和工具站的关系</h2>
+        <p>姊妹站 <a href="https://tools.ezaiops.com/">tools.ezaiops.com</a> 提供一批免费、纯浏览器本地运行的工具：LLM 成本计算、模型价格对比、子网与 Cron 计算、JWT 调试等。很多文章里的账，是用那边的计算器算出来的。</p>
+
+        <h2>谁在维护</h2>
+        <p>由 ezaiops 维护。源码与 issue 在 <a href="https://github.com/ezaiops">GitHub</a> 上，纠错与选题建议都欢迎——最快的渠道见<a href="/contact/">联系页</a>。</p>
+
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+      <span><a href="/about/">关于</a> · <a href="/contact/">联系</a> · <a href="/privacy/">隐私</a></span>
+      <span><a href="https://tools.ezaiops.com/?lang=zh">免费工具站 →</a></span>
+    </div>
+  </footer>
+
+</body>
+</html>

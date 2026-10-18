@@ -11,6 +11,24 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://ezaiops.com/about/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/about/"/>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/contact/"/>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ezaiops.com/en/</loc>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/"/>
@@ -18,6 +36,24 @@
     <lastmod>2026-10-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/about/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/about/"/>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/contact/"/>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ezaiops.com/en/posts/catching-silent-failures/</loc>
@@ -74,6 +110,15 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ezaiops.com/en/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/privacy/"/>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ezaiops.com/posts/catching-silent-failures/</loc>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/catching-silent-failures/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/catching-silent-failures/"/>
@@ -124,6 +169,15 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/what-is-ai-agent-observability/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/what-is-ai-agent-observability/"/>
     <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/privacy/"/>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
