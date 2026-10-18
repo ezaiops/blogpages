@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://ezaiops.com/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/posts/catching-silent-failures/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/catching-silent-failures/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/catching-silent-failures/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/catching-silent-failures/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/llm-as-a-judge-scoring-agents/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/llm-as-a-judge-scoring-agents/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/posts/three-pillars-trace-metrics-evaluation/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/three-pillars-trace-metrics-evaluation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/tool-selection-and-e2e-architecture/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/tool-selection-and-e2e-architecture/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/posts/understanding-agent-traces/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/understanding-agent-traces/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/understanding-agent-traces/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/understanding-agent-traces/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/posts/what-is-ai-agent-observability/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/what-is-ai-agent-observability/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/what-is-ai-agent-observability/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/what-is-ai-agent-observability/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/posts/catching-silent-failures/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/catching-silent-failures/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/catching-silent-failures/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/catching-silent-failures/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/posts/llm-as-a-judge-scoring-agents/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/llm-as-a-judge-scoring-agents/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/llm-as-a-judge-scoring-agents/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/llm-as-a-judge-scoring-agents/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/three-pillars-trace-metrics-evaluation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/three-pillars-trace-metrics-evaluation/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/posts/tool-selection-and-e2e-architecture/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/tool-selection-and-e2e-architecture/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/tool-selection-and-e2e-architecture/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/tool-selection-and-e2e-architecture/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/posts/understanding-agent-traces/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/understanding-agent-traces/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/understanding-agent-traces/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/understanding-agent-traces/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/posts/what-is-ai-agent-observability/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/what-is-ai-agent-observability/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/what-is-ai-agent-observability/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/what-is-ai-agent-observability/"/>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
