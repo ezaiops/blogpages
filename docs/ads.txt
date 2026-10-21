@@ -1,6 +1,2 @@
 # ads.txt for ezaiops.com
-# After your Google AdSense account is approved, uncomment the line below and
-# replace pub-0000000000000000 with your own publisher ID. Until then this file
-# authorises no sellers, which is the same as having no ads.txt at all.
-
-# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+google.com, pub-8810200627517885, DIRECT, f08c47fec0942fa0
