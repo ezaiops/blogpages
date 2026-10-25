@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The AI Stack in Six Layers: A 2026 Map from the Ops Side · EZ AI Ops Tips</title>
+  <meta name="description" content="Breaking the 2026 AI stack into six layers — infrastructure, models, capabilities, engineering, applications, governance — and talking about where each one breaks first in production, and what you can actually hold onto there. Includes an interactive map.">
+  <meta property="og:title" content="The AI Stack in Six Layers: A 2026 Map from the Ops Side">
+  <meta property="og:description" content="Models change. Layers don't. What breaks every week is the seam between two of them.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ezaiops.com/en/posts/ai-stack-2026/">
+  <meta property="article:published_time" content="2026-10-26">
+  <meta property="article:section" content="AI Infrastructure">
+  <link rel="canonical" href="https://ezaiops.com/en/posts/ai-stack-2026/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/ai-stack-2026/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/ai-stack-2026/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/ai-stack-2026/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "The AI Stack in Six Layers: A 2026 Map from the Ops Side",
+    "description": "Breaking the 2026 AI stack into six layers, where each one breaks first in production, and what you can hold onto at each layer.",
+    "datePublished": "2026-10-26",
+    "dateModified": "2026-10-26",
+    "inLanguage": "en",
+    "author": { "@type": "Organization", "name": "EZ AI Ops Tips" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZ AI Ops Tips",
+      "url": "https://ezaiops.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezaiops.com/en/posts/ai-stack-2026/"
+    },
+    "keywords": "AI stack, AI infrastructure, LLMOps, agent observability, MCP, OpenTelemetry"
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #4a90e2;
+      --text: #24292f;
+      --muted: #6b7280;
+      --bg: #f6f8fa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
+    .site-header-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-link { color: inherit; }
+    .brand-link:hover { text-decoration: none; }
+    .brand h1 { margin: 0; font-size: 1.35rem; color: var(--primary); letter-spacing: -0.01em; }
+    .brand .brand-cn { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; letter-spacing: 0.02em; }
+    nav.top-nav a { margin-left: 18px; color: var(--text); font-size: 0.92rem; }
+    nav.top-nav a:first-child { margin-left: 0; }
+    .lang-switch {
+      display: inline-flex; margin-left: 22px; padding: 2px;
+      background: #f3f4f6; border-radius: 12px; gap: 2px;
+    }
+    nav.top-nav .lang-switch a {
+      margin: 0; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--muted); border-radius: 10px; line-height: 1.5;
+    }
+    nav.top-nav .lang-switch a.active { background: var(--accent); color: #fff; }
+    nav.top-nav .lang-switch a:hover:not(.active) { color: var(--primary); background: #e8eaed; text-decoration: none; }
+
+    .article-main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .series-tag {
+      display: inline-block; color: var(--accent);
+      font-size: 0.85rem; font-weight: 500;
+      background: #eef4fc; padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 18px; letter-spacing: 0.02em;
+    }
+    .article-header h1 {
+      font-size: 1.9rem; line-height: 1.4; color: var(--primary);
+      margin: 0 0 16px; letter-spacing: -0.01em;
+    }
+    .article-header h1 .h1-sub {
+      display: block; font-size: 0.64em; font-weight: 600;
+      color: #4b5563; margin-top: 10px; letter-spacing: 0;
+    }
+    .article-meta {
+      color: var(--muted); font-size: 0.88rem; margin: 0 0 32px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--border);
+    }
+    .article-meta .dot { margin: 0 8px; }
+
+    .article-body p {
+      margin: 0 0 18px; font-size: 1.02rem; line-height: 1.85; color: #1f2937;
+    }
+    .article-body h2 {
+      font-size: 1.4rem; color: var(--primary); margin: 44px 0 18px;
+      letter-spacing: -0.01em; line-height: 1.4;
+    }
+    .article-body h3 {
+      font-size: 1.12rem; color: var(--primary); margin: 32px 0 14px; line-height: 1.5;
+    }
+    .article-body strong { color: var(--primary); font-weight: 600; }
+    .article-body em { color: #4b5563; font-style: italic; }
+    .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent); background: #f8fafc;
+      padding: 14px 20px; margin: 22px 0; color: #4b5563; font-size: 0.98rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .article-body blockquote p { margin: 0 0 10px; font-size: 1rem; line-height: 1.75; }
+    .article-body blockquote p:last-child { margin-bottom: 0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 18px; }
+    .article-body li { margin: 8px 0; line-height: 1.75; font-size: 1.02rem; }
+    .article-body table {
+      width: 100%; border-collapse: collapse; margin: 24px 0;
+      font-size: 0.94rem; background: #fff;
+    }
+    .article-body th, .article-body td {
+      border: 1px solid var(--border); padding: 10px 14px;
+      text-align: left; vertical-align: top; line-height: 1.6;
+    }
+    .article-body th { background: #f6f8fa; font-weight: 600; color: var(--primary); }
+    .article-body code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 0.92em;
+    }
+    .article-body pre {
+      background: #1f2937; color: #e5e7eb; padding: 16px 20px; margin: 22px 0;
+      border-radius: 8px; overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.88rem; line-height: 1.8;
+    }
+    .article-body pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .article-body sup.footnote-ref {
+      font-size: 0.72rem; margin: 0 2px; vertical-align: super;
+    }
+    .article-body sup.footnote-ref a {
+      color: var(--accent); text-decoration: none; padding: 0 3px;
+      border: 1px solid #dbeafe; border-radius: 4px; background: #f0f7ff;
+      font-weight: 600;
+    }
+    .article-body sup.footnote-ref a:hover { background: #dbeafe; }
+
+    /* ---- landscape figure ---- */
+    .graph-figure { margin: 28px 0 30px; }
+    .graph-figure > a { display: block; }
+    .graph-figure img {
+      display: block; width: 100%; height: auto;
+      border: 1px solid var(--border); border-radius: 10px; background: #fbfcff;
+    }
+    .graph-figure figcaption {
+      margin-top: 10px; font-size: 0.86rem; line-height: 1.75;
+      color: var(--muted); text-align: center;
+    }
+    .graph-figure figcaption a { color: var(--accent); font-weight: 500; }
+
+    .article-footnotes {
+      margin-top: 44px; padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .article-footnotes h4 {
+      margin: 0 0 14px; font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--primary);
+    }
+    .article-footnotes ol { padding-left: 22px; margin: 0; }
+    .article-footnotes li { margin: 10px 0; line-height: 1.7; }
+    .article-footnotes .back {
+      color: var(--accent); margin-left: 6px;
+      font-family: ui-monospace, monospace; text-decoration: none;
+    }
+
+    .article-license {
+      margin-top: 16px; padding: 16px 22px;
+      background: #fafbfc; border: 1px dashed var(--border); border-radius: 8px;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .article-license strong { color: var(--primary); font-weight: 600; }
+    .article-license .canonical {
+      display: inline-block; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: 0.85rem; color: var(--accent);
+    }
+
+    .post-nav {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 0.92rem; flex-wrap: wrap; gap: 12px;
+    }
+    .post-nav a { color: var(--accent); font-weight: 500; }
+    .post-nav .dim { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: #fff; color: var(--muted); font-size: 0.85rem; }
+    footer .footer-inner {
+      max-width: 860px; margin: 0 auto; padding: 22px 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .site-header-inner { flex-direction: column; align-items: flex-start; }
+      nav.top-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; }
+      nav.top-nav a { margin-left: 0; }
+      .lang-switch { margin-left: 0; }
+      .article-main { padding: 28px 20px 44px; }
+      .article-header h1 { font-size: 1.5rem; }
+      .article-body table { font-size: 0.88rem; }
+      .article-body th, .article-body td { padding: 8px 10px; }
+      .article-body pre { font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <a href="/en/" class="brand-link">
+          <h1>EZ AI Ops Tips</h1>
+          <span class="brand-cn">轻松自动化笔记</span>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="/en/">Home</a>
+        <a href="/en/#featured">Focus</a>
+        <a href="/en/#about">About</a>
+        <a href="https://tools.ezaiops.com/?lang=en">Tools</a>
+        <div class="lang-switch">
+          <a href="/posts/ai-stack-2026/" hreflang="zh-CN">中文</a>
+          <a href="/en/posts/ai-stack-2026/" class="active" aria-current="page">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <article>
+      <header class="article-header">
+        <span class="series-tag">AI Infrastructure &amp; Ops · 2026</span>
+        <h1>The AI Stack in Six Layers<span class="h1-sub">A 2026 map from the ops side</span></h1>
+        <div class="article-meta">
+          <time datetime="2026-10-26">October 26, 2026</time>
+          <span class="dot">·</span>
+          <span>~13 min read</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <blockquote>
+          <p>Models change. Layers don't. What breaks every week is the seam between two of them.</p>
+        </blockquote>
+
+        <blockquote>
+          <p>This isn't a "what happened in AI this year" roundup. It's simpler than that: I want to split the AI stack into six layers, talk about where each one breaks first in production, and what we can actually hold onto at each layer. The structural judgments don't depend on any market data; every standard and regulation cited was checked against the source, with links at the bottom.</p>
+        </blockquote>
+
+        <hr>
+
+        <h2>1. Why bother drawing another map</h2>
+
+        <p>Back in 2023, talking about AI mostly meant talking about models: whose parameter count was bigger, who topped the leaderboard, whose context window was longer. By 2026 that framing has started to wear thin.</p>
+
+        <p>Value has moved to both ends — toward compute and inference cost on one side, toward getting agents into production on the other. The model layer in the middle still matters, but it increasingly behaves like a replaceable dependency: a database, a message queue, a CDN.</p>
+
+        <p>And every replaceable dependency ends up on an ops workbench in exactly the same way — versions, capacity, quotas, canaries, rollbacks. For a lot of teams this year, the most important architecture decision wasn't "which model," it was "how do we keep the ability to switch."</p>
+
+        <p>So this map isn't about being exhaustive. Exhaustive is impossible; it's stale in six months.</p>
+
+        <blockquote>
+          <p>What it's actually good for is marking the <strong>seams</strong> — the interfaces between layers, which is where incidents actually happen.</p>
+        </blockquote>
+
+        <figure class="graph-figure">
+          <a href="../../graph/ai-2026/">
+            <img src="img/ai-stack-2026.svg" width="1206" height="1181"
+                 alt="The 2026 AI technology landscape: six layers — infrastructure, models, capabilities, engineering, applications, frontier and governance — across 93 nodes">
+          </a>
+          <figcaption>
+            The 2026 AI stack, six layers and 93 nodes. <a href="../../graph/ai-2026/">Open the interactive version</a> to filter by layer and read notes on any node.
+          </figcaption>
+        </figure>
+
+        <h2>2. Six layers, one table</h2>
+
+        <p>Let's put the skeleton up first. Reading left to right, the table says three things: what the layer owns, how it most typically fails, and what you can hold onto there.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width:16%">Layer</th>
+              <th style="width:30%">What it owns</th>
+              <th style="width:28%">How it typically fails</th>
+              <th style="width:26%">What you can hold onto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Infrastructure</strong></td>
+              <td>Chips, clusters, power, network, inference optimization</td>
+              <td>Utilization never gets where it should; at scale, hardware failure is the steady state</td>
+              <td>Capacity and quotas, utilization, self-healing, checkpoints</td>
+            </tr>
+            <tr>
+              <td><strong>Models</strong></td>
+              <td>Weights, versions, inference serving, routing</td>
+              <td>Silent version drift — production isn't what you evaluated</td>
+              <td>Version pinning, canaries, routing and rollback</td>
+            </tr>
+            <tr>
+              <td><strong>Capabilities</strong></td>
+              <td>Reasoning and planning, tool calls, context, code sandboxes</td>
+              <td>The capability "exists" in the docs but won't survive production</td>
+              <td>Timeouts, budgets, degradation paths, capability probes</td>
+            </tr>
+            <tr>
+              <td><strong>Engineering</strong></td>
+              <td>Orchestration, memory, retrieval, evaluation, observability</td>
+              <td>It works, but nobody can say why — or why it stopped</td>
+              <td>Trace replay, eval sets, cost attribution</td>
+            </tr>
+            <tr>
+              <td><strong>Applications</strong></td>
+              <td>User-facing flows and interfaces</td>
+              <td>Over-broad permissions, wrong clicks, blast radius</td>
+              <td>Sandboxes, least privilege, human approval</td>
+            </tr>
+            <tr>
+              <td><strong>Standards &amp; governance</strong></td>
+              <td>Protocols, compliance, security</td>
+              <td>Three months after launch, you find out you're non-compliant</td>
+              <td>Audit trails, content labeling, red teaming</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>If I had to keep one line from this, it'd be this one:</p>
+
+        <blockquote>
+          <p><strong>Lower layers set the ceiling, upper layers shape the experience, seams cause the incidents.</strong></p>
+        </blockquote>
+
+        <p>A bit of a slogan, but it works. Read it out loud during an architecture review and it'll surface a few questions you'd otherwise skip.</p>
+
+        <h2>3. Three structural shifts in 2026</h2>
+
+        <p>This section is about structure only, no figures. Figures go stale; structure doesn't.</p>
+
+        <h3>1. Training is a one-time bill, inference is a daily one</h3>
+
+        <p>Training spend happens once. Inference spend keeps going. Once volume picks up, what you're optimizing changes:</p>
+
+        <ul>
+          <li>From "how do we train the thing" to "how do we make each call a little cheaper";</li>
+          <li>Quantization, KV cache reuse, prefill/decode disaggregation (PD separation) — these used to be cost tricks, now they're architecture decisions;</li>
+          <li>Cost moves from a finance line item to an ops metric — latency, throughput, and dollars per thousand tokens, ideally on the same dashboard.</li>
+        </ul>
+
+        <p>For ops people this is pretty direct: <strong>what you watch expands from "is the service up" to "was this call worth it."</strong> Follow that thread and you end up in cost attribution, and a bit further down, in the "no errors, but expensive" cases we wrote about in <a href="/en/posts/catching-silent-failures/">Catching Silent Failures</a>.</p>
+
+        <h3>2. The standard is still moving, so anything you hardcode today is debt</h3>
+
+        <p>The biggest engineering risk in AI observability these past two years isn't the absence of a standard. It's that the standard is moving.</p>
+
+        <p>OpenTelemetry's GenAI semantic conventions were split out of the main repo into their own repository in May 2026<sup class="footnote-ref"><a href="#fn-otel-genai" id="fnref-otel-genai-1">[1]</a></sup>, and as of October they're still changing fast — even the schema URL is still marked as undecided. Which means:</p>
+
+        <blockquote>
+          <p><strong>A field name you hardcode today is tomorrow's legacy debt.</strong></p>
+        </blockquote>
+
+        <p>So our rule is: <strong>semantics follow the standard, implementations stay swappable.</strong></p>
+
+        <p>Build the trace semantic model — what one inference, one tool call, one agent invocation should look like — on top of the OpenTelemetry conventions, and treat every vendor SDK and every platform as a replaceable adapter. Do it the other way round, let one platform's private fields become the single source of truth, and the day you switch platforms you rewrite all your instrumentation.</p>
+
+        <p>It's the same line we keep repeating in <a href="/en/posts/understanding-agent-traces/">Understanding an Agent Trace</a>: agree on semantics first, pick tools second.</p>
+
+        <h3>3. MCP moved "what an agent can do" into the protocol</h3>
+
+        <p>MCP's role in 2026 is no longer just "wire tools up to a model."</p>
+
+        <p>The 2026-07-28 spec still has the core resources / prompts / tools, but it also ships several extensions<sup class="footnote-ref"><a href="#fn-mcp-spec" id="fnref-mcp-spec-1">[2]</a></sup>:</p>
+
+        <ul>
+          <li><strong>Tasks</strong> — asynchronous long-running work, with polling, mid-flight input, and durable handles;</li>
+          <li><strong>Skills over MCP</strong> — structured operating instructions distributed over the protocol instead of stuffed into a system prompt;</li>
+          <li><strong>MCP Apps</strong> — interactive UI rendered inline in the conversation.</li>
+        </ul>
+
+        <p>Together, that moves "what the agent is allowed to do" out of the prompt and into the protocol. And once it's in the protocol, the ops surface changes:</p>
+
+        <blockquote>
+          <p><strong>The MCP gateway becomes the new API gateway.</strong> Auth, rate limits, quotas, and audit belong there — not written five times across five agents.</p>
+        </blockquote>
+
+        <p>That's good news: agent access governance finally has a place where it can be standardized and operated centrally. It's also annoying news: you've gained another middleware you have to run yourself.</p>
+
+        <hr>
+
+        <h2>4. Layer by layer: what breaks first</h2>
+
+        <p>Six short sections. Each answers one question: in production, what breaks first in this layer.</p>
+
+        <h3>1. Infrastructure: the expensive part isn't the chips, it's the power and the fabric</h3>
+
+        <p>Once you're at the tens-of-thousands-of-accelerators scale, the binding constraints change. Chip supply is one of them, but the harder ones are usually power, cooling, interconnect bandwidth, and effective utilization.</p>
+
+        <p>Two engineering consequences:</p>
+
+        <ul>
+          <li><strong>Hardware failure becomes normal.</strong> At scale, "something is broken" is the steady state. Checkpointing, elastic training, and self-healing aren't nice-to-haves, they're the entry ticket.</li>
+          <li><strong>Utilization becomes the headline metric.</strong> An idle card and a dead card are the same thing on the balance sheet. Liquid cooling, network topology, and scheduling policy all collapse into that one number.</li>
+        </ul>
+
+        <p>Most teams won't build this layer themselves, but you still have to be able to do the math: where rental prices are heading, how to split reserved versus on-demand, which pool a training job should land in.</p>
+
+        <h3>2. Models: the least reliable piece of information is the model name</h3>
+
+        <p>I'm deliberately not naming any specific models in this post.</p>
+
+        <p>The reason is practical: model names have a very short shelf life. A model can go from launch to being superseded in a few months, and an article with hardcoded model names becomes evidence that "this person doesn't really know" half a year later. Worse, get one name wrong and readers stop trusting the whole piece.</p>
+
+        <p>What you actually need for ops is a <strong>capability tier</strong>, not a model name:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Used for</th>
+              <th>Key constraint</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Heavy reasoning</td>
+              <td>Complex planning, multi-step tasks, code refactoring</td>
+              <td>High unit cost, long latency — always cap the budget</td>
+            </tr>
+            <tr>
+              <td>Fast response</td>
+              <td>Classification, extraction, routing, the main conversation loop</td>
+              <td>Stability first; some capability loss is acceptable</td>
+            </tr>
+            <tr>
+              <td>Low cost</td>
+              <td>Batch jobs, offline summarization, data cleanup</td>
+              <td>Throughput first; queueing is fine</td>
+            </tr>
+            <tr>
+              <td>Self-hosted</td>
+              <td>Anything where data can't leave the boundary</td>
+              <td>Trading capability for compliance; accept the gap</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Route by tier and the model becomes swappable at any time. Then do three things: <strong>pin versions, canary, roll back.</strong></p>
+
+        <p>Model upgrades should go through the same pipeline as code releases — review, canary percentage, one-click rollback. Not "an engineer edits an environment variable," followed by discovering the next morning that the tone of every answer changed and nobody knows which change did it.</p>
+
+        <h3>3. Capabilities: capability isn't the same as usable</h3>
+
+        <p>"Supports tool calling" and "reliably calls tools inside your product" are two different things. The first is a checkbox in the docs; the second has to be built:</p>
+
+        <ul>
+          <li><strong>Timeouts and retries</strong> — tools are slow, they fail, they return garbage. An agent without timeouts is a process that hangs forever;</li>
+          <li><strong>Idempotency</strong> — retries assume the callee can take duplicates. Especially for writes;</li>
+          <li><strong>Budget gates</strong> — a token and cost ceiling per run. Without one, a single loop can burn the quarter's budget;</li>
+          <li><strong>Degradation paths</strong> — what happens when the strong model is unavailable, and what happens when the tool is.</li>
+        </ul>
+
+        <p>Long context works the same way: fitting it in doesn't mean getting value out of it. At million-token scale, the price and latency curves usually make "just stuff it all in" the most expensive option available. Compress when you should, retrieve when you should — that's the "write, select, compress, isolate" pattern from <a href="/en/posts/what-is-ai-agent-observability/">the first post</a> in the observability series.</p>
+
+        <h3>4. Engineering: can you replay that run or not</h3>
+
+        <p>This layer is the blog's main thread, so I won't expand it here. One test is enough:</p>
+
+        <blockquote>
+          <p><strong>When something goes wrong, can you play that run back exactly as it happened?</strong></p>
+        </blockquote>
+
+        <p>If yes, you have at minimum: a complete trace, inputs and outputs per step, tool arguments and returns, token counts and latency, and the model version. If no, you have a pile of logs and one sentence — "the user says it's wrong."</p>
+
+        <p>While we're here: evaluation. A lot of people treat evals as a pre-launch gate. The bigger value is in production — running LLM-as-a-Judge against real traffic gives you a time series for quality, instead of only having one for error rate. <a href="/en/posts/llm-as-a-judge-scoring-agents/">That post</a> goes deeper.</p>
+
+        <h3>5. Applications: coding agents got there first because the output is checkable</h3>
+
+        <p>Why was programming the first domain to scale?</p>
+
+        <p>Not because models are best at writing code, but because <strong>code compiles, code runs tests, code gets reviewed</strong>. The feedback loop is the shortest one available, verification is cheap, and mistakes surface immediately.</p>
+
+        <p>For every other industry that's a fairly blunt hint: <strong>if you want agents to land, first make "right" and "wrong" decidable.</strong> If even humans can't agree on what correct means, no one will let an agent do the work.</p>
+
+        <p>What you can hold onto in this layer is concrete: a code sandbox (mandatory, not optional), least privilege (if read is enough, don't grant write), and human approval before changes land.</p>
+
+        <h3>6. Standards &amp; governance: compliance lands in the data pipeline, not in legal</h3>
+
+        <p>Two dates first:</p>
+
+        <ul>
+          <li><strong>EU AI Act</strong> — the bulk of the Act became applicable on 2026-08-02, which has already passed; 2026-12-02 is the compliance date tied to labeling synthetic content (Article 50(2))<sup class="footnote-ref"><a href="#fn-eu-ai-act" id="fnref-eu-ai-act-1">[3]</a></sup>.</li>
+          <li><strong>China</strong> — the Measures for Labeling AI-Generated Synthetic Content took effect on 2025-09-01, requiring both explicit and implicit labels, with a matching mandatory national standard<sup class="footnote-ref"><a href="#fn-cn-label" id="fnref-cn-label-1">[4]</a></sup>.</li>
+        </ul>
+
+        <p>Both look like legal's problem. They aren't. They both land on a very engineering question:</p>
+
+        <blockquote>
+          <p><strong>Do you have the record?</strong></p>
+        </blockquote>
+
+        <p>Concretely, that means these fields have to be in the trace: who triggered it, when, which model and which version, which tools ran, whether the content was generated, and whether a human edited it. If those fields aren't in the collection path, you can't reconstruct them later — you will not be able to rebuild a specific call three months after the fact.</p>
+
+        <p>Security is the same shape. Prompt injection has long topped the LLM application risk list<sup class="footnote-ref"><a href="#fn-owasp" id="fnref-owasp-1">[5]</a></sup>, and it's fundamentally "untrusted input entering a trusted context." The engineering answer isn't keyword filtering — it's <strong>least privilege plus a human in the loop</strong>, so that an injected agent still can't do anything dangerous.</p>
+
+        <hr>
+
+        <h2>5. Three things you can use tomorrow</h2>
+
+        <p>None of these are new. We wrote them down because we learned them the hard way.</p>
+
+        <h3>1. Add a seam checklist to architecture reviews</h3>
+
+        <p>There are five key seams between the six layers. At each one, ask three questions: who defined the interface? who gets told when it changes? who catches it when it breaks?</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Seam</th>
+              <th>Typical interface</th>
+              <th>What usually goes wrong on change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Infra ↔ models</td>
+              <td>Inference serving API</td>
+              <td>Concurrency spikes, VRAM saturates, queues collapse</td>
+            </tr>
+            <tr>
+              <td>Models ↔ capabilities</td>
+              <td>Context window, tool schema</td>
+              <td>Tool call format changes with the model; silent failure</td>
+            </tr>
+            <tr>
+              <td>Capabilities ↔ engineering</td>
+              <td>Trace semantics</td>
+              <td>Switching SDKs drops fields; historical data no longer joins</td>
+            </tr>
+            <tr>
+              <td>Engineering ↔ applications</td>
+              <td>State and checkpoints</td>
+              <td>Long task interrupted, unrecoverable, has to restart from zero</td>
+            </tr>
+            <tr>
+              <td>Applications ↔ governance</td>
+              <td>Audit logs</td>
+              <td>Can't prove what happened, or who changed it</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>You don't have to fill the whole table. Fill what you can; whatever's left blank is a risk. Far more useful than a meeting about "our AI strategy."</p>
+
+        <h3>2. Observability before features</h3>
+
+        <p>Not "ship first, instrument later," but: <strong>if a feature can't be replayed, it isn't finished.</strong></p>
+
+        <p>This is harder in agents than in microservices. Microservice failures are usually loud — error rates climb, latency spikes, alerts fire. Agent failures are often quiet: the answer reads smoothly but is wrong; the task "completed" but the result is off. <a href="/en/posts/three-pillars-trace-metrics-evaluation/">The three pillars post</a> is about turning that quiet into something visible.</p>
+
+        <h3>3. Treat the model as a replaceable dependency</h3>
+
+        <p>Three pieces, all required:</p>
+
+        <ol>
+          <li><strong>A routing layer</strong> — call by capability tier; business code never names a model;</li>
+          <li><strong>An eval set</strong> — run it before switching models, and let the data decide instead of your gut;</li>
+          <li><strong>A rollback switch</strong> — one config flips back to the previous version, effective in minutes.</li>
+        </ol>
+
+        <p>With those three in place, "switching models" goes from a project with a kickoff meeting to a routine change.</p>
+
+        <hr>
+
+        <h2>6. Closing: watch the seams</h2>
+
+        <blockquote>
+          <p><strong>Models change. Layers don't.</strong></p>
+        </blockquote>
+
+        <p>By 2026 the six-layer skeleton is settled. What's still moving is how each layer is implemented internally, and where the interfaces between them sit.</p>
+
+        <p>For ops people that's actually good news: you don't have to chase every new model. Watching the seams is enough — is the interface defined, does a change get announced, does a break get caught.</p>
+
+        <p>A few honest notes on the limits of this piece. The six-layer structure and "what breaks first in each layer" are engineering judgments, not market data. Every standard and regulation cited was checked against the source, with links below. I deliberately left out model names, version numbers, and prices — they go stale, and getting them wrong is expensive. The nodes in the map will keep changing; the structure of this article won't, and if the two ever disagree, trust the article.</p>
+
+        <p>Anyway, I don't claim this map is fully right, and in six months a good chunk of it will probably need revising. If you spot a layer that's already off, tell me and we'll fix it together.</p>
+
+      </div>
+
+      <section class="article-footnotes" id="references">
+        <h4>Sources &amp; verification</h4>
+        <ol>
+          <li id="fn-otel-genai">
+            <a href="https://github.com/open-telemetry/semantic-conventions-genai" rel="noopener">OpenTelemetry — semantic-conventions-genai</a>: the GenAI semantic conventions were split into a standalone repository in May 2026, covering spans, metrics, and events, including MCP and vendor-specific conventions. As of October 2026 they are still changing frequently and the schema URL is not finalized.
+            <a href="#fnref-otel-genai-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-mcp-spec">
+            <a href="https://modelcontextprotocol.io/specification/2026-07-28" rel="noopener">Model Context Protocol — Specification (2026-07-28)</a>: core features are resources / prompts / tools, with elicitation on the client side; extensions include Tasks (async long-running execution, polling, mid-flight input, durable handles), Skills over MCP, and MCP Apps.
+            <a href="#fnref-mcp-spec-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-eu-ai-act">
+            <a href="https://artificialintelligenceact.eu/implementation-timeline/" rel="noopener">EU Artificial Intelligence Act — Implementation Timeline</a>: the Act entered into force on 2024-08-01, GPAI obligations applied from 2025-08-02, and the bulk of the Act applied from 2026-08-02; 2026-12-02 is the compliance date associated with labeling synthetic content (Article 50(2)).
+            <a href="#fnref-eu-ai-act-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-cn-label">
+            <a href="https://www.gov.cn/zhengce/zhengceku/202503/content_7014286.htm" rel="noopener">Gov.cn — Measures for Labeling AI-Generated Synthetic Content</a>: issued 2025-03-07, effective 2025-09-01; labels come in explicit and implicit forms, with a matching mandatory national standard (Security Technology — Labeling Method for AI-Generated Synthetic Content) implemented at the same time.
+            <a href="#fnref-cn-label-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+          <li id="fn-owasp">
+            <a href="https://genai.owasp.org/llm-top-10/" rel="noopener">OWASP — Top 10 for LLM Applications</a>: prompt injection has consistently ranked first among LLM application risks; the root cause is untrusted input sharing a context with trusted instructions.
+            <a href="#fnref-owasp-1" class="back" aria-label="Back to text">↩</a>
+          </li>
+        </ol>
+      </section>
+
+      <aside class="article-license">
+        <strong>License</strong><br>
+        © 2026 <a href="https://ezaiops.com/en/">EZ AI Ops Tips</a>. First published here.<br>
+        Canonical link: <a class="canonical" href="https://ezaiops.com/en/posts/ai-stack-2026/">https://ezaiops.com/en/posts/ai-stack-2026/</a><br>
+        Republishing in full is welcome — keep the attribution and the canonical link, and don't alter the content. For commercial use, get in touch first.
+      </aside>
+
+    </article>
+
+    <nav class="post-nav">
+      <a href="/en/posts/tool-selection-and-e2e-architecture/">← Tool Selection and E2E Architecture</a>
+    </nav>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span>DevSecOps · AIOps · LLMOps · IT Automation</span>
+      <span><a href="/en/about/">About</a> · <a href="/en/contact/">Contact</a> · <a href="/en/privacy/">Privacy</a></span>
+      <span><a href="https://tools.ezaiops.com/?lang=en">Free tools →</a></span>
+    </div>
+  </footer>
+
+</body>
+</html>

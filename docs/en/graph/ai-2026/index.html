@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Technology Landscape 2026 · Interactive map · EZ AI Ops Tips</title>
+<meta name="description" content="An interactive map of the 2026 AI stack: six layers, 93 nodes, from infrastructure and models to capabilities, engineering, applications, and governance. Filter by layer, search, and click any node to read its notes. Rendered entirely in the browser.">
+<link rel="canonical" href="https://ezaiops.com/en/graph/ai-2026/">
+<link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/graph/ai-2026/">
+<link rel="alternate" hreflang="en" href="https://ezaiops.com/en/graph/ai-2026/">
+<link rel="alternate" hreflang="x-default" href="https://ezaiops.com/graph/ai-2026/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Technology Landscape 2026 · Interactive map">
+<meta property="og:description" content="Six layers, 93 nodes. Filter by layer and search. The companion map to “The AI Stack in Six Layers”.">
+<meta property="og:url" content="https://ezaiops.com/en/graph/ai-2026/">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI Technology Landscape 2026",
+  "url": "https://ezaiops.com/en/graph/ai-2026/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "description": "An interactive six-layer map of the 2026 AI stack, 93 nodes.",
+  "publisher": { "@type": "Organization", "name": "EZ AI Ops Tips", "url": "https://ezaiops.com/" }
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f6fb; --card:#fff; --line:#e5eaf3; --text:#0f172a; --muted:#6b7a90;
+  --brand:#4f46e5; --soft:#f8fafc;
+}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--text); overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+.app{display:flex;flex-direction:column;height:100vh}
+
+/* ---------- top bar ---------- */
+.topbar{
+  height:64px;flex:0 0 64px;display:flex;align-items:center;gap:20px;
+  padding:0 20px;background:var(--card);border-bottom:1px solid var(--line);z-index:20;
+}
+.brand{display:flex;align-items:center;gap:11px;flex:0 0 auto}
+.logo{
+  width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;font-size:13px;font-weight:800;letter-spacing:.5px;
+  box-shadow:0 3px 10px rgba(79,70,229,.28);
+}
+.brand h1{font-size:14.5px;font-weight:700;letter-spacing:.2px;line-height:1.25}
+.brand p{font-size:11px;color:var(--muted);margin-top:1px}
+
+.tabs{display:flex;gap:4px;background:#f1f4fa;padding:4px;border-radius:10px;flex:0 0 auto}
+.tabs button{
+  border:0;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);
+  padding:7px 15px;border-radius:7px;cursor:pointer;transition:.16s;white-space:nowrap;
+}
+.tabs button:hover{color:var(--text)}
+.tabs button.on{background:#fff;color:var(--brand);box-shadow:0 1px 3px rgba(15,23,42,.1)}
+
+.spacer{flex:1}
+.search{position:relative;flex:0 0 auto}
+.search input{
+  width:210px;height:34px;border:1px solid var(--line);border-radius:9px;padding:0 12px 0 32px;
+  font:inherit;font-size:12.5px;background:var(--soft);outline:none;transition:.16s;color:var(--text);
+}
+.search input:focus{border-color:#c7d2fe;background:#fff;box-shadow:0 0 0 3px rgba(79,70,229,.09);width:240px}
+.search svg{position:absolute;left:10px;top:9px;width:15px;height:15px;stroke:#94a3b8;fill:none;stroke-width:2}
+.btn{
+  height:34px;padding:0 13px;border:1px solid var(--line);background:#fff;border-radius:9px;
+  font:inherit;font-size:12.5px;font-weight:600;color:#475569;cursor:pointer;transition:.16s;white-space:nowrap;
+}
+.btn:hover{border-color:#c7d2fe;color:var(--brand);background:#fafaff}
+
+/* back link to article */
+.backlink{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:600;color:#64748b;text-decoration:none;
+  padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;
+  transition:.16s;
+}
+.backlink:hover{color:var(--brand);border-color:#c7d2fe;background:#fafaff}
+
+/* mobile legend strip + hint */
+.mlegend{display:none}
+.mhint{display:none}
+
+/* mobile detail sheet */
+.sheet-bar{display:none}
+.sheet-grip{width:38px;height:4px;border-radius:2px;background:#d5dce8;margin:0 auto 2px}
+.sheet-close{
+  border:0;background:#f1f4fa;color:#64748b;font:inherit;font-size:11.5px;font-weight:600;
+  padding:5px 12px;border-radius:7px;cursor:pointer;
+}
+.sheet-close:hover{background:#e6ecf7;color:var(--brand)}
+
+/* ---------- layout ---------- */
+main{flex:1;display:flex;min-height:0}
+.panel{
+  background:var(--card);overflow-y:auto;flex:0 0 auto;padding:16px 14px;
+}
+.panel::-webkit-scrollbar{width:6px}
+.panel::-webkit-scrollbar-thumb{background:#dbe2ee;border-radius:3px}
+.panel.left{width:216px;border-right:1px solid var(--line)}
+.panel.right{width:308px;border-left:1px solid var(--line)}
+.sec{margin-bottom:20px}
+.sec-title{
+  font-size:10.5px;font-weight:700;color:#94a3b8;letter-spacing:1.1px;text-transform:uppercase;
+  margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;
+}
+.sec-title span{font-weight:600;letter-spacing:0;text-transform:none;font-size:10px;color:#b6c2d4}
+
+/* legend */
+.leg{display:flex;align-items:center;gap:8px;padding:6px 7px;border-radius:7px;cursor:pointer;transition:.14s;margin-bottom:1px}
+.leg:hover{background:var(--soft)}
+.leg.off{opacity:.35}
+.leg .dot{width:9px;height:9px;border-radius:3px;flex:0 0 auto}
+.leg .nm{font-size:12px;font-weight:500;flex:1}
+.leg .ct{font-size:10.5px;color:#b6c2d4;font-variant-numeric:tabular-nums}
+
+/* stats */
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px dashed #eef2f8}
+.stat:last-child{border:0}
+.stat .k{font-size:11.5px;color:var(--muted)}
+.stat .v{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+
+.hint{
+  font-size:10.5px;color:#94a3b8;line-height:1.85;background:var(--soft);
+  border:1px solid #eef2f8;border-radius:8px;padding:9px 10px;
+}
+.hint b{color:#64748b;font-weight:600}
+
+/* stage */
+#stage{flex:1;position:relative;overflow:hidden;min-width:0;
+  background:
+    radial-gradient(circle at 1px 1px,#dde4f0 1px,transparent 0) 0 0/22px 22px,
+    linear-gradient(180deg,#fbfcff,#f7f9fd);
+}
+#graph{width:100%;height:100%;display:block;touch-action:none}
+.toolbar{position:absolute;right:14px;bottom:14px;display:flex;gap:6px;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(8px);padding:5px;border-radius:10px;
+  border:1px solid var(--line);box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.toolbar button{
+  border:0;background:transparent;font:inherit;font-size:11.5px;font-weight:600;color:#64748b;
+  padding:6px 11px;border-radius:6px;cursor:pointer;transition:.14s;
+}
+.toolbar button:hover{background:#eef2ff;color:var(--brand)}
+.zoombadge{
+  position:absolute;left:14px;bottom:14px;font-size:11px;color:#94a3b8;font-variant-numeric:tabular-nums;
+  background:rgba(255,255,255,.85);padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+}
+
+/* node / link */
+.link{stroke:#cfd8e8;stroke-width:1.1;fill:none;transition:opacity .18s}
+.link.hi{stroke:#a5b4fc;stroke-width:2}
+.node{cursor:grab}
+.node:active{cursor:grabbing}
+.node circle{transition:opacity .18s,stroke-width .18s}
+.node text{
+  font-size:11px;font-weight:500;fill:#334155;text-anchor:middle;
+  paint-order:stroke;stroke:#fbfcff;stroke-width:3.2px;stroke-linejoin:round;
+  pointer-events:none;user-select:none;transition:opacity .18s;
+}
+.node.d1 text{font-size:12.5px;font-weight:700;fill:#1e293b}
+.node.d0 text{font-size:15px;font-weight:800;fill:#0f172a;letter-spacing:.3px}
+.node.dim circle,.node.dim text{opacity:.13}
+.node.hit circle{stroke:#4f46e5;stroke-width:3}
+.node.sel circle{stroke:#4f46e5;stroke-width:3.5}
+.ring{fill:none;stroke:#4f46e5;stroke-width:1.5;opacity:.55}
+
+/* detail */
+.d-empty h3{font-size:13.5px;font-weight:700;margin-bottom:8px}
+.d-empty p{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px}
+.d-title{font-size:16px;font-weight:750;line-height:1.4;margin-bottom:8px;letter-spacing:.2px}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;
+  padding:3px 9px;border-radius:20px;margin-bottom:12px;
+}
+.badge i{width:6px;height:6px;border-radius:50%;display:block}
+.d-desc{font-size:12.5px;line-height:1.9;color:#3f4d63;margin-bottom:14px}
+.d-meta{font-size:12px;line-height:1.85;color:#475569;background:var(--soft);border:1px solid #eef2f8;
+  border-radius:9px;padding:10px 12px;margin-bottom:14px}
+.d-meta b{color:#0f172a;font-weight:700}
+.kw{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.kw span{font-size:10.5px;background:#eef2ff;color:#4f46e5;padding:3px 8px;border-radius:5px;font-weight:600}
+.rel-title{font-size:10.5px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.rel{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:7px;cursor:pointer;transition:.14s;font-size:12px}
+.rel:hover{background:#f1f5ff;color:var(--brand)}
+.rel i{width:6px;height:6px;border-radius:50%;flex:0 0 auto}
+.rel .dirmark{color:#cbd5e1;font-size:10px;margin-left:auto}
+
+/* ---------- responsive ---------- */
+body.clean .topbar,body.clean .panel,body.clean .toolbar,body.clean .zoombadge{display:none}
+body.clean #stage{background:#ffffff}
+@media (max-width: 1240px){
+  .panel.left{width:186px;padding:14px 11px}
+  .panel.right{width:270px}
+  .search input{width:158px}
+  .search input:focus{width:178px}
+}
+@media (max-width: 1080px){
+  .panel.left{display:none}
+  .brand p{display:none}
+}
+@media (max-width: 880px){
+  .topbar{height:auto;flex:0 0 auto;flex-wrap:wrap;padding:9px 12px;gap:9px}
+  .backlink{padding:5px 9px;font-size:11.5px}
+  .brand{flex:1 1 auto;min-width:0}
+  .brand h1{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brand p{display:none}
+  .btn{padding:0 9px;font-size:11.5px}
+  .tabs{order:3;width:100%;overflow-x:auto;padding:3px;border-radius:9px}
+  .tabs button{flex:1 0 auto;padding:6px 12px;font-size:11.5px}
+  .search{order:4;width:100%}
+  .search input,.search input:focus{width:100%}
+  .spacer{display:none}
+
+  /* detail panel becomes a bottom sheet */
+  .panel.right{
+    display:block;position:fixed;left:0;right:0;bottom:0;width:100%;
+    max-height:64vh;border-left:0;border-top:1px solid var(--line);
+    border-radius:16px 16px 0 0;padding:8px 16px 24px;
+    box-shadow:0 -10px 34px rgba(15,23,42,.18);z-index:40;
+    transform:translateY(104%);transition:transform .24s cubic-bezier(.4,0,.2,1);
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  }
+  body.sheet .panel.right{transform:translateY(0)}
+  .sheet-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;
+    position:sticky;top:0;background:#fff;padding:8px 0 6px;margin-bottom:4px;z-index:2}
+  .sheet-grip{position:absolute;left:50%;transform:translateX(-50%);top:4px}
+  .zoombadge{bottom:auto;top:12px;left:12px}
+  .toolbar{bottom:auto;top:12px;right:12px}
+
+  .mlegend{
+    display:flex;gap:6px;position:absolute;left:10px;right:10px;top:60px;z-index:30;
+    overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none;
+  }
+  .mlegend::-webkit-scrollbar{display:none}
+  .mlegend .leg{
+    flex:0 0 auto;margin:0;padding:5px 11px;border-radius:20px;
+    background:rgba(255,255,255,.94);border:1px solid var(--line);
+    box-shadow:0 1px 4px rgba(15,23,42,.06);
+  }
+  .mlegend .leg .ct{display:none}
+  .mlegend .leg .nm{font-size:11.5px}
+  .mlegend .leg.off{opacity:.4}
+
+  .mhint{
+    display:block;position:absolute;left:50%;transform:translateX(-50%);bottom:18px;z-index:30;
+    background:rgba(15,23,42,.76);color:#fff;font-size:11.5px;font-weight:500;
+    padding:7px 15px;border-radius:20px;white-space:nowrap;pointer-events:none;
+    transition:opacity .25s;
+  }
+  body.sheet .mhint{opacity:0}
+}
+</style>
+</head>
+<body>
+<noscript>
+  <div style="padding:16px 20px;background:#fffbe8;border-bottom:1px solid #f0e3b8;font-size:13px;line-height:1.8">
+    <b>This page needs JavaScript</b> to render the interactive map. For the text version, read the companion post:
+    <a href="../../posts/ai-stack-2026/">"The AI Stack in Six Layers"</a>.
+  </div>
+</noscript>
+<div class="app">
+  <header class="topbar">
+    <a class="backlink" href="../../posts/ai-stack-2026/" title="Back to the post: The AI Stack in Six Layers">← Post</a>
+    <div class="brand">
+      <div class="logo">AI</div>
+      <div>
+        <h1>AI Knowledge Graph · 2026</h1>
+        <p>Landscape / Agents / Enterprise · interactive</p>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+    <div class="spacer"></div>
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" placeholder="Search nodes, e.g. MCP, memory…" autocomplete="off">
+    </div>
+    <button class="btn" id="btnPng">Export PNG</button>
+  </header>
+
+  <main>
+    <aside class="panel left">
+      <div class="sec">
+        <div class="sec-title">Layers <span id="legTip">click to hide</span></div>
+        <div id="legend"></div>
+      </div>
+      <div class="sec">
+        <div class="sec-title">Scale</div>
+        <div id="stats"></div>
+      </div>
+      <div class="hint">
+        <b>Drag</b> a node to pin it<br>
+        <b>Scroll</b> to zoom, drag empty space to pan<br>
+        <b>Double-click</b> a node to focus it<br>
+        <b>1 / 2 / 3</b> to switch maps
+      </div>
+      <div class="hint" style="margin-top:10px">
+        <b>How to read this</b><br>
+        The layering is an engineering judgment, not market data; every standard and regulation cited was checked against the source. Nodes keep changing — when in doubt, the structure in the <a href="../../posts/ai-stack-2026/" style="color:var(--brand)">companion post</a> wins.
+      </div>
+      <div class="hint" style="margin-top:10px">
+        <b>About</b><br>
+        <a href="../../posts/ai-stack-2026/" style="color:var(--brand)">Read the companion post</a><br>
+        <a href="https://ezaiops.com/en/" style="color:var(--brand)">EZ AI Ops Tips</a>
+      </div>
+    </aside>
+
+    <div id="stage">
+      <svg id="graph">
+        <g id="viewport">
+          <g id="links"></g>
+          <g id="nodes"></g>
+        </g>
+      </svg>
+      <div class="mlegend" id="mlegend"></div>
+      <div class="mhint" id="mhint">Tap a node for notes · pinch to zoom</div>
+      <div class="zoombadge" id="zb">100%</div>
+      <div class="toolbar">
+        <button data-act="fit">Fit</button>
+        <button data-act="reset">Reset layout</button>
+      </div>
+    </div>
+
+    <aside class="panel right" id="detail"></aside>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   AI Knowledge Graph 2026 — single-file interactive viewer
+   hosted at /en/graph/ai-2026/ · companion to /en/posts/ai-stack-2026/
+   ============================================================ */
+const NS = 'http://www.w3.org/2000/svg';
+const $ = s => document.querySelector(s);
+const svg = $('#graph'), vp = $('#viewport'), gLinks = $('#links'), gNodes = $('#nodes');
+
+const GRAPHS = {};
+GRAPHS.panorama = {
+  tab: 'Landscape',
+  title: 'AI Technology Landscape',
+  subtitle: 'A Q4 2026 view: from the compute substrate up to applications, in six layers plus the couplings between them. The paradigm is shifting from "scaling parameter counts" toward "modeling the physical world" and "engineering agents."',
+  layout: 'radial',
+  cats: [
+    {id:'base',  name:'Infrastructure',   color:'#4f46e5'},
+    {id:'model', name:'Models',           color:'#0ea5e9'},
+    {id:'cap',   name:'Capabilities',     color:'#14b8a6'},
+    {id:'eng',   name:'Engineering',      color:'#f59e0b'},
+    {id:'app',   name:'Applications',     color:'#ef4444'},
+    {id:'edge',  name:'Frontier & governance', color:'#a855f7'}
+  ],
+  nodes: [
+    {id:'p-root', label:'AI Stack', cat:'base', root:true, size:3,
+     d:'By 2026 the AI stack has settled into a stable six-layer structure. Unlike the 2023 "model-centric" story, value has moved to both ends: compute and inference cost on one side, getting agents into production on the other.',
+     m:['Observation window: October 2026','Core tension: capability surplus vs. delivery shortage'],
+     k:['stack','2026']},
+
+    /* ===== infrastructure ===== */
+    {id:'p-base', label:'Compute & infrastructure', cat:'base', size:3,
+     d:'The physical constraint layer of the whole stack. The 2026 bottleneck is not "can\'t buy accelerators" but power and interconnect bandwidth — at ten-thousand-accelerator scale, the limit has moved from chips to power delivery, cooling, and network topology.',
+     m:['Key metric: cost per dollar of tokens','2026 trend: inference compute share overtakes training for the first time'],
+     k:['compute','clusters','cost']},
+    {id:'p-chip', label:'AI chips', cat:'base', size:2,
+     d:'GPUs still dominate training, but ASIC share on the inference side is climbing fast. In-house silicon has become standard for cloud providers, used to shave long-tail inference cost.',
+     m:['Examples: NVIDIA Rubin family, Google TPU, AWS Trainium','China: Ascend, Cambricon, Hygon'],
+     k:['GPU','ASIC','TPU']},
+    {id:'p-hbm', label:'HBM & interconnect', cat:'base', size:1,
+     d:'Memory bandwidth sets the throughput ceiling for LLM inference; NVLink and optical interconnect set how efficiently a cluster scales. HBM supply remains one of the hardest constraints in the industry.',
+     m:['Key: HBM3E/HBM4, NVLink, InfiniBand, optical modules'],
+     k:['HBM','NVLink']},
+    {id:'p-asic', label:'Custom ASICs', cat:'base', size:1,
+     d:'Cloud providers use dedicated silicon for steady, large-scale inference workloads, driving unit cost below a third of general-purpose GPUs.',
+     m:['Examples: TPU v7, Trainium 3, Ascend 910C'],
+     k:['ASIC','cost']},
+    {id:'p-dc', label:'Clusters & data centers', cat:'base', size:2,
+     d:'Hundred-thousand-accelerator clusters are now the entry ticket for frontier labs. Power delivery, liquid cooling, and network topology (non-blocking fat trees, for instance) jointly determine effective utilization.',
+     m:['2026: single clusters reach the 100k-accelerator range','Key metrics: MFU, cluster availability'],
+     k:['data center','liquid cooling']},
+    {id:'p-wan', label:'Large-scale clusters', cat:'base', size:1,
+     d:'The engineering difficulty of large-scale training is failure rate — at this scale, hardware failure is the norm and you need automatic detection plus resumable training.',
+     m:['Key techniques: checkpointing, elastic training, self-healing'],
+     k:['distributed training']},
+    {id:'p-cool', label:'Liquid cooling', cat:'base', size:1,
+     d:'Once per-rack power density passes what air can handle, liquid cooling goes from optional to mandatory, directly shaping PUE and site selection.',
+     m:['Forms: cold plate, immersion'],
+     k:['cooling','PUE']},
+    {id:'p-rent', label:'Compute rental', cat:'base', size:1,
+     d:'The default for smaller teams. Inference rental prices kept falling through 2026, while top-tier training accelerators stayed tight.',
+     m:['Forms: per accelerator-hour, per token, reserved instances'],
+     k:['cloud','rental']},
+    {id:'p-inf', label:'Inference optimization', cat:'base', size:2,
+     d:'The engineering layer that decides whether a business model works at all. With the same model, unit token cost can differ by an order of magnitude before and after optimization.',
+     m:['Levers: quantization, KV cache, batch scheduling, PD separation, speculative decoding'],
+     k:['inference','cost']},
+    {id:'p-quant', label:'Quantization & KV cache', cat:'base', size:1,
+     d:'FP8 is now the default serving precision, with INT4 common on edge and local deployments. Paged KV cache management and reuse is the core optimization for long-context workloads.',
+     m:['Examples: FP8, AWQ/GPTQ, PagedAttention'],
+     k:['quantization','KV cache']},
+    {id:'p-pd', label:'PD separation', cat:'base', size:1,
+     d:'Splitting prefill and decode onto separate resource pools so each can be tuned independently — the mainstream architecture for large-scale inference serving through 2025-2026.',
+     m:['Gain: 2-4x throughput','Supporting: KV transfer, scheduler'],
+     k:['prefill','decode']},
+    {id:'p-domestic', label:'China compute stack', cat:'base', size:2,
+     d:'An independent ecosystem that formed under export controls. Software-stack maturity, rather than paper FLOPs, is the current weak point.',
+     m:['Examples: Ascend + CANN, Cambricon, Hygon DCU','2026: multi-chip adaptation frameworks (e.g. FlagOS) in progress'],
+     k:['domestic','Ascend']},
+    {id:'p-ascend', label:'Ascend ecosystem', cat:'base', size:1,
+     d:'The most complete end-to-end option inside China, from silicon to framework to industry models. Migration cost and operator coverage are the main friction points.',
+     m:['Software stack: CANN, MindSpore, MindIE'],
+     k:['Ascend','CANN']},
+
+    /* ===== models ===== */
+    {id:'p-model', label:'Foundation models', cat:'model', size:3,
+     d:'The 2026 model layer looks like a dumbbell: a few closed flagships at the top, open-weight models close to the frontier at the bottom, and mid-tier general models squeezed out fast in between.',
+     m:['Key shift: open weights match the previous closed flagship','Selection logic: from "strongest" to "good enough and controllable"'],
+     k:['LLM','foundation model']},
+    {id:'p-closed', label:'Closed flagships', cat:'model', size:2,
+     d:'They define the current capability ceiling, aimed at complex reasoning, long-horizon tasks, and multimodal fusion. The notable change in H2 2026 is tiering: a flagship plus a cheaper high-value sibling, so selection no longer means "just take the flagship."',
+     m:['Flagships: GPT-6 Astra (09-03), Claude Opus 5.5 (09-22), Gemini 4 Argon (10-14)',
+        'High value: GPT-6.1 Sol (09-29), Sonnet 5.5 (09-29)',
+        'Versions checked to 2026-10-25; release cadence is fast, trust the vendor'],
+     k:['closed','flagship','versions']},
+    {id:'p-gpt6', label:'GPT-6 Astra', cat:'model', size:1,
+     d:'The September 2026 flagship, focused on long-horizon task execution and tool-call stability. A common baseline for agent work.',
+     m:['Released: 2026-09-03','Family: GPT-6.1 Sol (09-29, roughly a fifth of Astra\'s price), GPT-6 Luna'],
+     k:['OpenAI','GPT-6']},
+    {id:'p-opus', label:'Claude Opus 5.5', cat:'model', size:1,
+     d:'Consistent on code, long documents, and instruction following; notably strong at agentic coding and reverse engineering. Enterprise controllability is the differentiator.',
+     m:['Released: 2026-09-22 (version jumped from 5.2 to 5.5)','Family: Sonnet 5.5 (09-29, faster and cheaper, ahead of Opus on some coding tasks)'],
+     k:['Anthropic','Claude','Opus']},
+    {id:'p-gemini', label:'Gemini 4 Argon', cat:'model', size:1,
+     d:'Strong natively multimodal. The October 2026 flagship puts the emphasis on complex software engineering and long tasks rather than simply extending context.',
+     m:['Released: 2026-10-14','Input, thinking, and output share roughly a 1M token budget','Ecosystem: Gemini app, AI Studio, AI Mode in Search'],
+     k:['Google','Gemini','Argon']},
+    {id:'p-cnd', label:'China closed models', cat:'model', size:1,
+     d:'Advantageous for Chinese-language, local knowledge, and compliance-heavy scenarios; price competition pushed API cost well below overseas flagships.',
+     m:['Examples (as of 2026-10): Doubao Seed 2.1, ERNIE 5, Hunyuan Hy4','Doubao Seed 2.1 Pro/Turbo released 2026-06-23, 256K context'],
+     k:['China','Chinese']},
+    {id:'p-open', label:'Open weights', cat:'model', size:2,
+     d:'The most important structural change of 2026: open-weight models match the previous closed flagship on most tasks, making self-hosted deployment a real option for enterprises.',
+     m:['Architectural consensus: sparse MoE, hundreds of billions to trillions of total parameters, few active','Licensing: the Apache-2.0 / MIT camp keeps growing'],
+     k:['open source','self-hosted']},
+    {id:'p-qwen', label:'Qwen3.8', cat:'model', size:1,
+     d:'The open family with the largest derived-model ecosystem, spanning 0.5B to trillion-scale MoE, with leading multilingual and Chinese capability.',
+     m:['Released 2026-08-03, open weights 08-13 (2.4T-A95B)','Ecosystem: top of the open-source charts for derivatives and downloads'],
+     k:['Alibaba','Qwen']},
+    {id:'p-ds', label:'DeepSeek V4.1', cat:'model', size:1,
+     d:'Known for extreme price-performance. V4.1 Flash in September 2026 pushed prices lower still, making it a default for cost-sensitive workloads.',
+     m:['Released 2026-09-10, 552B MoE, 1017 build on 10-17','Peak/off-peak pricing; off-peak runs at roughly half the peak rate'],
+     k:['DeepSeek','value']},
+    {id:'p-kimi', label:'Kimi K3', cat:'model', size:1,
+     d:'Built around very long context and open weights, aimed at long documents and repo-scale understanding.',
+     m:['Released 2026-07-16, open weights 07-27','2.8T parameters, 1M context, KDA hybrid linear attention'],
+     k:['Moonshot','long context']},
+    {id:'p-llama', label:'Llama 4 / GLM-5.3', cat:'model', size:1,
+     d:'The other two open camps, international and Chinese. GLM-5.3 is notably strong on coding and agent tasks; license differences are a must-check before commercial use.',
+     m:['GLM-5.3: released 2026-08-14, 743B, plus Flash/FlashX open lines','License split: Llama custom community license vs. GLM permissive terms'],
+     k:['Meta','Zhipu','GLM']},
+    {id:'p-arch', label:'Architecture', cat:'model', size:2,
+     d:'Transformer is still the backbone, but sparsity and linear attention keep spreading on long sequences; multimodality is moving from "bolted on" to "native."',
+     m:['Three threads: sparsity, efficient attention, native multimodality'],
+     k:['architecture','MoE']},
+    {id:'p-moe', label:'Sparse MoE', cat:'model', size:1,
+     d:'Buy capability with total parameters and control cost with active ones — now the default architecture for flagships. The hard parts are routing stability and load balancing.',
+     m:['Typical: 500B-2.8T total, 8B-95B active'],
+     k:['MoE','sparse']},
+    {id:'p-ssm', label:'Linear attention / SSM', cat:'model', size:1,
+     d:'Brings attention complexity from quadratic down to linear, suited to very long sequences and on-device use. Hybrid architectures (SSM in some layers) are the current compromise.',
+     m:['Examples: the Mamba family, hybrid linear attention'],
+     k:['SSM','long sequence']},
+    {id:'p-native', label:'Native multimodality', cat:'model', size:1,
+     d:'Text, image, audio, and video are mixed from day one of training rather than stitched together with separate encoders, which shows clearly in cross-modal reasoning.',
+     m:['Examples: Gemini 4 native multimodality, DeepSeek V4.1 vision'],
+     k:['multimodal','native']},
+    {id:'p-mbase', label:'Generative media stack', cat:'model', size:2,
+     d:'Visual and audio generation has become its own system, giving the language model a second engine for "understanding plus generation."',
+     m:['Three product lines: video, voice, image/3D'],
+     k:['generation','multimodal']},
+    {id:'p-video', label:'Video generation', cat:'model', size:1,
+     d:'Moving from "a few seconds of clip" to "minute-scale controllable narrative." Consistency and physical plausibility are still the weak points.',
+     m:['Examples: Kling, Veo, Hunyuan Video, Jimeng'],
+     k:['video','generation']},
+    {id:'p-voice', label:'Realtime voice', cat:'model', size:1,
+     d:'End-to-end speech models pushed latency into the hundreds of milliseconds, making voice one of the default interaction modes for agents.',
+     m:['Key: full duplex, interruption handling, emotional prosody'],
+     k:['voice','realtime']},
+    {id:'p-3d', label:'3D & image editing', cat:'model', size:1,
+     d:'Image editing has reached instruction-level retouching; 3D generation is starting to scale in games, e-commerce, and industrial design.',
+     m:['Examples: Qwen-Image-Edit, single-image-to-3D pipelines'],
+     k:['3D','image']},
+
+    /* ===== capabilities ===== */
+    {id:'p-cap', label:'Core capabilities', cat:'cap', size:3,
+     d:'The main battleground has moved from "answering questions" to "executing long-horizon tasks," and evaluation has moved with it — from static test sets to task completion rates in real environments.',
+     m:['2026 keywords: reasoning, long context, tool use, world models'],
+     k:['capability','evaluation']},
+    {id:'p-reason', label:'Reasoning & planning', cat:'cap', size:2,
+     d:'Reasoning improves along two paths — longer thinking and verifiable reinforcement learning — and has become table stakes for complex tasks rather than a selling point.',
+     m:['Two paths: test-time scaling + RLVR'],
+     k:['reasoning','planning']},
+    {id:'p-ttc', label:'Test-time scaling', cat:'cap', size:1,
+     d:'Trading more inference compute for accuracy (long chains of thought, multiple samples, self-verification). Pays off clearly in math, code, and research tasks.',
+     m:['Cost: latency and token spend rise linearly'],
+     k:['test-time','CoT']},
+    {id:'p-rlvr', label:'RLVR', cat:'cap', size:1,
+     d:'Reinforcement learning driven by automatically verifiable rewards (right answer, tests pass) — the main engine behind the reasoning jump of 2025-2026.',
+     m:['Applies to: math, code, formal verification'],
+     k:['RLVR','reinforcement learning']},
+    {id:'p-long', label:'Long context', cat:'cap', size:2,
+     d:'Million-token context is commercially available, but fitting it in is not the same as using it well — losing information in the middle remains unsolved.',
+     m:['2026 baseline: 200K-1M tokens','Supporting: context caching, chunked retrieval'],
+     k:['context','1M']},
+    {id:'p-1m', label:'Million-token context', cat:'cap', size:1,
+     d:'Enough for a whole codebase, a full contract, or long video input, but effective utilization degrades with length, so retrieval still usually comes along.',
+     m:['Examples: Kimi K3, Gemini 4 Argon, Qwen3.8'],
+     k:['1M','long document']},
+    {id:'p-cache', label:'Context caching', cat:'cap', size:1,
+     d:'Caching and reusing repeated prefixes can cut the cost of long system prompts and knowledge bases by an order of magnitude — a key lever for agent cost.',
+     m:['Examples: prompt caching, KV reuse'],
+     k:['caching','cost']},
+    {id:'p-tooluse', label:'Tools & execution', cat:'cap', size:2,
+     d:'The line between "can talk" and "can do." Tool-call success rate is one of the most watched engineering metrics of 2026.',
+     m:['Forms: function calling, computer use, code execution'],
+     k:['tools','execution']},
+    {id:'p-fc', label:'Function calling', cat:'cap', size:1,
+     d:'Structured tool calls are infrastructure now; the hard part has shifted to selection accuracy and argument correctness as tool counts explode.',
+     m:['2026 bottleneck: selection accuracy drops noticeably past ~50 tools'],
+     k:['function calling','tools']},
+    {id:'p-cu', label:'Computer use', cat:'cap', size:1,
+     d:'Driving software directly via screenshots plus mouse and keyboard, sidestepping missing APIs — but slow, brittle, and a real security risk.',
+     m:['Fits: legacy systems with no API','Supporting: sandbox, human confirmation'],
+     k:['GUI','automation']},
+    {id:'p-sandbox', label:'Code sandbox', cat:'cap', size:1,
+     d:'An isolated environment where an agent can execute code safely. A required component for data analysis and coding agents.',
+     m:['Examples: E2B, Daytona, Firecracker microVMs'],
+     k:['sandbox','execution']},
+    {id:'p-world', label:'World models', cat:'cap', size:2,
+     d:'The most watched frontier of 2026: teaching models the causality and dynamics of the physical world, the basis for embodied intelligence and simulation-based training.',
+     m:['BAAI\'s "Top 10 AI Technology Trends 2026" puts the shift from language learning to physical-world modeling at the center'],
+     k:['world model','physical']},
+    {id:'p-genie', label:'Generative world models', cat:'cap', size:1,
+     d:'Interactive, predictive generation of virtual environments for robot training and content production — the new front in the 2026 architecture race.',
+     m:['Examples: Genie 3, Hunyuan 1.5, Marble, Gen-3C'],
+     k:['world model','simulation']},
+    {id:'p-vla', label:'VLA embodied models', cat:'cap', size:1,
+     d:'Vision-language-action models that map natural-language instructions straight to robot actions — the core track for general-purpose manipulation.',
+     m:['Forms: VLA, hierarchical policies, sim-to-real transfer'],
+     k:['embodied','robotics']},
+
+    /* ===== engineering ===== */
+    {id:'p-eng', label:'AI engineering', cat:'eng', size:3,
+     d:'The main battleground of 2026. Once model capability converges, what sets the product ceiling is the craft around it: context, memory, retrieval, evaluation.',
+     m:['Paradigm shift: prompt engineering -> context engineering -> harness / coordination engineering'],
+     k:['engineering','LLMOps']},
+    {id:'p-ctx', label:'Context engineering', cat:'eng', size:2,
+     d:'Replacing prompt engineering as the core discipline: no longer "how do I ask" but "what do I put in front of the model." The method compresses to write, select, compress, isolate.',
+     m:['Four moves: write (externalize), select (retrieve), compress (summarize), isolate (sub-agents)','2026 extensions: harness engineering, coordination engineering, loop engineering'],
+     k:['context','context engineering']},
+    {id:'p-wsc', label:'Write / select / compress / isolate', cat:'eng', size:1,
+     d:'Write: externalize rules and state into files. Select: pull only the relevant slice. Compress: summarize and structure. Isolate: split sub-tasks into their own context.',
+     m:['Goal: fight context rot and intent drift'],
+     k:['context','method']},
+    {id:'p-harness', label:'Harness & coordination', cat:'eng', size:1,
+     d:'The harness is the runtime skeleton around the model (tools, loop, validation); coordination engineering studies how multiple agents divide work and hand off.',
+     m:['2026 coinages: harness engineering (early year), coordination engineering (April), loop engineering (June)'],
+     k:['harness','multi-agent']},
+    {id:'p-rag', label:'RAG', cat:'eng', size:2,
+     d:'Retrieval-augmented generation has evolved from a static "vector search plus generate" pipeline into an agent-driven, dynamic system.',
+     m:['Four generations: naive -> advanced -> GraphRAG -> agentic RAG'],
+     k:['RAG','retrieval']},
+    {id:'p-arag', label:'Agentic RAG', cat:'eng', size:1,
+     d:'The model decides whether to retrieve, what to retrieve, and when to stop, making retrieval part of the action loop rather than a fixed preamble.',
+     m:['Upside: multi-hop questions; cost: higher latency and variance'],
+     k:['agentic','retrieval']},
+    {id:'p-graphrag', label:'Lightweight GraphRAG', cat:'eng', size:1,
+     d:'Knowledge graphs for multi-hop reasoning. Early versions had brutal indexing costs; LightRAG, nano-GraphRAG, and KAG brought it down to something deployable in 2026.',
+     m:['Fits: domains with strong entity relations (risk, healthcare, supply chain)'],
+     k:['GraphRAG','knowledge graph']},
+    {id:'p-mem', label:'Memory systems', cat:'eng', size:2,
+     d:'The number one bottleneck for long-horizon tasks. Research keeps pointing at context loss as a leading cause of agent failure, which is why memory became its own layer.',
+     m:['Structure: working memory / long-term memory / memory governance','Operations: write, recall, compress, forget'],
+     k:['memory','long-term']},
+    {id:'p-l0', label:'Tiered memory', cat:'eng', size:1,
+     d:'Store at L0-L3 (raw conversation -> summary -> facts -> profile) and recall on demand, balancing token cost against information precision.',
+     m:['Supporting: hybrid vector + BM25 retrieval, reranking'],
+     k:['tiering','recall']},
+    {id:'p-forget', label:'Active forgetting', cat:'eng', size:1,
+     d:'Forgetting is a capability, not a defect: stale information, wrong memories, and private data all need active cleanup policies.',
+     m:['Policies: time decay, conflict resolution, compliance deletion'],
+     k:['forgetting','governance']},
+    {id:'p-train', label:'Training & adaptation', cat:'eng', size:2,
+     d:'On the enterprise side the mainstream is not pretraining but post-training and lightweight adaptation: tune a general model to business-usable with a small amount of high-quality data.',
+     m:['Path: SFT -> preference alignment -> distillation -> quantized deployment'],
+     k:['fine-tuning','post-training']},
+    {id:'p-rlhf', label:'SFT / RLHF', cat:'eng', size:1,
+     d:'Supervised fine-tuning sets the behavioral baseline; preference alignment tunes style and safety. In 2026, verifiable rewards increasingly replace human preference labels.',
+     m:['Evolution: RLHF -> RLAIF -> RLVR'],
+     k:['SFT','alignment']},
+    {id:'p-lora', label:'LoRA & distillation', cat:'eng', size:1,
+     d:'Standard tools for cheap adaptation and capability compression, letting 10B-70B models beat general large models inside a vertical domain.',
+     m:['2026 consensus: a fine-tuned mid-size model is the best value in vertical scenarios'],
+     k:['LoRA','distillation']},
+    {id:'p-syn', label:'Synthetic data', cat:'eng', size:1,
+     d:'With high-quality real data running out, synthetic data became staple training feed — but you have to guard against model collapse and distribution drift.',
+     m:['Methods: self-play, environment feedback, procedural generation'],
+     k:['synthetic data','self-play']},
+    {id:'p-eval', label:'Evaluation & observability', cat:'eng', size:2,
+     d:'Moving from benchmark scores to production monitoring. The lack of an evaluation system is the leading reason agent projects never cross the production gap.',
+     m:['Industry consensus: missing observability and evals is the main reason agent pilots stall'],
+     k:['eval','observability']},
+    {id:'p-bench', label:'Benchmarks', cat:'eng', size:1,
+     d:'Static test sets saturate quickly; the weight has shifted to real-environment tasks — fixing code, operating a browser, multi-turn tool use.',
+     m:['Examples: SWE-bench, GAIA, tau-bench, WebArena, OSWorld'],
+     k:['benchmark','eval']},
+    {id:'p-judge', label:'LLM-as-Judge', cat:'eng', size:1,
+     d:'Using a model as the grader solves the problem of evaluating open-ended output, but position bias and self-preference need calibration.',
+     m:['Supporting: rubrics, double-blind, human spot checks'],
+     k:['judge','eval']},
+    {id:'p-trace', label:'Tracing', cat:'eng', size:1,
+     d:'Recording the input, tool calls, latency, and cost of every step — the only reliable way to debug an agent.',
+     m:['Examples: Langfuse, LangSmith, Braintrust, Arize Phoenix'],
+     k:['trace','LLMOps']},
+
+    /* ===== applications ===== */
+    {id:'p-app', label:'Applications', cat:'app', size:3,
+     d:'The 2026 deployment order is clear: coding and knowledge work got there first, customer service and marketing next, process-heavy industries are still grinding.',
+     m:['Shared traits: verifiable tasks, reversible errors, human takeover'],
+     k:['deployment','scenarios']},
+    {id:'p-code', label:'AI coding', cat:'app', size:2,
+     d:'The highest penetration and clearest ROI. It has moved from autocomplete to finishing an issue end to end.',
+     m:['Forms: IDE completion -> conversational editing -> autonomous coding agents'],
+     k:['coding','programming']},
+    {id:'p-coder', label:'Coding agents', cat:'app', size:1,
+     d:'Agents that read the repo, change multiple files, run tests, and open a PR — already reshaping how teams divide work.',
+     m:['Examples: Claude Code, Codex, Cursor Agent, Tongyi Lingma'],
+     k:['agent','code']},
+    {id:'p-ide', label:'IDE & review', cat:'app', size:1,
+     d:'AI code review has become standard, with the focus moving from catching syntax errors to catching logic and security defects.',
+     m:['Forms: inline suggestions, automated PR review, test generation'],
+     k:['IDE','review']},
+    {id:'p-agent', label:'Agents', cat:'app', size:2,
+     d:'Upgraded from chatbot to digital worker: understands complex instructions, operates multiple business systems, closes long chains of work.',
+     m:['Core metrics: task completion rate, human takeover rate'],
+     k:['agent','digital worker']},
+    {id:'p-general', label:'General agents', cat:'app', size:1,
+     d:'Assistants for individuals and teams, aimed at open-ended work like research, office tasks, and browsing. Broad but shallow.',
+     m:['Examples: Deep Research-style products, general assistants'],
+     k:['general','assistant']},
+    {id:'p-vertical', label:'Vertical agents', cat:'app', size:1,
+     d:'Deep in a single process (support, recruiting, legal, ops), building moats out of domain knowledge and system integration.',
+     m:['Moats: data, system integration, liability boundaries'],
+     k:['vertical','industry']},
+    {id:'p-create', label:'Content & creative', cat:'app', size:2,
+     d:'Once generation cost approaches zero, the competition moves to topic choice, taste, and distribution rather than throughput.',
+     m:['Forms: graphics, short video, music, design'],
+     k:['AIGC','creative']},
+    {id:'p-gen', label:'Generative production', cat:'app', size:1,
+     d:'Marketing assets, short video, and e-commerce imagery monetize fastest; batch generation plus human curation is the standard workflow.',
+     m:['Workflow: batch generate -> auto filter -> human retouch'],
+     k:['creation','marketing']},
+    {id:'p-search', label:'AI search', cat:'app', size:1,
+     d:'From giving links to giving answers, and increasingly merging with agents into "search that executes."',
+     m:['Forms: answer engines, deep research, task-oriented search'],
+     k:['search','answers']},
+    {id:'p-industry', label:'Industry deployment', cat:'app', size:2,
+     d:'Finance and healthcare lead (data-dense, able to pay); manufacturing and education are held back by system rework and liability questions.',
+     m:['Shared obstacles: data silos, compliance audits, expensive mistakes'],
+     k:['industry','deployment']},
+    {id:'p-fin', label:'Finance / healthcare / legal', cat:'app', size:1,
+     d:'High value, high compliance. The core isn\'t model capability but a traceable evidence chain and a human review process.',
+     m:['Typical: investment research assistants, clinical record structuring, contract review'],
+     k:['finance','healthcare','legal']},
+    {id:'p-mfg', label:'Manufacturing / education', cat:'app', size:1,
+     d:'Manufacturing combines with visual inspection, scheduling, and equipment maintenance; education focuses on personalized tutoring and reducing teacher load.',
+     m:['Forms: multimodal inspection, smart scheduling, AI teaching assistants'],
+     k:['manufacturing','education']},
+
+    /* ===== frontier & governance ===== */
+    {id:'p-edge', label:'Frontier & governance', cat:'edge', size:3,
+     d:'The second battlefield, outside the technology itself. Protocols set interoperability cost, regulation sets what you can sell, security sets whether you can ship.',
+     m:['2026 marker: protocol layering converges + national standards land'],
+     k:['protocol','regulation','security']},
+    {id:'p-proto', label:'Protocol standards', cat:'edge', size:2,
+     d:'The "HTTP moment" of the agent era. By 2026 a layered consensus formed: MCP for tools, A2A for agent-to-agent, AG-UI for frontend rendering.',
+     m:['MCP has become the de facto standard for tool integration','A2A was proposed by Google and donated to an open foundation'],
+     k:['protocol','interop']},
+    {id:'p-mcp', label:'MCP', cat:'edge', size:1,
+     d:'The standard connection protocol between models and tools or data sources. Now de facto infrastructure — without support you are hard to integrate with.',
+     m:['Led by: Anthropic (proposed 2024-11)','2026: enterprises commonly deploy an MCP gateway for central control'],
+     k:['MCP','tools']},
+    {id:'p-a2a', label:'A2A', cat:'edge', size:1,
+     d:'A communication and collaboration protocol between agents, solving cross-framework and cross-organization agent calls.',
+     m:['Led by: Google, proposed 2025-04, later moved to open-foundation governance'],
+     k:['A2A','collaboration']},
+    {id:'p-agui', label:'AG-UI / A2UI', cat:'edge', size:1,
+     d:'The agent-to-user-interface protocol: rendering agent state and artifacts into a frontend in a standard way.',
+     m:['Solves: streaming state, generative UI, human confirmation'],
+     k:['AG-UI','frontend']},
+    {id:'p-aip', label:'AIP & national standards', cat:'edge', size:1,
+     d:'China\'s agent-interconnection standards system. GB/Z 185-2026 was published in May 2026, marking the shift into national standardization.',
+     m:['GB/Z 185-2026 "Artificial Intelligence - Agent Interconnection", published 2026-05-22','Companion protocols: ACP, ANP, AIP'],
+     k:['national standard','AIP']},
+    {id:'p-oss', label:'Open-source ecosystem', cat:'edge', size:2,
+     d:'Open source became the main channel for capability diffusion, with Chinese labs leading on open weights and multilingual ability.',
+     m:['Shape: Qwen has the largest derivative ecosystem, DeepSeek competes on price-performance, Llama has cooled'],
+     k:['open source','community']},
+    {id:'p-hf', label:'Hugging Face ecosystem', cat:'edge', size:1,
+     d:'The center of model distribution and fine-tuning communities, and the default place enterprises look for vertical models.',
+     m:['Forms: model hub, datasets, Spaces, inference endpoints'],
+     k:['HuggingFace','community']},
+    {id:'p-lic', label:'License divergence', cat:'edge', size:1,
+     d:'Licenses have become a hard constraint on selection: Apache-2.0 and MIT are safe for commercial use; custom terms need clause-by-clause review.',
+     m:['Two poles: permissive camp vs. custom community licenses'],
+     k:['license','compliance']},
+    {id:'p-reg', label:'Regulation & compliance', cat:'edge', size:2,
+     d:'Compliance moved from "check before launch" to "embedded at design time." High-risk scenarios require explainability, auditability, and traceability.',
+     m:['Key items: risk classification, filing, content labeling, cross-border data'],
+     k:['compliance','regulation']},
+    {id:'p-act', label:'EU AI Act', cat:'edge', size:1,
+     d:'The most binding AI regulation globally, with obligations tiered by risk and separate provisions for general-purpose model providers.',
+     m:['Impact: a condition of market entry in Europe'],
+     k:['EU','regulation']},
+    {id:'p-label', label:'Content labeling & filing', cat:'edge', size:1,
+     d:'Generated content must be attributable (watermark or metadata), and public-facing services must complete algorithm and security filings.',
+     m:['Requires: explicit label + implicit watermark + filing number'],
+     k:['watermark','filing']},
+    {id:'p-sec', label:'Security', cat:'edge', size:2,
+     d:'Once agents touch enterprise systems, the security boundary moves from content risk to action risk — whatever it can do is attack surface.',
+     m:['The OWASP LLM Top 10 ranks prompt injection first'],
+     k:['security','attack']},
+    {id:'p-inject', label:'Prompt injection', cat:'edge', size:1,
+     d:'Hijacking agent instructions through external content — web pages, documents, email. Currently the hardest class of vulnerability to eliminate.',
+     m:['Defenses: content isolation, instruction/data separation, capability allowlists'],
+     k:['injection','attack']},
+    {id:'p-red', label:'Red teaming & poisoning', cat:'edge', size:1,
+     d:'Adversarial testing before launch and detection of training-data poisoning are becoming routine for enterprise AI.',
+     m:['Methods: automated jailbreaks, supply-chain audit, behavioral baselines'],
+     k:['red team','poisoning']}
+  ],
+  links: [
+    ['p-root','p-base'],['p-root','p-model'],['p-root','p-cap'],
+    ['p-root','p-eng'],['p-root','p-app'],['p-root','p-edge'],
+
+    ['p-base','p-chip'],['p-base','p-dc'],['p-base','p-inf'],['p-base','p-domestic'],
+    ['p-chip','p-hbm'],['p-chip','p-asic'],
+    ['p-dc','p-wan'],['p-dc','p-cool'],['p-dc','p-rent'],
+    ['p-inf','p-quant'],['p-inf','p-pd'],
+    ['p-domestic','p-ascend'],
+
+    ['p-model','p-closed'],['p-model','p-open'],['p-model','p-arch'],['p-model','p-mbase'],
+    ['p-closed','p-gpt6'],['p-closed','p-opus'],['p-closed','p-gemini'],['p-closed','p-cnd'],
+    ['p-open','p-qwen'],['p-open','p-ds'],['p-open','p-kimi'],['p-open','p-llama'],
+    ['p-arch','p-moe'],['p-arch','p-ssm'],['p-arch','p-native'],
+    ['p-mbase','p-video'],['p-mbase','p-voice'],['p-mbase','p-3d'],
+
+    ['p-cap','p-reason'],['p-cap','p-long'],['p-cap','p-tooluse'],['p-cap','p-world'],
+    ['p-reason','p-ttc'],['p-reason','p-rlvr'],
+    ['p-long','p-1m'],['p-long','p-cache'],
+    ['p-tooluse','p-fc'],['p-tooluse','p-cu'],['p-tooluse','p-sandbox'],
+    ['p-world','p-genie'],['p-world','p-vla'],
+
+    ['p-eng','p-ctx'],['p-eng','p-rag'],['p-eng','p-mem'],['p-eng','p-train'],['p-eng','p-eval'],
+    ['p-ctx','p-wsc'],['p-ctx','p-harness'],
+    ['p-rag','p-arag'],['p-rag','p-graphrag'],
+    ['p-mem','p-l0'],['p-mem','p-forget'],
+    ['p-train','p-rlhf'],['p-train','p-lora'],['p-train','p-syn'],
+    ['p-eval','p-bench'],['p-eval','p-judge'],['p-eval','p-trace'],
+
+    ['p-app','p-code'],['p-app','p-agent'],['p-app','p-create'],['p-app','p-industry'],
+    ['p-code','p-coder'],['p-code','p-ide'],
+    ['p-agent','p-general'],['p-agent','p-vertical'],
+    ['p-create','p-gen'],['p-create','p-search'],
+    ['p-industry','p-fin'],['p-industry','p-mfg'],
+
+    ['p-edge','p-proto'],['p-edge','p-oss'],['p-edge','p-reg'],['p-edge','p-sec'],
+    ['p-proto','p-mcp'],['p-proto','p-a2a'],['p-proto','p-agui'],['p-proto','p-aip'],
+    ['p-oss','p-hf'],['p-oss','p-lic'],
+    ['p-reg','p-act'],['p-reg','p-label'],
+    ['p-sec','p-inject'],['p-sec','p-red'],
+
+    /* 跨层耦合 */
+    ['p-moe','p-inf'],['p-moe','p-open'],
+    ['p-quant','p-open'],['p-hbm','p-wan'],
+    ['p-1m','p-cache'],['p-cache','p-ctx'],
+    ['p-mcp','p-tooluse'],['p-mcp','p-agent'],
+    ['p-a2a','p-harness'],['p-agui','p-agent'],
+    ['p-arag','p-graphrag'],['p-graphrag','p-mem'],
+    ['p-ctx','p-mem'],['p-l0','p-ctx'],
+    ['p-sandbox','p-coder'],['p-cu','p-agent'],
+    ['p-trace','p-agent'],['p-bench','p-coder'],
+    ['p-lora','p-open'],['p-syn','p-rlvr'],
+    ['p-rlvr','p-ttc'],
+    ['p-genie','p-vla'],['p-vla','p-mfg'],
+    ['p-inject','p-cu'],['p-inject','p-rag'],
+    ['p-act','p-cnd'],['p-label','p-gen'],
+    ['p-ds','p-inf'],['p-qwen','p-oss'],
+    ['p-ascend','p-lic'],['p-cnd','p-reg'],
+    ['p-vertical','p-fin'],['p-general','p-search']
+  ]
+};
+GRAPHS.agent = {
+  tab: 'Agents',
+  title: 'AI Agent Knowledge Graph',
+  subtitle: 'From cognitive patterns to production engineering: an agent is a model plus context, tools, and a loop. What changed in 2026 is that the protocol layer converged, memory became its own layer, and evaluation moved from "got it right" to "got it done."',
+  layout: 'radial',
+  cats: [
+    {id:'paradigm', name:'Cognitive patterns', color:'#4f46e5'},
+    {id:'memory',   name:'Memory & context',   color:'#0ea5e9'},
+    {id:'tool',     name:'Tools & execution',  color:'#14b8a6'},
+    {id:'proto',    name:'Protocols & interop', color:'#a855f7'},
+    {id:'fw',       name:'Frameworks',         color:'#f59e0b'},
+    {id:'ops',      name:'Eval & security',    color:'#ef4444'}
+  ],
+  nodes: [
+    {id:'a-root', label:'AI Agent', cat:'paradigm', root:true, size:3,
+     d:'An agent is essentially a closed loop: observe, think, act, observe again. The 2026 dividing line isn\'t how strong the model is, but whether that loop can reliably finish a long task inside a real system.',
+     m:['Formula: agent = model + context + tools + loop','Core metrics: task completion rate, human takeover rate'],
+     k:['agent','agents']},
+
+    /* ===== cognitive patterns ===== */
+    {id:'a-paradigm', label:'Cognitive patterns', cat:'paradigm', size:3,
+     d:'The part that decides how an agent thinks. The pattern you pick directly affects cost, latency, and debuggability — more complexity is not better.',
+     m:['Selection rule: if a single loop solves it, don\'t reach for multi-agent'],
+     k:['paradigm','reasoning']},
+    {id:'a-loop', label:'Basic loop', cat:'paradigm', size:2,
+     d:'ReAct is still the skeleton of most production agents: think one step, call one tool, look at the result, think again. Simple, observable, easy to debug.',
+     m:['Upside: every step is traceable','Downside: long tasks drift, token cost grows linearly'],
+     k:['ReAct','loop']},
+    {id:'a-react', label:'ReAct', cat:'paradigm', size:1,
+     d:'Reasoning alternating with acting. The default pattern for tool-using agents, and still the baseline in 2026.',
+     m:['Variants: ReWOO (plan then execute), Reflexion (with reflection)'],
+     k:['ReAct','baseline']},
+    {id:'a-pae', label:'Plan-and-Execute', cat:'paradigm', size:1,
+     d:'Produce a full plan first, then execute step by step. Cuts repeated reasoning overhead, but plan quality sets the ceiling, so replanning has to be supported.',
+     m:['Fits: tasks with clear steps that can be decomposed upfront'],
+     k:['planning','execution']},
+    {id:'a-plan', label:'Planning patterns', cat:'paradigm', size:2,
+     d:'Turning a vague goal into executable steps. The 2026 progress is mostly in dynamic replanning — correcting course when execution reveals a mismatch.',
+     m:['Hard parts: decomposition granularity, dependency order, failure fallback'],
+     k:['planning','decomposition']},
+    {id:'a-decomp', label:'Task decomposition', cat:'paradigm', size:1,
+     d:'Hierarchical breakdown (goal -> subgoal -> action), paired with an externalized to-do list, measurably reduces how often long tasks get lost.',
+     m:['Practice: externalize the todo list, give each sub-task its own context'],
+     k:['decomposition','todo']},
+    {id:'a-tot', label:'Tree search / sampling', cat:'paradigm', size:1,
+     d:'Expand several reasoning paths at once and prune by score — trading compute for accuracy. Worth it for high-value decisions.',
+     m:['Examples: ToT, MCTS hybrids, best-of-N'],
+     k:['search','sampling']},
+    {id:'a-multi', label:'Multi-agent orchestration', cat:'paradigm', size:2,
+     d:'2026 moved from single agents toward coordinated fleets. But multi-agent is not a free performance win; coordination overhead is routinely underestimated.',
+     m:['Main topologies: supervisor, handoff, swarm','Risks: doubled token cost, cascading errors'],
+     k:['multi-agent','orchestration']},
+    {id:'a-supervisor', label:'Supervisor', cat:'paradigm', size:1,
+     d:'One controller agent dispatches and aggregates while sub-agents do their part. The most controllable option, and the default topology in production.',
+     m:['Supporting: explicit routing, sub-task timeouts, result validation'],
+     k:['supervisor','centralized']},
+    {id:'a-handoff', label:'Handoff', cat:'paradigm', size:1,
+     d:'Passing control plus context to another agent. Works for things like support triage, but global state gets lost easily.',
+     m:['Key: a context handoff protocol, clear ownership boundaries'],
+     k:['handoff','transfer']},
+    {id:'a-swarm', label:'Swarm', cat:'paradigm', size:1,
+     d:'Decentralized collaboration where agents hand tasks directly to each other. Flexible, hard to debug, use with care in production.',
+     m:['Fits: exploratory work, open-ended research'],
+     k:['swarm','decentralized']},
+    {id:'a-reflect', label:'Reflection & correction', cat:'paradigm', size:2,
+     d:'Having the agent check its own output and improve it. In 2026 the emphasis shifted to external verifiers rather than self-reflection — self-checking is only so reliable.',
+     m:['What actually works: run the tests, check the facts, cross-review'],
+     k:['reflection','verification']},
+    {id:'a-selfreflex', label:'Self-reflection', cat:'paradigm', size:1,
+     d:'Attributing failures on a trajectory and adjusting strategy, combined with writing to memory, builds up experience over time.',
+     m:['Risk: confirmation bias — needs external signals to calibrate'],
+     k:['reflection','experience']},
+    {id:'a-verifier', label:'Verifiers', cat:'paradigm', size:1,
+     d:'Checking results with deterministic means (unit tests, type checks, rule engines) is far more reliable than asking the model to grade itself.',
+     m:['Principle: if it can be verified automatically, never leave it to model judgment'],
+     k:['verification','testing']},
+
+    /* ===== memory & context ===== */
+    {id:'a-memory', label:'Memory & context', cat:'memory', size:3,
+     d:'The number one source of agent failure. The model is a genius with only short-term memory, and seventy percent of what it can do depends on the material placed in front of it.',
+     m:['Research: most long-task failures correlate directly with context loss'],
+     k:['memory','context']},
+    {id:'a-ctx', label:'Context engineering', cat:'memory', size:2,
+     d:'Managing what the model can currently see: system rules, task state, retrieval results, tool returns. All of it needs deliberate arrangement, not a dump.',
+     m:['Four moves: write, select, compress, isolate','Fights: context rot, intent drift, lost-in-the-middle'],
+     k:['context','context engineering']},
+    {id:'a-wsc', label:'Write / select / compress / isolate', cat:'memory', size:1,
+     d:'Write: commit rules and state to files. Select: retrieve only relevant slices. Compress: summarize and structure. Isolate: keep dirty context in sub-agents.',
+     m:['Core goal: keep the main context short and accurate'],
+     k:['method','context']},
+    {id:'a-compact', label:'Compression & summarization', cat:'memory', size:1,
+     d:'Triggered as context approaches its ceiling: keep decisions and conclusions, drop the intermediate process. The compaction strategy decides whether a long task finishes at all.',
+     m:['Strategies: rolling summary, structured notes, key-fact extraction'],
+     k:['compression','summary']},
+    {id:'a-mem', label:'Memory tiers', cat:'memory', size:2,
+     d:'Layering memory by lifecycle: working memory (current task), episodic (past conversations), semantic (facts), procedural (how to do things).',
+     m:['Implementation: L0 raw -> L1 summary -> L2 facts -> L3 profile'],
+     k:['tiering','long-term memory']},
+    {id:'a-l0', label:'L0-L3 storage', cat:'memory', size:1,
+     d:'Recall different granularities on demand, balancing token cost against precision, instead of stuffing the whole history in every time.',
+     m:['Supporting: hybrid vector + keyword retrieval, reranking'],
+     k:['tiering','recall']},
+    {id:'a-forget', label:'Forgetting governance', cat:'memory', size:1,
+     d:'Stale information, wrong memories, and private data must be actively removable — otherwise memory becomes a liability.',
+     m:['Policies: time decay, conflict resolution, compliance deletion'],
+     k:['forgetting','governance']},
+    {id:'a-rag', label:'Retrieval', cat:'memory', size:2,
+     d:'The agent\'s external knowledge intake. By 2026 it went from a fixed pipeline to retrieval on demand — the model decides when to look and what for.',
+     m:['Evolution: naive -> advanced -> GraphRAG -> agentic RAG'],
+     k:['RAG','retrieval']},
+    {id:'a-arag', label:'Agentic RAG', cat:'memory', size:1,
+     d:'Retrieval becomes one step in the action loop, supporting query rewriting and multi-hop reasoning. Good for complex research tasks.',
+     m:['Cost: higher latency and variance — cap the iteration count'],
+     k:['agentic','multi-hop']},
+    {id:'a-graphrag', label:'GraphRAG', cat:'memory', size:1,
+     d:'Entity-relation graphs backing multi-hop Q&A. Lightweight variants (LightRAG, KAG) brought indexing cost down to acceptable.',
+     m:['Fits: strongly relational domains — risk, healthcare, supply chain'],
+     k:['graph','multi-hop']},
+    {id:'a-state', label:'State & long tasks', cat:'memory', size:2,
+     d:'Reliability on long tasks comes from recoverability: externalized state, checkpoints, resume-on-failure — not from hoping the model gets it right in one pass.',
+     m:['Pattern: durable execution'],
+     k:['state','long task']},
+    {id:'a-checkpoint', label:'Checkpoints', cat:'memory', size:1,
+     d:'Persist every step so a failure resumes from the last good state. Mandatory for long-running agents.',
+     m:['Examples: LangGraph checkpointer, Temporal'],
+     k:['checkpoint','resume']},
+    {id:'a-durable', label:'Durable execution', cat:'memory', size:1,
+     d:'Run the agent loop on a workflow engine and inherit retries, timeouts, and compensation.',
+     m:['Value: putting AI\'s uncertainty inside engineering\'s determinism'],
+     k:['workflow','reliability']},
+
+    /* ===== tools & execution ===== */
+    {id:'a-tool', label:'Tools & execution', cat:'tool', size:3,
+     d:'The agent\'s hands on the real world. By 2026, tool-call success rate predicts production outcomes better than model benchmarks do.',
+     m:['Key metrics: tool selection accuracy, argument correctness, call success rate'],
+     k:['tool','execution']},
+    {id:'a-fc', label:'Function calling', cat:'tool', size:2,
+     d:'The most basic and most reliable execution path: structured arguments, explicit returns. Tool design quality often matters more to success than model choice.',
+     m:['Design rules: single responsibility, flat arguments, readable errors'],
+     k:['function','tools']},
+    {id:'a-schema', label:'Tool schema design', cat:'tool', size:1,
+     d:'Name, description, and argument docs together form the model\'s manual for the tool. Vague descriptions are the number one cause of tool-call failure.',
+     m:['Practice: verb-first names, worked examples, constrained enums'],
+     k:['schema','design']},
+    {id:'a-select', label:'Tool selection', cat:'tool', size:1,
+     d:'Once the tool count explodes, selection accuracy drops noticeably. Production systems usually need grouping, routing, or two-stage filtering.',
+     m:['Rule of thumb: keep tools exposed per turn in the 20-50 range'],
+     k:['selection','routing']},
+    {id:'a-mcp', label:'MCP tool layer', cat:'tool', size:2,
+     d:'Wrapping files, databases, and SaaS APIs as standard tools behind one protocol, discovered and called by the model. Industry infrastructure in 2026.',
+     m:['Ecosystem: the de facto standard for tool integration; server count growing fast'],
+     k:['MCP','tool layer']},
+    {id:'a-mcpserver', label:'MCP server', cat:'tool', size:1,
+     d:'A service endpoint exposing resources, prompts, and tools. Enterprises usually run internal servers that connect to their own systems.',
+     m:['Transports: stdio (local), streamable HTTP (remote)'],
+     k:['server','integration']},
+    {id:'a-gateway', label:'MCP gateway', cat:'tool', size:1,
+     d:'A single choke point for all MCP traffic: auth, audit, rate limits, tool allowlists. A required component for enterprise deployment.',
+     m:['2026 enterprise practice: LLM traffic through an AI gateway, MCP traffic through an MCP gateway, code through a sandbox'],
+     k:['gateway','control']},
+    {id:'a-code', label:'Code execution', cat:'tool', size:2,
+     d:'Having the agent write code to solve the problem is more general than piling up tools — code is a composable tool.',
+     m:['Scenarios: data analysis, batch processing, format conversion'],
+     k:['code','execution']},
+    {id:'a-sandbox', label:'Code sandbox', cat:'tool', size:1,
+     d:'An isolated execution environment with network, filesystem, and resource limits. Code execution without a sandbox is handing over the server.',
+     m:['Examples: E2B, Daytona, Firecracker, gVisor'],
+     k:['sandbox','isolation']},
+    {id:'a-notebook', label:'Data analysis', cat:'tool', size:1,
+     d:'Running Python in a sandbox for statistics and charts — the most frequent agent capability in office and research settings.',
+     m:['Forms: notebook-style multi-turn analysis, chart output'],
+     k:['data','analysis']},
+    {id:'a-computer', label:'Computer use', cat:'tool', size:2,
+     d:'Understanding the UI from screenshots and operating software with mouse and keyboard, working around missing APIs — but slow and brittle.',
+     m:['Fits: legacy systems without APIs, cross-application flows'],
+     k:['computer use','GUI']},
+    {id:'a-gui', label:'Screenshot & act', cat:'tool', size:1,
+     d:'A loop of visual localization plus action execution. The hard parts are stable element location and handling unexpected screens.',
+     m:['Optimizations: accessibility tree, coordinate cache, retry on failure'],
+     k:['GUI','vision']},
+    {id:'a-rpa', label:'RPA integration', cat:'tool', size:1,
+     d:'Combining with traditional RPA: deterministic scripts for fixed steps, model calls only at judgment points. Stable and flexible at once.',
+     m:['Pattern: RPA as the base, LLM for decisions'],
+     k:['RPA','hybrid']},
+    {id:'a-browser', label:'Browser automation', cat:'tool', size:2,
+     d:'One of the most active agent categories of 2026, moving from scraping pages to completing tasks on them.',
+     m:['Scenarios: price comparison, form filling, back-office work, deep research'],
+     k:['browser','automation']},
+    {id:'a-playwright', label:'Browser driver', cat:'tool', size:1,
+     d:'Driving a real browser through CDP or Playwright — faster and steadier than pure vision approaches.',
+     m:['Key points: session state, anti-bot handling, concurrency isolation'],
+     k:['Playwright','CDP']},
+    {id:'a-extract', label:'Page extraction', cat:'tool', size:1,
+     d:'Turning a page into structured information (body text, tables, links) — a baseline capability for research agents.',
+     m:['Hard parts: dynamic rendering, anti-bot, truncation on long pages'],
+     k:['extraction','parsing']},
+
+    /* ===== protocols & interop ===== */
+    {id:'a-proto', label:'Protocols & interop', cat:'proto', size:3,
+     d:'The agent world\'s TCP/IP moment. The layering has converged by 2026, so selection is no longer a debate about direction — it\'s a question of how you connect.',
+     m:['Layered consensus: MCP for tools, A2A for agents, AG-UI for interfaces'],
+     k:['protocol','standards']},
+    {id:'a-mcpp', label:'MCP', cat:'proto', size:2,
+     d:'The connection standard between agents and tools or data, proposed by Anthropic in November 2024 and de facto infrastructure by 2026.',
+     m:['Status: tools without MCP support are effectively locked out of the mainstream ecosystem'],
+     k:['MCP','Anthropic']},
+    {id:'a-discovery', label:'Capability discovery', cat:'proto', size:1,
+     d:'Clients query a server dynamically for the tools and resources it offers, giving plug-and-play instead of hardcoded wiring.',
+     m:['Mechanism: list_tools / list_resources'],
+     k:['discovery','dynamic']},
+    {id:'a-auth', label:'Authorization', cat:'proto', size:1,
+     d:'Remote MCP needs standard authorization such as OAuth, passing the user\'s authorization scope down to tools. The most likely place for security bugs.',
+     m:['Key points: least-scope grants, token isolation, audit trails'],
+     k:['OAuth','auth']},
+    {id:'a-a2a', label:'A2A', cat:'proto', size:2,
+     d:'An agent-to-agent communication and collaboration protocol, solving cross-framework and cross-organization calls and task delegation.',
+     m:['Led by: Google (proposed 2025-04)','Scenarios: cross-vendor agent collaboration, agent interop across teams'],
+     k:['A2A','collaboration']},
+    {id:'a-card', label:'Agent Card', cat:'proto', size:1,
+     d:'A standard description declaring an agent\'s capabilities, inputs and outputs, and auth method. The prerequisite for interop.',
+     m:['Contents: skill list, endpoints, auth schemes'],
+     k:['Agent Card','description']},
+    {id:'a-task', label:'Task delegation', cat:'proto', size:1,
+     d:'Handing a sub-task plus context to a remote agent and tracking it to completion, handling timeouts and partial failure along the way.',
+     m:['State machine: submitted -> working -> completed/failed'],
+     k:['delegation','tasks']},
+    {id:'a-ui', label:'AG-UI / A2UI', cat:'proto', size:2,
+     d:'Solving how agent state reaches the user: streaming output, visualizing tool execution, generative UI, human confirmation.',
+     m:['Value: turning a black-box agent into a process the user can follow and interrupt'],
+     k:['AG-UI','frontend']},
+    {id:'a-stream', label:'Streaming state', cat:'proto', size:1,
+     d:'Pushing thinking, tool calls, and intermediate artifacts to the frontend in real time — better UX and easier for a human to interrupt.',
+     m:['Implementation: SSE, WebSocket, event streams'],
+     k:['streaming','SSE']},
+    {id:'a-genui', label:'Generative UI', cat:'proto', size:1,
+     d:'The agent decides whether to return a table, a form, or a chart instead of a fixed text bubble, which raises information density a lot.',
+     m:['Forms: structured component protocols, interactive cards'],
+     k:['generative UI','components']},
+    {id:'a-cn', label:'China standards', cat:'proto', size:2,
+     d:'China built an independent standards system that maps onto international protocols. Government and financial projects usually have explicit requirements.',
+     m:['GB/Z 185-2026 "Artificial Intelligence - Agent Interconnection", published 2026-05-22'],
+     k:['national standard','AIP']},
+    {id:'a-gbz', label:'GB/Z 185-2026', cat:'proto', size:1,
+     d:'The national standard series for agent interconnection, covering identity, interaction, and coordination. A common compliance item in public-sector tenders.',
+     m:['Published: 2026-05-22','Supporting: open-source implementations from the OpenAtom Foundation'],
+     k:['national standard','compliance']},
+    {id:'a-aip', label:'AIP / ACP / ANP', cat:'proto', size:1,
+     d:'A set of domestic protocol explorations converging toward a layered stack, complementary to international protocols rather than a replacement.',
+     m:['ACP (AgentUnion, 2025-05), AIP (first version 2025-10)'],
+     k:['AIP','protocol']},
+
+    /* ===== frameworks ===== */
+    {id:'a-fw', label:'Frameworks', cat:'fw', size:3,
+     d:'Framework competition in 2026 moved from feature count to production readiness: durability, observability, human intervention, cost control.',
+     m:['Consensus: the framework is scaffolding; the architecture is the asset'],
+     k:['framework','platform']},
+    {id:'a-graph', label:'Graph orchestration', cat:'fw', size:2,
+     d:'Modeling an agent as a state graph — nodes are steps, edges are transitions — which gives branching, loops, and resume-after-interrupt for free.',
+     m:['Examples: LangGraph','Upside: controllable, debuggable, easy to add human review'],
+     k:['graph','state machine']},
+    {id:'a-langgraph', label:'LangGraph', cat:'fw', size:1,
+     d:'The most widely used orchestration framework in production today, with a mature ecosystem and observability through LangSmith.',
+     m:['Features: checkpoints, human interrupts, nested subgraphs'],
+     k:['LangChain','orchestration']},
+    {id:'a-temporal', label:'Durable workflows', cat:'fw', size:1,
+     d:'Running the agent on a mature workflow engine to inherit retries, timeouts, compensation, and long-running tasks.',
+     m:['Examples: Temporal, Restate, AWS Step Functions'],
+     k:['Temporal','reliability']},
+    {id:'a-role', label:'Role-based frameworks', cat:'fw', size:2,
+     d:'Organizing multiple agents with roles and SOPs. Fast to pick up and semantically intuitive — good for well-defined business processes.',
+     m:['Examples: CrewAI, AutoGen / AG2, MetaGPT'],
+     k:['multi-agent','roles']},
+    {id:'a-crewai', label:'CrewAI', cat:'fw', size:1,
+     d:'Built around team, role, and task abstractions. Business people can read the flow, so it lands quickly.',
+     m:['Strength: business process modeling','Weakness: weaker control over complex branching'],
+     k:['CrewAI','roles']},
+    {id:'a-autogen', label:'AutoGen / AG2', cat:'fw', size:1,
+     d:'Microsoft\'s multi-agent framework, strong at conversational collaboration and code execution, widely used in research.',
+     m:['Patterns: group chat, agents-as-tools'],
+     k:['AutoGen','conversation']},
+    {id:'a-sdk', label:'Vendor SDKs', cat:'fw', size:2,
+     d:'Official SDKs from model vendors, deeply tuned to their own models with the best tool-call and caching behavior — at the cost of lock-in.',
+     m:['Examples: OpenAI Agents SDK, Claude Agent SDK'],
+     k:['SDK','vendor']},
+    {id:'a-oai', label:'OpenAI Agents SDK', cat:'fw', size:1,
+     d:'Lightweight abstractions (agent, handoff, guardrail) plus the Responses API for built-in tools and tracing.',
+     m:['Upside: tight fit with GPT models, quick start'],
+     k:['OpenAI','SDK']},
+    {id:'a-claude', label:'Claude Agent SDK', cat:'fw', size:1,
+     d:'Designed for long tasks and code work, with built-in file operations, sub-agents, and context compaction.',
+     m:['Features: long-running tasks, the Skills mechanism, native MCP'],
+     k:['Anthropic','SDK']},
+    {id:'a-lowcode', label:'Low-code platforms', cat:'fw', size:2,
+     d:'Visual building for business users. Fine for standardized flows; deep customization tends to hit a ceiling.',
+     m:['Examples: Dify, Coze, n8n, Alibaba Bailian'],
+     k:['low-code','visual']},
+    {id:'a-dify', label:'Dify / Coze', cat:'fw', size:1,
+     d:'Workflow, knowledge base, and publishing channels in one — the mainstream choice for small and mid-size teams validating a scenario fast.',
+     m:['Upside: works out of the box, multi-model support','Weakness: limited complex state management'],
+     k:['Dify','Coze']},
+    {id:'a-n8n', label:'n8n', cat:'fw', size:1,
+     d:'An automation platform built around integrations; agent nodes drop into hundreds of existing system connectors.',
+     m:['Scenarios: cross-system data flow plus AI decisions'],
+     k:['n8n','automation']},
+
+    /* ===== eval & security ===== */
+    {id:'a-ops', label:'Eval & security', cat:'ops', size:3,
+     d:'The two gates that decide whether an agent ships. The 2026 consensus: an agent project without an evaluation system cannot scale.',
+     m:['Reality: most teams only do offline evals, with no production loop'],
+     k:['eval','security']},
+    {id:'a-eval', label:'Evaluation systems', cat:'ops', size:2,
+     d:'Moving from single-turn answer accuracy to multi-step task completion, which needs reproducible environments and trajectory-level judgment.',
+     m:['Three levels: unit (tool call) -> trajectory (multi-step) -> end to end (business metric)'],
+     k:['eval','evaluation']},
+    {id:'a-bench', label:'Benchmarks', cat:'ops', size:1,
+     d:'Static test sets are saturated; real-environment benchmarks dominate — code fixes, web operation, multi-turn tool use.',
+     m:['Examples: SWE-bench, GAIA, tau-bench, WebArena, OSWorld'],
+     k:['benchmark','environment']},
+    {id:'a-judge', label:'LLM-Judge', cat:'ops', size:1,
+     d:'Using a model to grade, suited to open-ended output, but bias has to be calibrated and periodically aligned against human labels.',
+     m:['Key points: rubrics, double-blind, agreement checks'],
+     k:['judge','scoring']},
+    {id:'a-trajectory', label:'Trajectory evaluation', cat:'ops', size:1,
+     d:'Not just the final answer but whether the path was reasonable, whether there were redundant steps, whether risky operations fired.',
+     m:['Metrics: step efficiency, tool misuse rate, repeat-call rate'],
+     k:['trajectory','process']},
+    {id:'a-obs', label:'Observability', cat:'ops', size:2,
+     d:'Agents fail differently from traditional software: the same input can take a completely different path, and without traces you cannot debug it.',
+     m:['The set: traces, cost, latency, failure attribution'],
+     k:['observability','trace']},
+    {id:'a-trace', label:'End-to-end tracing', cat:'ops', size:1,
+     d:'Recording each step\'s input, tool calls, returns, latency, and tokens — the only reliable way to locate a problem.',
+     m:['Examples: Langfuse, LangSmith, Braintrust, Arize Phoenix'],
+     k:['trace','tracing']},
+    {id:'a-cost', label:'Cost monitoring', cat:'ops', size:1,
+     d:'Agent token consumption is tens of times a normal chat, so budgets and alerts need to be tracked per session, task, and user.',
+     m:['Levers: tiered model routing, context caching, step caps'],
+     k:['cost','budget']},
+    {id:'a-guard', label:'Guardrails', cat:'ops', size:2,
+     d:'The agent security boundary moved from content risk to action risk: whatever it can call, it can break.',
+     m:['The OWASP LLM Top 10 ranks prompt injection first'],
+     k:['guardrail','security']},
+    {id:'a-inject', label:'Injection defense', cat:'ops', size:1,
+     d:'External content (pages, email, documents) can carry malicious instructions, so instructions and data need strict separation.',
+     m:['Methods: content marking, dual-model checks, capability allowlists'],
+     k:['injection','defense']},
+    {id:'a-perm', label:'Least privilege', cat:'ops', size:1,
+     d:'Declare explicitly what the agent may do and deny everything else; require human confirmation for high-risk actions.',
+     m:['Practice: a capability manifest as JSON, short-lived credentials per scenario'],
+     k:['permissions','least privilege']},
+    {id:'a-hitl', label:'Human in the loop', cat:'ops', size:2,
+     d:'Not a patch for weak capability but standard production design: critical points need human confirmation and a safety net.',
+     m:['Design: approval gates, interruptible, rollback-able'],
+     k:['HITL','human']},
+    {id:'a-approve', label:'Approval gates', cat:'ops', size:1,
+     d:'Insert confirmation before irreversible actions — payments, deletions, outbound messages. The single most effective risk control.',
+     m:['Forms: confirmation cards, second checks, amount thresholds'],
+     k:['approval','risk']},
+    {id:'a-rollback', label:'Rollback & compensation', cat:'ops', size:1,
+     d:'Design an inverse operation for every write so failures can be undone. More realistic than promising nothing goes wrong.',
+     m:['Patterns: saga, transactional compensation, snapshots'],
+     k:['rollback','compensation']}
+  ],
+  links: [
+    ['a-root','a-paradigm'],['a-root','a-memory'],['a-root','a-tool'],
+    ['a-root','a-proto'],['a-root','a-fw'],['a-root','a-ops'],
+
+    ['a-paradigm','a-loop'],['a-paradigm','a-plan'],['a-paradigm','a-multi'],['a-paradigm','a-reflect'],
+    ['a-loop','a-react'],['a-loop','a-pae'],
+    ['a-plan','a-decomp'],['a-plan','a-tot'],
+    ['a-multi','a-supervisor'],['a-multi','a-handoff'],['a-multi','a-swarm'],
+    ['a-reflect','a-selfreflex'],['a-reflect','a-verifier'],
+
+    ['a-memory','a-ctx'],['a-memory','a-mem'],['a-memory','a-rag'],['a-memory','a-state'],
+    ['a-ctx','a-wsc'],['a-ctx','a-compact'],
+    ['a-mem','a-l0'],['a-mem','a-forget'],
+    ['a-rag','a-arag'],['a-rag','a-graphrag'],
+    ['a-state','a-checkpoint'],['a-state','a-durable'],
+
+    ['a-tool','a-fc'],['a-tool','a-mcp'],['a-tool','a-code'],['a-tool','a-computer'],['a-tool','a-browser'],
+    ['a-fc','a-schema'],['a-fc','a-select'],
+    ['a-mcp','a-mcpserver'],['a-mcp','a-gateway'],
+    ['a-code','a-sandbox'],['a-code','a-notebook'],
+    ['a-computer','a-gui'],['a-computer','a-rpa'],
+    ['a-browser','a-playwright'],['a-browser','a-extract'],
+
+    ['a-proto','a-mcpp'],['a-proto','a-a2a'],['a-proto','a-ui'],['a-proto','a-cn'],
+    ['a-mcpp','a-discovery'],['a-mcpp','a-auth'],
+    ['a-a2a','a-card'],['a-a2a','a-task'],
+    ['a-ui','a-stream'],['a-ui','a-genui'],
+    ['a-cn','a-gbz'],['a-cn','a-aip'],
+
+    ['a-fw','a-graph'],['a-fw','a-role'],['a-fw','a-sdk'],['a-fw','a-lowcode'],
+    ['a-graph','a-langgraph'],['a-graph','a-temporal'],
+    ['a-role','a-crewai'],['a-role','a-autogen'],
+    ['a-sdk','a-oai'],['a-sdk','a-claude'],
+    ['a-lowcode','a-dify'],['a-lowcode','a-n8n'],
+
+    ['a-ops','a-eval'],['a-ops','a-obs'],['a-ops','a-guard'],['a-ops','a-hitl'],
+    ['a-eval','a-bench'],['a-eval','a-judge'],['a-eval','a-trajectory'],
+    ['a-obs','a-trace'],['a-obs','a-cost'],
+    ['a-guard','a-inject'],['a-guard','a-perm'],
+    ['a-hitl','a-approve'],['a-hitl','a-rollback'],
+
+    /* 跨域关联 */
+    ['a-gateway','a-auth'],
+    ['a-a2a','a-supervisor'],['a-a2a','a-handoff'],
+    ['a-mcpp','a-mcp'],['a-gbz','a-aip'],
+    ['a-mem','a-ctx'],
+    ['a-arag','a-graphrag'],['a-rag','a-mem'],
+    ['a-sandbox','a-perm'],
+    ['a-inject','a-computer'],['a-inject','a-browser'],
+    ['a-verifier','a-eval'],['a-trajectory','a-trace'],
+    ['a-langgraph','a-checkpoint'],['a-temporal','a-durable'],
+    ['a-claude','a-mcpp'],['a-oai','a-guard'],
+    ['a-crewai','a-supervisor'],['a-autogen','a-swarm'],
+    ['a-dify','a-rag'],['a-n8n','a-tool'],
+    ['a-cost','a-ctx'],['a-approve','a-perm'],
+    ['a-decomp','a-wsc'],['a-tot','a-verifier'],
+    ['a-multi','a-cost'],['a-react','a-fc']
+  ]
+};
+GRAPHS.enterprise = {
+  tab: 'Enterprise',
+  title: 'Enterprise AI Agent Reference Architecture',
+  subtitle: 'Left to right is the request path; grey is cross-cutting governance. The 2026 deployment consensus: decouple models, skills, and execution into three layers, and control LLM, MCP, and code traffic independently.',
+  layout: 'layered',
+  cats: [
+    {id:'l1',  name:'L1 Interface',   color:'#4f46e5'},
+    {id:'l2',  name:'L2 Access',      color:'#0ea5e9'},
+    {id:'l3',  name:'L3 Orchestration', color:'#14b8a6'},
+    {id:'l4',  name:'L4 Capability',  color:'#f59e0b'},
+    {id:'l5',  name:'L5 Execution',   color:'#ef4444'},
+    {id:'l6',  name:'L6 Data',        color:'#a855f7'},
+    {id:'gov', name:'Cross-cutting · governance', color:'#64748b'}
+  ],
+  nodes: [
+    /* L1 */
+    {id:'e-web', label:'Web / portal', cat:'l1', size:1,
+     d:'The unified internal entry point. In 2026 it is no longer a standalone chat page but a task panel embedded in the business system.',
+     m:['Key points: session isolation, inherited permissions, exportable results'],
+     k:['portal','entry']},
+    {id:'e-im', label:'IM & email', cat:'l1', size:1,
+     d:'Slack, Teams, email, and enterprise messengers are the most natural entry points — employees don\'t have to change their habits.',
+     m:['Key points: message signing, group boundaries, @-trigger policy'],
+     k:['IM','entry']},
+    {id:'e-voice', label:'Voice', cat:'l1', size:1,
+     d:'A requirement for phone support and field operations. End-to-end speech models brought latency down to conversational levels.',
+     m:['Key points: interruption handling, identity verification, call recording'],
+     k:['voice','calls']},
+    {id:'e-copilot', label:'Embedded copilot', cat:'l1', size:1,
+     d:'Living directly inside ERP, CRM, or office suites, offering context-relevant help in a side panel.',
+     m:['Key points: read the current record, actions limited to page permissions'],
+     k:['copilot','embedded']},
+    {id:'e-agui', label:'AG-UI rendering', cat:'l1', size:1,
+     d:'Rendering agent reasoning, tool calls, and artifacts as interactive components over a standard protocol rather than plain text.',
+     m:['Value: understandable, interruptible, confirmable'],
+     k:['AG-UI','rendering']},
+
+    /* L2 */
+    {id:'e-aigw', label:'AI gateway', cat:'l2', size:2,
+     d:'The single door for all LLM traffic: multi-model routing, quotas, caching, degradation, and content review all happen here.',
+     m:['Capabilities: model routing, semantic cache, retries, token metering','Value: swap models without touching business code'],
+     k:['gateway','routing']},
+    {id:'e-mcpgw', label:'MCP gateway', cat:'l2', size:2,
+     d:'Central control of MCP traffic: tool allowlists, auth, audit, rate limits. Keeps every agent from connecting straight into internal systems.',
+     m:['2026 enterprise practice: MCP traffic must pass through the gateway; direct connections are banned'],
+     k:['MCP','control']},
+    {id:'e-iam', label:'Identity & authorization', cat:'l2', size:2,
+     d:'Agents need their own identity and act on behalf of a user. Permission inheritance and minimization are the foundation of security.',
+     m:['Protocols: SSO, OAuth 2.1, SPIFFE, short-lived credentials'],
+     k:['IAM','OAuth']},
+    {id:'e-apim', label:'API & connection management', cat:'l2', size:1,
+     d:'Registering, versioning, and quota-managing internal and external APIs to give tooling a stable base.',
+     m:['Key points: versioned contracts, SLAs, circuit breaking'],
+     k:['API','integration']},
+    {id:'e-ratelimit', label:'Rate limits & quotas', cat:'l2', size:1,
+     d:'Quotas by user, team, and task so one agent can\'t take down the service or burn through the budget.',
+     m:['Dimensions: concurrency, QPS, daily token caps'],
+     k:['rate limit','quota']},
+
+    /* L3 */
+    {id:'e-supervisor', label:'Supervisor routing', cat:'l3', size:2,
+     d:'A controller agent handles intent recognition and task dispatch — the most controllable multi-agent topology in production.',
+     m:['Key points: explicit routing rules, sub-task timeouts, result validation'],
+     k:['supervisor','orchestration']},
+    {id:'e-workflow', label:'Workflow engine', cat:'l3', size:2,
+     d:'Deterministic steps go to the workflow, uncertain ones to the model. This hybrid is the mainstream enterprise shape in 2026.',
+     m:['Examples: Temporal, LangGraph, Camunda','Rule: if a rule can do it, don\'t use a model'],
+     k:['workflow','hybrid']},
+    {id:'e-state', label:'State & checkpoints', cat:'l3', size:1,
+     d:'Persist every step so work can resume after a break or a human intervention — the source of long-task reliability.',
+     m:['Key points: idempotent, replayable, versioned state'],
+     k:['state','resume']},
+    {id:'e-hitl', label:'Human approval', cat:'l3', size:2,
+     d:'Forced confirmation before irreversible actions (payments, deletions, outbound sends) — the last gate on risk.',
+     m:['Design: approval cards, timeout escalation, batch approval'],
+     k:['HITL','approval']},
+    {id:'e-queue', label:'Task queue', cat:'l3', size:1,
+     d:'Make long tasks asynchronous so they don\'t block the conversation, with priority and concurrency control to hold the SLA.',
+     m:['Key points: priorities, dead-letter queue, idempotent consumption'],
+     k:['queue','async']},
+    {id:'e-policy', label:'Policy engine', cat:'l3', size:1,
+     d:'Encoding who may do what, under which conditions, as executable policy — decoupled from model judgment.',
+     m:['Forms: rule DSL, OPA, amount thresholds'],
+     k:['policy','rules']},
+
+    /* L4 */
+    {id:'e-router', label:'Model routing', cat:'l4', size:2,
+     d:'Pick models by task difficulty, cost, and compliance: easy tasks to small models, sensitive data to self-hosted ones.',
+     m:['Policies: difficulty tiers, cost ceilings, data residency'],
+     k:['routing','multi-model']},
+    {id:'e-skills', label:'Skill library', cat:'l4', size:2,
+     d:'Business capabilities packaged as reusable tools or skills — the middle layer in the model-skill-execution split.',
+     m:['Forms: MCP servers, functions, skill packages','Governance: versions, ownership, eval baselines'],
+     k:['skills','tools']},
+    {id:'e-kb', label:'Enterprise knowledge base', cat:'l4', size:2,
+     d:'The knowledge substrate for RAG and GraphRAG. Quality depends on chunking, metadata, and permission filtering — not on the vector database you pick.',
+     m:['Key points: inherited document permissions, incremental updates, traceable citations'],
+     k:['RAG','knowledge base']},
+    {id:'e-mem', label:'Memory service', cat:'l4', size:1,
+     d:'Cross-session user preferences and task history, with tiered storage, active forgetting, and compliance deletion.',
+     m:['Key points: tenant isolation, TTL, explainable recall'],
+     k:['memory','memory']},
+    {id:'e-prompt', label:'Prompts & versions', cat:'l4', size:1,
+     d:'The system prompt is a core asset and needs the same versioning, canary release, and regression testing as code.',
+     m:['Key points: version tree, A/B, rollback, change audit'],
+     k:['prompt','versions']},
+    {id:'e-finetune', label:'Fine-tuned models', cat:'l4', size:1,
+     d:'In vertical scenarios, a fine-tuned 10B-70B model is often more accurate, cheaper, and more controllable than a general large model.',
+     m:['2026 consensus: a fine-tuned mid-size model is the best value in vertical scenarios'],
+     k:['fine-tuning','vertical']},
+
+    /* L5 */
+    {id:'e-sandbox', label:'Code sandbox', cat:'l5', size:2,
+     d:'All code execution happens isolated: no outbound network, read-only mounts, resource caps, destroyed after the run.',
+     m:['Examples: Firecracker microVMs, gVisor, E2B'],
+     k:['sandbox','isolation']},
+    {id:'e-connector', label:'System connectors', cat:'l5', size:2,
+     d:'The adapter layer to ERP, CRM, OA, and ticketing — what actually makes an enterprise agent able to do work.',
+     m:['Key points: idempotent writes, field mapping, failure compensation'],
+     k:['connector','ERP']},
+    {id:'e-rpa', label:'RPA bridge', cat:'l5', size:1,
+     d:'A path into legacy systems without APIs: deterministic scripts underneath, model calls only at decision points.',
+     m:['Pattern: RPA executes, LLM decides'],
+     k:['RPA','legacy']},
+    {id:'e-browser', label:'Browser automation', cat:'l5', size:1,
+     d:'Handling external sites and SaaS backends, which needs dedicated account pools, network egress, and behavior auditing.',
+     m:['Risks: session leakage, anti-bot, privilege escalation'],
+     k:['browser','automation']},
+    {id:'e-bus', label:'Message bus', cat:'l5', size:1,
+     d:'Asynchronous decoupling and event-driven flow between systems, so agents can react to business events instead of only answering questions.',
+     m:['Examples: Kafka, Pulsar, enterprise MQ'],
+     k:['event','bus']},
+
+    /* L6 */
+    {id:'e-vector', label:'Vector store', cat:'l6', size:1,
+     d:'Infrastructure for semantic retrieval. The difference between products is far smaller than the difference data governance makes.',
+     m:['Examples: Milvus, pgvector, Elasticsearch'],
+     k:['vector','retrieval']},
+    {id:'e-graphdb', label:'Graph database', cat:'l6', size:1,
+     d:'Backs multi-hop relation reasoning and permission graphs — the base for GraphRAG and risk scenarios.',
+     m:['Examples: Neo4j, NebulaGraph, TigerGraph'],
+     k:['graph','relations']},
+    {id:'e-lake', label:'Lake / warehouse', cat:'l6', size:1,
+     d:'The unified base for structured data. An agent\'s analytical ability ultimately depends on data quality and consistent metric definitions.',
+     m:['Key points: unified metric definitions, lineage, freshness'],
+     k:['lakehouse','warehouse']},
+    {id:'e-govdata', label:'Data governance', cat:'l6', size:2,
+     d:'Classification, masking, permission tags — this decides what an agent can see, and it\'s the evidence base for compliance audits.',
+     m:['Key points: data tiers, row/column permissions, masking rules'],
+     k:['governance','classification']},
+    {id:'e-audit', label:'Audit logs', cat:'l6', size:2,
+     d:'Recording who, through which agent, did what operation, on what data — a tamper-evident chain of responsibility.',
+     m:['Requirements: complete, tamper-proof, traceable to a single step'],
+     k:['audit','trail']},
+
+    /* cross-cutting governance */
+    {id:'e-observe', label:'Observability', cat:'gov', size:2,
+     d:'End-to-end traces, metrics, and attribution. Agent failure paths aren\'t reproducible, so without traces you\'re flying blind.',
+     m:['The set: traces, latency, cost, failure attribution','Examples: Langfuse, LangSmith, Arize'],
+     k:['observability','trace']},
+    {id:'e-eval', label:'Evaluation & regression', cat:'gov', size:2,
+     d:'Run offline eval sets before release, monitor online metrics after, and regress on every prompt or model change.',
+     m:['Three levels: tool -> trajectory -> business metric','Missing evals is the top reason pilots never reach production'],
+     k:['eval','regression']},
+    {id:'e-cost', label:'Cost governance', cat:'gov', size:1,
+     d:'Attribute token cost by team and scenario, set budgets and alerts, and turn AI spend into a manageable line item.',
+     m:['Levers: tiered routing, caching, step caps, budget alerts'],
+     k:['cost','FinOps']},
+    {id:'e-sec', label:'Guardrails', cat:'gov', size:2,
+     d:'Injection defense on input, leakage prevention on output, privilege checks on execution. Three independent controls; any failure rejects the call.',
+     m:['OWASP: roughly 83% of agent systems have injection vulnerabilities'],
+     k:['guardrail','security']},
+    {id:'e-compliance', label:'Compliance & audit', cat:'gov', size:1,
+     d:'Meeting algorithm filing, cross-border data, and sector regulation requirements, and being able to produce evidence for regulators and internal audit.',
+     m:['Key points: filing, retention periods, explainability statements'],
+     k:['compliance','regulation']},
+    {id:'e-devops', label:'Agent DevOps', cat:'gov', size:1,
+     d:'A joint release pipeline for prompts, tools, and models: canaries, rollback, shadow traffic, change tracking.',
+     m:['Key points: config as code, rollback-able, canary percentage control'],
+     k:['DevOps','release']},
+    {id:'e-coe', label:'AI CoE', cat:'gov', size:1,
+     d:'A center of excellence owning standards, reuse, and training. Beyond technology, organizational fit is often the real variable in project success.',
+     m:['Responsibilities: scenario review, asset reuse, training, measurement'],
+     k:['CoE','organization']}
+  ],
+  links: [
+    /* L1 → L2 */
+    ['e-web','e-aigw'],['e-im','e-aigw'],['e-voice','e-aigw'],
+    ['e-copilot','e-aigw'],['e-agui','e-aigw'],
+    ['e-aigw','e-iam'],['e-aigw','e-apim'],['e-aigw','e-ratelimit'],
+    ['e-apim','e-mcpgw'],['e-iam','e-mcpgw'],
+
+    /* L2 → L3 */
+    ['e-aigw','e-supervisor'],['e-mcpgw','e-supervisor'],
+    ['e-iam','e-policy'],['e-ratelimit','e-queue'],
+    ['e-supervisor','e-workflow'],['e-supervisor','e-policy'],
+    ['e-workflow','e-state'],['e-workflow','e-queue'],
+    ['e-policy','e-hitl'],['e-state','e-hitl'],
+
+    /* L3 → L4 */
+    ['e-supervisor','e-router'],['e-supervisor','e-skills'],
+    ['e-workflow','e-skills'],['e-state','e-mem'],
+    ['e-hitl','e-skills'],['e-router','e-prompt'],
+    ['e-router','e-finetune'],['e-skills','e-kb'],
+
+    /* L4 → L5 */
+    ['e-skills','e-sandbox'],['e-skills','e-connector'],
+    ['e-skills','e-browser'],['e-skills','e-rpa'],
+    ['e-kb','e-vector'],['e-mem','e-vector'],
+    ['e-connector','e-bus'],['e-rpa','e-bus'],
+    ['e-sandbox','e-audit'],['e-browser','e-audit'],
+
+    /* L5 → L6 */
+    ['e-bus','e-lake'],['e-connector','e-govdata'],
+    ['e-vector','e-lake'],['e-graphdb','e-lake'],
+    ['e-lake','e-govdata'],['e-govdata','e-audit'],
+    ['e-kb','e-graphdb'],
+
+    /* 治理横切 */
+    ['e-observe','e-supervisor'],['e-observe','e-aigw'],
+    ['e-eval','e-observe'],['e-eval','e-skills'],
+    ['e-cost','e-aigw'],['e-cost','e-router'],
+    ['e-sec','e-aigw'],['e-sec','e-sandbox'],['e-sec','e-mcpgw'],
+    ['e-compliance','e-audit'],['e-compliance','e-sec'],
+    ['e-devops','e-workflow'],['e-devops','e-prompt'],
+    ['e-coe','e-observe'],['e-coe','e-eval']
+  ]
+};
+
+
+/* ---------- state ---------- */
+let G = null, NODES = [], LINKS = [], MAP = new Map(), ADJ = new Map();
+let view = {s:1, x:0, y:0};
+let sel = null, hover = null, activeCats = new Set(), q = '';
+let nodeEls = new Map(), linkEls = [];
+
+/* ---------- helpers ---------- */
+function mk(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  if(attrs) for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function catOf(id){ return G.cats.find(c => c.id === id) || {name:'Other', color:'#94a3b8'}; }
+
+/* ---------- layout: radial (parent-anchored tree) ---------- */
+function layoutRadial(){
+  const root = NODES.find(n => n.root) || NODES[0];
+
+  // BFS: build spanning tree
+  NODES.forEach(n => { n.depth = Infinity; n.parent = null; n.ang = undefined; });
+  root.depth = 0;
+  const q = [root.id];
+  const seen = new Set([root.id]);
+  while(q.length){
+    const cur = MAP.get(q.shift());
+    const nbs = (ADJ.get(cur.id) || []).slice();
+    for(const nb of nbs){
+      const m = MAP.get(nb);
+      if(m && !seen.has(nb)){
+        seen.add(nb);
+        m.depth = cur.depth + 1;
+        m.parent = cur.id;
+        q.push(nb);
+      }
+    }
+  }
+  NODES.forEach(n => { if(!seen.has(n.id)){ n.depth = 2; n.parent = root.id; } });
+  root.x = 0; root.y = 0; root.ang = 0;
+
+  // depth-1 nodes: one angular sector per category
+  const cats = G.cats.map(c => c.id);
+  const span = Math.PI * 2 / cats.length;
+  const d1 = NODES.filter(n => n.depth === 1);
+  cats.forEach((cid, ci) => {
+    const arr = d1.filter(n => n.cat === cid);
+    arr.forEach((n, i) => {
+      const a = -Math.PI / 2 + ci * span + (((i + 0.5) / arr.length) - 0.5) * span * 0.82;
+      n.ang = a;
+      n.x = Math.cos(a) * 218;
+      n.y = Math.sin(a) * 218;
+    });
+  });
+  d1.forEach(n => { if(n.ang === undefined) n.ang = Math.atan2(n.y, n.x); });
+
+  // recursive: children fan out around their parent
+  function placeChildren(pid, guard){
+    if(guard > 8) return;
+    const kids = NODES.filter(n => n.parent === pid);
+    if(!kids.length) return;
+    const p = MAP.get(pid);
+    const baseAng = p.ang !== undefined ? p.ang : Math.atan2(p.y, p.x);
+    const spread = Math.min(1.75, 0.46 * kids.length);
+    const dist = p.depth === 0 ? 218 : (p.depth === 1 ? 176 : 156);
+    kids.forEach((k, i) => {
+      const t = kids.length === 1 ? 0.5 : i / (kids.length - 1);
+      const a = baseAng + (t - 0.5) * spread;
+      k.ang = a;
+      k.x = p.x + Math.cos(a) * dist;
+      k.y = p.y + Math.sin(a) * dist;
+    });
+    kids.forEach(k => placeChildren(k.id, guard + 1));
+  }
+  d1.forEach(n => placeChildren(n.id, 0));
+
+  // remember home positions, then relax gently so labels do not collide
+  NODES.forEach(n => { n.hx = n.x; n.hy = n.y; });
+  for(let it = 0; it < 130; it++){
+    for(let i = 0; i < NODES.length; i++){
+      for(let j = i + 1; j < NODES.length; j++){
+        const a = NODES[i], b = NODES[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d = Math.hypot(dx, dy) || .01;
+        const minD = 66;
+        if(d < minD){
+          const f = (minD - d) / d * 0.34;
+          const am = a.depth >= 2, bm = b.depth >= 2;
+          if(am && bm){
+            a.x -= dx * f; a.y -= dy * f;
+            b.x += dx * f; b.y += dy * f;
+          } else if(am){
+            a.x -= dx * f * 1.7; a.y -= dy * f * 1.7;
+          } else if(bm){
+            b.x += dx * f * 1.7; b.y += dy * f * 1.7;
+          }
+        }
+      }
+    }
+    for(const n of NODES){
+      if(n.depth < 2) continue;
+      n.x += (n.hx - n.x) * 0.16;
+      n.y += (n.hy - n.y) * 0.16;
+    }
+  }
+}
+
+/* ---------- layout: layered (architecture) ---------- */
+function layoutLayered(){
+  const order = G.cats.map(c => c.id);
+  const cols = order.map(c => NODES.filter(n => n.cat === c));
+  const maxN = Math.max(1, ...cols.map(c => c.length));
+  const colGap = 214;
+  const rowGap = Math.min(88, 800 / Math.max(maxN, 4));
+  const totalW = (order.length - 1) * colGap;
+  const maxSpan = maxN * rowGap;
+
+  cols.forEach((col, ci) => {
+    const x = -totalW / 2 + ci * colGap;
+    col.forEach((n, ri) => {
+      n.x = x;
+      n.y = (ri - (col.length - 1) / 2) * rowGap;
+      n.depth = 1;
+      n._col = ci;
+      n.fx = x; n.fy = n.y;
+    });
+  });
+  NODES.forEach(n => { if(n.root){ n.x = 0; n.y = -maxSpan / 2 - 90; n.fx = n.x; n.fy = n.y; } });
+
+  G._lay = {
+    cols: cols.map((col, ci) => ({x: -totalW / 2 + ci * colGap, cat: order[ci], n: col.length})),
+    top: -maxSpan / 2 - 26,
+    bottom: maxSpan / 2 + 26,
+    w: 176
+  };
+}
+
+/* keep labels from sitting on top of each other */
+function resolveLabelCollisions(){
+  const ctx = document.createElement('canvas').getContext('2d');
+  const items = [];
+  for(const n of NODES){
+    if(n.root) continue;
+    const fs = n.depth === 1 ? 12.5 : 11;
+    ctx.font = (n.depth === 1 ? '700 ' : '500 ') + fs + 'px sans-serif';
+    const w = ctx.measureText(n.label).width + 8;
+    const r = n.size === 3 ? 15 : n.size === 2 ? 11 : 8;
+    items.push({n, w, h: fs + 3, r, side: 1, lift: 0});
+  }
+  const boxOf = it => ({
+    x: it.n.x,
+    y: it.n.y + (it.side === 1 ? it.r + 14 + it.lift : -it.r - 6 - it.lift),
+    w: it.w, h: it.h
+  });
+  for(let pass = 0; pass < 8; pass++){
+    let moved = false;
+    for(let i = 0; i < items.length; i++){
+      for(let j = i + 1; j < items.length; j++){
+        const a = items[i], b = items[j];
+        const ba = boxOf(a), bb = boxOf(b);
+        if(Math.abs(ba.x - bb.x) < (ba.w + bb.w) / 2 + 2 &&
+           Math.abs(ba.y - bb.y) < (ba.h + bb.h) / 2 + 1){
+          const t = a.n.depth >= b.n.depth ? a : b;
+          if(t.side === 1 && t.lift === 0){ t.side = -1; }
+          else { t.lift += 15; }
+          moved = true;
+        }
+      }
+    }
+    if(!moved) break;
+  }
+  for(const it of items){
+    const o = nodeEls.get(it.n.id);
+    if(o) o.t.setAttribute('y', it.side === 1 ? it.r + 14 + it.lift : -it.r - 6 - it.lift);
+  }
+}
+
+/* ---------- render ---------- */
+let gLanes = null;
+
+function render(){
+  gLinks.innerHTML = ''; gNodes.innerHTML = '';
+  nodeEls.clear(); linkEls = [];
+
+  // swimlanes for layered layout
+  if(G.layout === 'layered' && G._lay){
+    if(!gLanes){ gLanes = mk('g', {'pointer-events':'none'}); vp.insertBefore(gLanes, gLinks); }
+    gLanes.innerHTML = '';
+    for(const c of G._lay.cols){
+      const cat = catOf(c.cat);
+      gLanes.appendChild(mk('rect', {
+        x: c.x - G._lay.w / 2, y: G._lay.top,
+        width: G._lay.w, height: G._lay.bottom - G._lay.top,
+        rx: 14, fill: cat.color, 'fill-opacity': .05,
+        stroke: cat.color, 'stroke-opacity': .18, 'stroke-width': 1
+      }));
+      const t = mk('text', {
+        x: c.x, y: G._lay.top - 13, 'text-anchor': 'middle',
+        'font-size': 12.5, 'font-weight': 700, fill: cat.color,
+        'font-family': 'inherit'
+      });
+      t.textContent = cat.name;
+      gLanes.appendChild(t);
+    }
+  } else if(gLanes){ gLanes.remove(); gLanes = null; }
+
+  // links
+  for(const [s, t] of LINKS){
+    const a = MAP.get(s), b = MAP.get(t);
+    if(!a || !b) continue;
+    const dc = (a._col !== undefined && b._col !== undefined) ? Math.abs(a._col - b._col) : 0;
+    const far = dc > 2;
+    const attrs = {
+      x1:a.x, y1:a.y, x2:b.x, y2:b.y,
+      stroke: far ? '#dde4f0' : '#cfd8e8', 'stroke-width':1.1, class:'link'
+    };
+    if(far) attrs['stroke-dasharray'] = '3 4';
+    const line = mk('line', attrs);
+    gLinks.appendChild(line);
+    linkEls.push({el:line, s, t});
+  }
+
+  // nodes
+  for(const n of NODES){
+    const cat = catOf(n.cat);
+    const r = n.root ? 26 : (n.size === 3 ? 15 : n.size === 2 ? 11 : 8);
+    const g = mk('g', {class:'node d' + (n.root ? 0 : Math.min(n.depth,3)), transform:`translate(${n.x},${n.y})`});
+    g.dataset.id = n.id;
+
+    const c = mk('circle', {
+      r: r,
+      fill: n.root ? '#0f172a' : cat.color,
+      'fill-opacity': n.root ? 1 : (n.depth === 3 ? .82 : 1),
+      stroke:'#ffffff', 'stroke-width': n.root ? 3 : 2
+    });
+    g.appendChild(c);
+
+    const label = n.label;
+    const ty = n.root ? 42 : r + 14;
+    const fs = n.root ? 15 : (n.depth === 1 ? 12.5 : 11);
+    const t = mk('text', {
+      x: 0, y: ty,
+      'text-anchor': 'middle',
+      'font-size': fs,
+      'font-weight': n.root ? 800 : (n.depth === 1 ? 700 : 500),
+      'font-family': '-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif',
+      fill: n.root ? '#0f172a' : (n.depth === 1 ? '#1e293b' : '#334155'),
+      'paint-order': 'stroke', stroke: '#fbfcff', 'stroke-width': 3.2, 'stroke-linejoin': 'round'
+    });
+    t.textContent = label;
+    g.appendChild(t);
+
+    gNodes.appendChild(g);
+    nodeEls.set(n.id, {g, c, t, n});
+  }
+  resolveLabelCollisions();
+  applyView();
+  updateHighlight();
+  updateZoomBadge();
+}
+
+/* ---------- view ---------- */
+function applyView(){
+  vp.setAttribute('transform', `translate(${view.x},${view.y}) scale(${view.s})`);
+  updateZoomBadge();
+}
+function updateZoomBadge(){
+  const zb = $('#zb'); if(zb) zb.textContent = Math.round(view.s * 100) + '%';
+}
+function fit(){
+  if(!NODES.length) return;
+  const padX = G.layout === 'layered' ? 100 : 72;
+  const padTop = G.layout === 'layered' ? 80 : 34;
+  const padBot = G.layout === 'layered' ? 80 : 40;
+  let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+  for(const n of NODES){
+    minX = Math.min(minX, n.x - padX); maxX = Math.max(maxX, n.x + padX);
+    minY = Math.min(minY, n.y - padTop); maxY = Math.max(maxY, n.y + padBot);
+  }
+  const W = svg.clientWidth, H = svg.clientHeight;
+  const s = Math.min(W / (maxX - minX), H / (maxY - minY)) * 0.94;
+  view.s = Math.max(.15, Math.min(2.2, s));
+  const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+  view.x = W / 2 - cx * view.s;
+  view.y = H / 2 - cy * view.s;
+  applyView();
+}
+
+/* ---------- highlight ---------- */
+function visible(n){
+  if(activeCats.size && !activeCats.has(n.cat) && !n.root) return false;
+  return true;
+}
+function updateHighlight(){
+  const focus = hover || sel;
+  const nb = new Set();
+  if(focus){
+    nb.add(focus);
+    for(const x of (ADJ.get(focus) || [])) nb.add(x);
+  }
+  const ql = q.trim().toLowerCase();
+  for(const [id, o] of nodeEls){
+    const n = o.n;
+    let dim = false;
+    if(!visible(n)) dim = true;
+    if(focus && !nb.has(id)) dim = true;
+    if(ql && !(n.label.toLowerCase().includes(ql) || (n.k || []).join(' ').toLowerCase().includes(ql))) dim = true;
+    o.g.setAttribute('opacity', dim ? .1 : 1);
+    o.g.classList.toggle('hit', !!ql && !dim && !focus);
+    o.g.classList.toggle('sel', sel === id);
+  }
+  for(const l of linkEls){
+    const on = focus ? (l.s === focus || l.t === focus) : true;
+    const vis = visible(MAP.get(l.s)) && visible(MAP.get(l.t));
+    l.el.setAttribute('opacity', on && vis ? 1 : (focus ? .08 : (vis ? .75 : .06)));
+    l.el.setAttribute('stroke', on && focus ? '#a5b4fc' : '#cfd8e8');
+    l.el.setAttribute('stroke-width', on && focus ? 1.9 : 1.1);
+  }
+}
+
+/* ---------- detail panel ---------- */
+const SHEETBAR = '<div class="sheet-bar"><span class="sheet-grip"></span><button class="sheet-close" type="button">Close</button></div>';
+function bindSheet(d){
+  const b = d.querySelector('.sheet-close');
+  if(b) b.onclick = () => { sel = null; document.body.classList.remove('sheet'); updateHighlight(); renderDetail(); };
+}
+
+function renderDetail(){
+  const d = $('#detail');
+  if(!sel){
+    const cats = G.cats.map(c => `${c.name} ${NODES.filter(n=>n.cat===c.id).length}`).join(' · ');
+    d.innerHTML = SHEETBAR + `
+      <div class="d-empty">
+        <h3>${esc(G.title)}</h3>
+        <p>${esc(G.subtitle)}</p>
+        <p style="font-size:11.5px;color:#94a3b8">${esc(cats)}</p>
+        <div class="rel-title">How to use</div>
+        <p style="font-size:12px">Click any node for its definition, where it stands in 2026, and what it connects to. Toggle layers on the left; the search box up top jumps to a keyword.</p>
+      </div>`;
+    bindSheet(d);
+    return;
+  }
+  const n = MAP.get(sel);
+  if(!n) return;
+  const cat = catOf(n.cat);
+  const rels = (ADJ.get(n.id) || []).map(id => MAP.get(id)).filter(Boolean);
+  d.innerHTML = SHEETBAR + `
+    <div class="badge" style="background:${cat.color}1a;color:${cat.color}"><i style="background:${cat.color}"></i>${esc(cat.name)}</div>
+    <div class="d-title">${esc(n.label)}</div>
+    <div class="d-desc">${esc(n.d || '')}</div>
+    ${n.m && n.m.length ? `<div class="d-meta">${n.m.map(x => '· ' + esc(x)).join('<br>')}</div>` : ''}
+    ${n.k && n.k.length ? `<div class="kw">${n.k.map(x => `<span>${esc(x)}</span>`).join('')}</div>` : ''}
+    <div class="rel-title">Connected ${rels.length}</div>
+    ${rels.map(r => {
+      const rc = catOf(r.cat);
+      return `<div class="rel" data-go="${r.id}"><i style="background:${rc.color}"></i>${esc(r.label)}<span class="dirmark">→</span></div>`;
+    }).join('')}
+  `;
+  d.querySelectorAll('[data-go]').forEach(x => {
+    x.onclick = () => { selectNode(x.dataset.go, true); };
+  });
+  bindSheet(d);
+}
+
+/* ---------- select ---------- */
+function selectNode(id, focusIt){
+  sel = (sel === id) ? null : id;
+  if(focusIt && sel){
+    const n = MAP.get(sel);
+    const W = svg.clientWidth, H = svg.clientHeight;
+    const target = Math.max(view.s, .85);
+    view.s = target;
+    view.x = W / 2 - n.x * target;
+    view.y = H / 2 - n.y * target;
+    applyView();
+  }
+  updateHighlight();
+  renderDetail();
+  document.body.classList.toggle('sheet', !!sel);
+}
+
+/* ---------- graph loading ---------- */
+function loadGraph(key){
+  G = GRAPHS[key];
+  NODES = G.nodes.map(n => ({...n}));
+  LINKS = G.links.map(l => [l[0], l[1]]);
+  MAP = new Map(NODES.map(n => [n.id, n]));
+  ADJ = new Map(NODES.map(n => [n.id, []]));
+  for(const [s, t] of LINKS){
+    if(ADJ.has(s) && ADJ.has(t)){ ADJ.get(s).push(t); ADJ.get(t).push(s); }
+  }
+  sel = null; hover = null; q = ''; $('#q').value = '';
+  activeCats = new Set();
+
+  if(G.layout === 'layered') layoutLayered(); else layoutRadial();
+
+  renderLegend(); renderStats(); renderTabs(); renderDetail();
+  render();
+  fit();
+}
+
+/* ---------- chrome ---------- */
+function renderTabs(){
+  const t = $('#tabs');
+  t.innerHTML = '';
+  Object.keys(GRAPHS).forEach((k, i) => {
+    const b = document.createElement('button');
+    b.textContent = (i + 1) + ' · ' + GRAPHS[k].tab;
+    b.className = (GRAPHS[k] === G) ? 'on' : '';
+    b.onclick = () => loadGraph(k);
+    t.appendChild(b);
+  });
+}
+function renderLegend(){
+  const boxes = [$('#legend'), $('#mlegend')].filter(Boolean);
+  boxes.forEach(b => { b.innerHTML = ''; });
+  for(const c of G.cats){
+    const count = NODES.filter(n => n.cat === c.id).length;
+    for(const box of boxes){
+      const row = document.createElement('div');
+      row.className = 'leg' + (activeCats.has(c.id) ? ' off' : '');
+      row.innerHTML = `<span class="dot" style="background:${c.color}"></span>
+        <span class="nm">${esc(c.name)}</span><span class="ct">${count}</span>`;
+      row.onclick = () => {
+        if(activeCats.has(c.id)) activeCats.delete(c.id); else activeCats.add(c.id);
+        renderLegend(); updateHighlight();
+      };
+      box.appendChild(row);
+    }
+  }
+}
+function renderStats(){
+  const st = $('#stats');
+  const d1 = NODES.filter(n => n.depth === 1).length;
+  st.innerHTML = `
+    <div class="stat"><span class="k">Nodes</span><span class="v">${NODES.length}</span></div>
+    <div class="stat"><span class="k">Links</span><span class="v">${LINKS.length}</span></div>
+    <div class="stat"><span class="k">Layers</span><span class="v">${G.cats.length}</span></div>
+    <div class="stat"><span class="k">Versions checked</span><span class="v">2026-10-25</span></div>`;
+}
+
+/* ---------- interaction ---------- */
+let drag = null;
+
+svg.addEventListener('pointerdown', e => {
+  const gEl = e.target.closest('.node');
+  if(gEl){
+    const id = gEl.dataset.id;
+    const n = MAP.get(id);
+    drag = {type:'node', id, n, moved:false};
+    gEl.parentNode.appendChild(gEl);
+    e.preventDefault();
+  } else {
+    drag = {type:'canvas', sx:e.clientX, sy:e.clientY, ox:view.x, oy:view.y};
+  }
+});
+
+window.addEventListener('pointermove', e => {
+  if(!drag) return;
+  if(drag.type === 'node'){
+    const rect = svg.getBoundingClientRect();
+    const mx = (e.clientX - rect.left - view.x) / view.s;
+    const my = (e.clientY - rect.top - view.y) / view.s;
+    drag.n.x = mx; drag.n.y = my;
+    drag.moved = true;
+    const o = nodeEls.get(drag.id);
+    if(o) o.g.setAttribute('transform', `translate(${mx},${my})`);
+    for(const l of linkEls){
+      if(l.s === drag.id){ l.el.setAttribute('x1', mx); l.el.setAttribute('y1', my); }
+      if(l.t === drag.id){ l.el.setAttribute('x2', mx); l.el.setAttribute('y2', my); }
+    }
+  } else {
+    view.x = drag.ox + (e.clientX - drag.sx);
+    view.y = drag.oy + (e.clientY - drag.sy);
+    applyView();
+  }
+});
+
+window.addEventListener('pointerup', e => {
+  if(drag && drag.type === 'node' && !drag.moved) selectNode(drag.id, false);
+  drag = null;
+});
+
+svg.addEventListener('dblclick', e => {
+  const gEl = e.target.closest('.node');
+  if(gEl) selectNode(gEl.dataset.id, true);
+});
+
+svg.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = svg.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+  const ns = Math.max(.12, Math.min(3.2, view.s * factor));
+  const k = ns / view.s;
+  view.x = mx - (mx - view.x) * k;
+  view.y = my - (my - view.y) * k;
+  view.s = ns;
+  applyView();
+}, {passive:false});
+
+// hover
+svg.addEventListener('pointerover', e => {
+  const gEl = e.target.closest('.node');
+  if(!gEl) return;
+  hover = gEl.dataset.id;
+  updateHighlight();
+});
+svg.addEventListener('pointerout', e => {
+  const gEl = e.target.closest('.node');
+  if(!gEl) return;
+  if(e.relatedTarget && gEl.contains(e.relatedTarget)) return;
+  hover = null;
+  updateHighlight();
+});
+
+// toolbar
+document.querySelectorAll('.toolbar button').forEach(b => {
+  b.onclick = () => {
+    if(b.dataset.act === 'fit') fit();
+    else { loadGraph(Object.keys(GRAPHS).find(k => GRAPHS[k] === G)); }
+  };
+});
+
+// search
+$('#q').addEventListener('input', e => {
+  q = e.target.value;
+  updateHighlight();
+});
+
+// keyboard
+window.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT') return;
+  const keys = Object.keys(GRAPHS);
+  const idx = keys.findIndex(k => GRAPHS[k] === G);
+  if(e.key === '1' && keys[0]) loadGraph(keys[0]);
+  if(e.key === '2' && keys[1]) loadGraph(keys[1]);
+  if(e.key === '3' && keys[2]) loadGraph(keys[2]);
+  if(e.key === 'f') fit();
+  if(e.key === 'Escape'){ sel = null; updateHighlight(); renderDetail(); }
+});
+
+// resize
+let rt;
+window.addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => { if(NODES.length) fit(); }, 160);
+});
+
+/* ---------- export png ---------- */
+$('#btnPng').onclick = () => {
+  // export the whole graph, not just the current viewport
+  const saved = {s:view.s, x:view.x, y:view.y};
+  fit();
+  const W = svg.clientWidth * 2, H = svg.clientHeight * 2;
+  const clone = svg.cloneNode(true);
+  clone.setAttribute('xmlns', NS);
+  clone.setAttribute('width', W);
+  clone.setAttribute('height', H);
+  clone.setAttribute('viewBox', `0 0 ${svg.clientWidth} ${svg.clientHeight}`);
+  const bg = mk('rect', {x:0, y:0, width:'100%', height:'100%', fill:'#fbfcff'});
+  clone.insertBefore(bg, clone.firstChild);
+
+  const str = new XMLSerializer().serializeToString(clone);
+  view.s = saved.s; view.x = saved.x; view.y = saved.y; applyView();
+  const img = new Image();
+  img.onload = () => {
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#fbfcff'; ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(img, 0, 0, W, H);
+    const a = document.createElement('a');
+    a.download = 'AI-KG-2026-' + G.tab.replace(/\s+/g,'-') + '.png';
+    a.href = cv.toDataURL('image/png');
+    a.click();
+  };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str);
+};
+
+/* ---------- mobile: move PNG export into the canvas toolbar ---------- */
+function placeExport(){
+  const btn = $('#btnPng');
+  if(!btn) return;
+  const bar = document.querySelector('.toolbar');
+  const small = window.matchMedia('(max-width: 880px)').matches;
+  const inBar = btn.parentNode && btn.parentNode.classList.contains('toolbar');
+  if(small && !inBar) bar.appendChild(btn);
+  else if(!small && inBar) document.querySelector('.topbar').appendChild(btn);
+}
+window.addEventListener('resize', placeExport);
+
+/* ---------- boot ---------- */
+(function(){
+  const sp = new URLSearchParams(location.search);
+  const p = sp.get('g');
+  loadGraph(p && GRAPHS[p] ? p : 'panorama');
+  placeExport();
+  const nid = sp.get('n');
+  if(nid && MAP.has(nid)) selectNode(nid, true);
+  if(sp.get('clean') === '1'){
+    document.body.classList.add('clean');
+    requestAnimationFrame(() => { fit(); setTimeout(fit, 120); });
+  }
+})();
+</script>
+</body>
+</html>

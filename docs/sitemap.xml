@@ -56,6 +56,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ezaiops.com/en/graph/ai-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/graph/ai-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/graph/ai-2026/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/graph/ai-2026/"/>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/en/posts/ai-stack-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/ai-stack-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/ai-stack-2026/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/ai-stack-2026/"/>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ezaiops.com/en/posts/catching-silent-failures/</loc>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/catching-silent-failures/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/catching-silent-failures/"/>
@@ -115,6 +133,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/privacy/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/privacy/"/>
     <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/graph/ai-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/graph/ai-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/graph/ai-2026/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/graph/ai-2026/"/>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ezaiops.com/posts/ai-stack-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/ai-stack-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/ai-stack-2026/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/ai-stack-2026/"/>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

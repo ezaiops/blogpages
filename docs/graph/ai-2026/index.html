@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 技术全景图谱 2026 · 可交互 · 轻松自动化笔记</title>
+<meta name="description" content="2026 年 AI 技术栈的六层结构图谱:基础、模型、能力、工程、应用、前沿与治理,共 93 个节点。可按层筛选、搜索、点开节点看说明,纯浏览器本地渲染。">
+<link rel="canonical" href="https://ezaiops.com/graph/ai-2026/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI 技术全景图谱 2026 · 可交互">
+<meta property="og:description" content="六层结构、93 个节点,可按层筛选与搜索。配套文章《AI 技术栈的六层结构》的配图。">
+<meta property="og:url" content="https://ezaiops.com/graph/ai-2026/">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI 技术全景图谱 2026",
+  "url": "https://ezaiops.com/graph/ai-2026/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "zh-CN",
+  "isAccessibleForFree": true,
+  "description": "2026 年 AI 技术栈的六层结构交互式图谱,共 93 个节点。",
+  "publisher": { "@type": "Organization", "name": "EZ AI Ops Tips", "url": "https://ezaiops.com/" }
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f6fb; --card:#fff; --line:#e5eaf3; --text:#0f172a; --muted:#6b7a90;
+  --brand:#4f46e5; --soft:#f8fafc;
+}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--text); overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+.app{display:flex;flex-direction:column;height:100vh}
+
+/* ---------- top bar ---------- */
+.topbar{
+  height:64px;flex:0 0 64px;display:flex;align-items:center;gap:20px;
+  padding:0 20px;background:var(--card);border-bottom:1px solid var(--line);z-index:20;
+}
+.brand{display:flex;align-items:center;gap:11px;flex:0 0 auto}
+.logo{
+  width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;font-size:13px;font-weight:800;letter-spacing:.5px;
+  box-shadow:0 3px 10px rgba(79,70,229,.28);
+}
+.brand h1{font-size:14.5px;font-weight:700;letter-spacing:.2px;line-height:1.25}
+.brand p{font-size:11px;color:var(--muted);margin-top:1px}
+
+.tabs{display:flex;gap:4px;background:#f1f4fa;padding:4px;border-radius:10px;flex:0 0 auto}
+.tabs button{
+  border:0;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);
+  padding:7px 15px;border-radius:7px;cursor:pointer;transition:.16s;white-space:nowrap;
+}
+.tabs button:hover{color:var(--text)}
+.tabs button.on{background:#fff;color:var(--brand);box-shadow:0 1px 3px rgba(15,23,42,.1)}
+
+.spacer{flex:1}
+.search{position:relative;flex:0 0 auto}
+.search input{
+  width:210px;height:34px;border:1px solid var(--line);border-radius:9px;padding:0 12px 0 32px;
+  font:inherit;font-size:12.5px;background:var(--soft);outline:none;transition:.16s;color:var(--text);
+}
+.search input:focus{border-color:#c7d2fe;background:#fff;box-shadow:0 0 0 3px rgba(79,70,229,.09);width:240px}
+.search svg{position:absolute;left:10px;top:9px;width:15px;height:15px;stroke:#94a3b8;fill:none;stroke-width:2}
+.btn{
+  height:34px;padding:0 13px;border:1px solid var(--line);background:#fff;border-radius:9px;
+  font:inherit;font-size:12.5px;font-weight:600;color:#475569;cursor:pointer;transition:.16s;white-space:nowrap;
+}
+.btn:hover{border-color:#c7d2fe;color:var(--brand);background:#fafaff}
+
+/* back link to article */
+.backlink{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:600;color:#64748b;text-decoration:none;
+  padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;
+  transition:.16s;
+}
+.backlink:hover{color:var(--brand);border-color:#c7d2fe;background:#fafaff}
+
+/* mobile legend strip + hint */
+.mlegend{display:none}
+.mhint{display:none}
+
+/* mobile detail sheet */
+.sheet-bar{display:none}
+.sheet-grip{width:38px;height:4px;border-radius:2px;background:#d5dce8;margin:0 auto 2px}
+.sheet-close{
+  border:0;background:#f1f4fa;color:#64748b;font:inherit;font-size:11.5px;font-weight:600;
+  padding:5px 12px;border-radius:7px;cursor:pointer;
+}
+.sheet-close:hover{background:#e6ecf7;color:var(--brand)}
+
+/* ---------- layout ---------- */
+main{flex:1;display:flex;min-height:0}
+.panel{
+  background:var(--card);overflow-y:auto;flex:0 0 auto;padding:16px 14px;
+}
+.panel::-webkit-scrollbar{width:6px}
+.panel::-webkit-scrollbar-thumb{background:#dbe2ee;border-radius:3px}
+.panel.left{width:216px;border-right:1px solid var(--line)}
+.panel.right{width:308px;border-left:1px solid var(--line)}
+.sec{margin-bottom:20px}
+.sec-title{
+  font-size:10.5px;font-weight:700;color:#94a3b8;letter-spacing:1.1px;text-transform:uppercase;
+  margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;
+}
+.sec-title span{font-weight:600;letter-spacing:0;text-transform:none;font-size:10px;color:#b6c2d4}
+
+/* legend */
+.leg{display:flex;align-items:center;gap:8px;padding:6px 7px;border-radius:7px;cursor:pointer;transition:.14s;margin-bottom:1px}
+.leg:hover{background:var(--soft)}
+.leg.off{opacity:.35}
+.leg .dot{width:9px;height:9px;border-radius:3px;flex:0 0 auto}
+.leg .nm{font-size:12px;font-weight:500;flex:1}
+.leg .ct{font-size:10.5px;color:#b6c2d4;font-variant-numeric:tabular-nums}
+
+/* stats */
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px dashed #eef2f8}
+.stat:last-child{border:0}
+.stat .k{font-size:11.5px;color:var(--muted)}
+.stat .v{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+
+.hint{
+  font-size:10.5px;color:#94a3b8;line-height:1.85;background:var(--soft);
+  border:1px solid #eef2f8;border-radius:8px;padding:9px 10px;
+}
+.hint b{color:#64748b;font-weight:600}
+
+/* stage */
+#stage{flex:1;position:relative;overflow:hidden;min-width:0;
+  background:
+    radial-gradient(circle at 1px 1px,#dde4f0 1px,transparent 0) 0 0/22px 22px,
+    linear-gradient(180deg,#fbfcff,#f7f9fd);
+}
+#graph{width:100%;height:100%;display:block;touch-action:none}
+.toolbar{position:absolute;right:14px;bottom:14px;display:flex;gap:6px;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(8px);padding:5px;border-radius:10px;
+  border:1px solid var(--line);box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.toolbar button{
+  border:0;background:transparent;font:inherit;font-size:11.5px;font-weight:600;color:#64748b;
+  padding:6px 11px;border-radius:6px;cursor:pointer;transition:.14s;
+}
+.toolbar button:hover{background:#eef2ff;color:var(--brand)}
+.zoombadge{
+  position:absolute;left:14px;bottom:14px;font-size:11px;color:#94a3b8;font-variant-numeric:tabular-nums;
+  background:rgba(255,255,255,.85);padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+}
+
+/* node / link */
+.link{stroke:#cfd8e8;stroke-width:1.1;fill:none;transition:opacity .18s}
+.link.hi{stroke:#a5b4fc;stroke-width:2}
+.node{cursor:grab}
+.node:active{cursor:grabbing}
+.node circle{transition:opacity .18s,stroke-width .18s}
+.node text{
+  font-size:11px;font-weight:500;fill:#334155;text-anchor:middle;
+  paint-order:stroke;stroke:#fbfcff;stroke-width:3.2px;stroke-linejoin:round;
+  pointer-events:none;user-select:none;transition:opacity .18s;
+}
+.node.d1 text{font-size:12.5px;font-weight:700;fill:#1e293b}
+.node.d0 text{font-size:15px;font-weight:800;fill:#0f172a;letter-spacing:.3px}
+.node.dim circle,.node.dim text{opacity:.13}
+.node.hit circle{stroke:#4f46e5;stroke-width:3}
+.node.sel circle{stroke:#4f46e5;stroke-width:3.5}
+.ring{fill:none;stroke:#4f46e5;stroke-width:1.5;opacity:.55}
+
+/* detail */
+.d-empty h3{font-size:13.5px;font-weight:700;margin-bottom:8px}
+.d-empty p{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px}
+.d-title{font-size:16px;font-weight:750;line-height:1.4;margin-bottom:8px;letter-spacing:.2px}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;
+  padding:3px 9px;border-radius:20px;margin-bottom:12px;
+}
+.badge i{width:6px;height:6px;border-radius:50%;display:block}
+.d-desc{font-size:12.5px;line-height:1.9;color:#3f4d63;margin-bottom:14px}
+.d-meta{font-size:12px;line-height:1.85;color:#475569;background:var(--soft);border:1px solid #eef2f8;
+  border-radius:9px;padding:10px 12px;margin-bottom:14px}
+.d-meta b{color:#0f172a;font-weight:700}
+.kw{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.kw span{font-size:10.5px;background:#eef2ff;color:#4f46e5;padding:3px 8px;border-radius:5px;font-weight:600}
+.rel-title{font-size:10.5px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.rel{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:7px;cursor:pointer;transition:.14s;font-size:12px}
+.rel:hover{background:#f1f5ff;color:var(--brand)}
+.rel i{width:6px;height:6px;border-radius:50%;flex:0 0 auto}
+.rel .dirmark{color:#cbd5e1;font-size:10px;margin-left:auto}
+
+/* ---------- responsive ---------- */
+body.clean .topbar,body.clean .panel,body.clean .toolbar,body.clean .zoombadge{display:none}
+body.clean #stage{background:#ffffff}
+@media (max-width: 1240px){
+  .panel.left{width:186px;padding:14px 11px}
+  .panel.right{width:270px}
+  .search input{width:158px}
+  .search input:focus{width:178px}
+}
+@media (max-width: 1080px){
+  .panel.left{display:none}
+  .brand p{display:none}
+}
+@media (max-width: 880px){
+  .topbar{height:auto;flex:0 0 auto;flex-wrap:wrap;padding:9px 12px;gap:9px}
+  .backlink{padding:5px 9px;font-size:11.5px}
+  .brand{flex:1 1 auto;min-width:0}
+  .brand h1{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brand p{display:none}
+  .btn{padding:0 9px;font-size:11.5px}
+  .tabs{order:3;width:100%;overflow-x:auto;padding:3px;border-radius:9px}
+  .tabs button{flex:1 0 auto;padding:6px 12px;font-size:11.5px}
+  .search{order:4;width:100%}
+  .search input,.search input:focus{width:100%}
+  .spacer{display:none}
+
+  /* detail panel becomes a bottom sheet */
+  .panel.right{
+    display:block;position:fixed;left:0;right:0;bottom:0;width:100%;
+    max-height:64vh;border-left:0;border-top:1px solid var(--line);
+    border-radius:16px 16px 0 0;padding:8px 16px 24px;
+    box-shadow:0 -10px 34px rgba(15,23,42,.18);z-index:40;
+    transform:translateY(104%);transition:transform .24s cubic-bezier(.4,0,.2,1);
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  }
+  body.sheet .panel.right{transform:translateY(0)}
+  .sheet-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;
+    position:sticky;top:0;background:#fff;padding:8px 0 6px;margin-bottom:4px;z-index:2}
+  .sheet-grip{position:absolute;left:50%;transform:translateX(-50%);top:4px}
+  .zoombadge{bottom:auto;top:12px;left:12px}
+  .toolbar{bottom:auto;top:12px;right:12px}
+
+  .mlegend{
+    display:flex;gap:6px;position:absolute;left:10px;right:10px;top:60px;z-index:30;
+    overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none;
+  }
+  .mlegend::-webkit-scrollbar{display:none}
+  .mlegend .leg{
+    flex:0 0 auto;margin:0;padding:5px 11px;border-radius:20px;
+    background:rgba(255,255,255,.94);border:1px solid var(--line);
+    box-shadow:0 1px 4px rgba(15,23,42,.06);
+  }
+  .mlegend .leg .ct{display:none}
+  .mlegend .leg .nm{font-size:11.5px}
+  .mlegend .leg.off{opacity:.4}
+
+  .mhint{
+    display:block;position:absolute;left:50%;transform:translateX(-50%);bottom:18px;z-index:30;
+    background:rgba(15,23,42,.76);color:#fff;font-size:11.5px;font-weight:500;
+    padding:7px 15px;border-radius:20px;white-space:nowrap;pointer-events:none;
+    transition:opacity .25s;
+  }
+  body.sheet .mhint{opacity:0}
+}
+</style>
+</head>
+<body>
+<noscript>
+  <div style="padding:16px 20px;background:#fffbe8;border-bottom:1px solid #f0e3b8;font-size:13px;line-height:1.8">
+    <b>这个页面需要 JavaScript</b> 才能渲染交互图谱。纯文字版本请看配套文章:
+    <a href="../../posts/ai-stack-2026/">《AI 技术栈的六层结构:一份 2026 年的运维视角地图》</a>。
+  </div>
+</noscript>
+<div class="app">
+  <header class="topbar">
+    <a class="backlink" href="../../posts/ai-stack-2026/" title="返回文章:AI 技术栈的六层结构">← 文章</a>
+    <div class="brand">
+      <div class="logo">AI</div>
+      <div>
+        <h1>AI 知识图谱 · 2026</h1>
+        <p>全景 / Agent / 企业级 · 交互式</p>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+    <div class="spacer"></div>
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" placeholder="搜索节点，如 MCP、记忆…" autocomplete="off">
+    </div>
+    <button class="btn" id="btnPng">导出 PNG</button>
+  </header>
+
+  <main>
+    <aside class="panel left">
+      <div class="sec">
+        <div class="sec-title">图层筛选 <span id="legTip">点击隐藏</span></div>
+        <div id="legend"></div>
+      </div>
+      <div class="sec">
+        <div class="sec-title">图谱规模</div>
+        <div id="stats"></div>
+      </div>
+      <div class="hint">
+        <b>拖拽</b> 节点可固定位置<br>
+        <b>滚轮</b> 缩放，空白处拖动平移<br>
+        <b>双击</b> 节点聚焦放大<br>
+        <b>1 / 2 / 3</b> 快速切换图谱
+      </div>
+      <div class="hint" style="margin-top:10px">
+        <b>口径说明</b><br>
+        分层结构为工程判断,不含市场数据;引用的标准与法规已核对原文。节点会持续更新,<a href="../../posts/ai-stack-2026/" style="color:var(--brand)">配套文章</a>里的结构判断为准。
+      </div>
+      <div class="hint" style="margin-top:10px">
+        <b>关于</b><br>
+        <a href="../../posts/ai-stack-2026/" style="color:var(--brand)">读配套文章</a><br>
+        <a href="https://ezaiops.com/" style="color:var(--brand)">轻松自动化笔记</a>
+      </div>
+    </aside>
+
+    <div id="stage">
+      <svg id="graph">
+        <g id="viewport">
+          <g id="links"></g>
+          <g id="nodes"></g>
+        </g>
+      </svg>
+      <div class="mlegend" id="mlegend"></div>
+      <div class="mhint" id="mhint">点节点看说明 · 双指缩放</div>
+      <div class="zoombadge" id="zb">100%</div>
+      <div class="toolbar">
+        <button data-act="fit">适配画布</button>
+        <button data-act="reset">重置布局</button>
+      </div>
+    </div>
+
+    <aside class="panel right" id="detail"></aside>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   AI Knowledge Graph 2026 — single-file interactive viewer
+   hosted at /graph/ai-2026/ · companion to /posts/ai-stack-2026/
+   ============================================================ */
+const NS = 'http://www.w3.org/2000/svg';
+const $ = s => document.querySelector(s);
+const svg = $('#graph'), vp = $('#viewport'), gLinks = $('#links'), gNodes = $('#nodes');
+
+const GRAPHS = {};
+GRAPHS.panorama = {
+  tab: 'AI 全景',
+  title: 'AI 技术全景图谱',
+  subtitle: '2026 年 Q4 视角：从算力底座到应用落地，六层结构 + 跨层耦合关系。技术范式正从「参数规模竞赛」转向「物理世界建模」与「智能体工程化」。',
+  layout: 'radial',
+  cats: [
+    {id:'base',  name:'基础层',     color:'#4f46e5'},
+    {id:'model', name:'模型层',     color:'#0ea5e9'},
+    {id:'cap',   name:'能力层',     color:'#14b8a6'},
+    {id:'eng',   name:'工程层',     color:'#f59e0b'},
+    {id:'app',   name:'应用层',     color:'#ef4444'},
+    {id:'edge',  name:'前沿与治理', color:'#a855f7'}
+  ],
+  nodes: [
+    {id:'p-root', label:'AI 技术全景', cat:'base', root:true, size:3,
+     d:'2026 年的 AI 技术栈已形成稳定的六层结构。与 2023 年的「模型中心」叙事不同，当前价值重心向两端迁移：一端是算力与推理成本，另一端是智能体的工程化落地。',
+     m:['观察窗口：2026 年 10 月','核心矛盾：能力过剩 vs 落地不足'],
+     k:['技术栈','2026']},
+
+    /* ===== 基础层 ===== */
+    {id:'p-base', label:'算力与基础设施', cat:'base', size:3,
+     d:'整个技术栈的物理约束层。2026 年的核心矛盾不是「买不到卡」，而是「电力与互联带宽」——万卡集群的瓶颈已从芯片转向供电、散热与网络拓扑。',
+     m:['关键指标：每美元 token 成本','2026 趋势：推理算力占比首次超过训练'],
+     k:['算力','集群','成本']},
+    {id:'p-chip', label:'AI 芯片', cat:'base', size:2,
+     d:'GPU 仍主导训练，但推理侧 ASIC 份额快速上升。自研芯片成为云厂商的标配，用于摊薄长尾推理成本。',
+     m:['代表：NVIDIA  Rubin 系、Google TPU、AWS Trainium','国产：昇腾、寒武纪、海光'],
+     k:['GPU','ASIC','TPU']},
+    {id:'p-hbm', label:'HBM 与互联', cat:'base', size:1,
+     d:'显存带宽决定了大模型推理的吞吐上限，NVLink / 光互联决定集群扩展效率。HBM 供给仍是全行业最硬的约束之一。',
+     m:['关键：HBM3E/HBM4、NVLink、InfiniBand、光模块'],
+     k:['HBM','NVLink']},
+    {id:'p-asic', label:'自研 ASIC', cat:'base', size:1,
+     d:'云厂商用专用芯片承接稳定的大规模推理负载，单位成本可降至通用 GPU 的三分之一以下。',
+     m:['代表：TPU v7、Trainium 3、昇腾 910C'],
+     k:['ASIC','降本']},
+    {id:'p-dc', label:'集群与数据中心', cat:'base', size:2,
+     d:'十万卡级集群成为前沿实验室的入场券。供电、液冷、网络拓扑（如无阻塞胖树）共同决定有效算力利用率。',
+     m:['2026：单集群规模进入 10 万卡量级','关键指标：MFU、集群可用率'],
+     k:['数据中心','液冷']},
+    {id:'p-wan', label:'万卡集群', cat:'base', size:1,
+     d:'大规模训练的工程难点在于故障率——万卡规模下硬件故障是常态，需要自动检测与断点续训。',
+     m:['关键技术：检查点、弹性训练、故障自愈'],
+     k:['分布式训练']},
+    {id:'p-cool', label:'液冷', cat:'base', size:1,
+     d:'单机柜功率密度突破风冷极限后，液冷从可选项变为必选项，直接影响 PUE 与选址。',
+     m:['形态：冷板式、浸没式'],
+     k:['散热','PUE']},
+    {id:'p-rent', label:'算力租赁', cat:'base', size:1,
+     d:'中小团队的主流选择。2026 年推理算力租赁价格持续下行，但高端训练卡仍然紧俏。',
+     m:['形态：按卡时、按 token、预留实例'],
+     k:['云','租赁']},
+    {id:'p-inf', label:'推理优化', cat:'base', size:2,
+     d:'决定商业模式能否成立的关键工程层。同样的模型，优化前后单位 token 成本可相差一个数量级。',
+     m:['手段：量化、KV Cache、批调度、PD 分离、投机解码'],
+     k:['推理','降本']},
+    {id:'p-quant', label:'量化与 KV Cache', cat:'base', size:1,
+     d:'FP8 已成为服务端默认精度，INT4 在边缘与本地部署普及。KV Cache 的分页管理与复用是长上下文场景的核心优化点。',
+     m:['代表：FP8、AWQ/GPTQ、PagedAttention'],
+     k:['量化','KV Cache']},
+    {id:'p-pd', label:'PD 分离', cat:'base', size:1,
+     d:'把预填充（Prefill）与解码（Decode）拆到不同资源池，分别优化，是 2025-2026 年大规模推理服务的主流架构。',
+     m:['收益：吞吐提升 2-4 倍','配套：KV 传输、调度器'],
+     k:['Prefill','Decode']},
+    {id:'p-domestic', label:'国产算力', cat:'base', size:2,
+     d:'在出口管制背景下形成独立生态。软件栈成熟度（而非纸面算力）是当前最大短板。',
+     m:['代表：昇腾 + CANN、寒武纪、海光 DCU','2026：多芯片适配框架（如 FlagOS）推进中'],
+     k:['国产化','昇腾']},
+    {id:'p-ascend', label:'昇腾生态', cat:'base', size:1,
+     d:'国内最完整的一体化方案，从芯片到框架到行业模型。迁移成本与算子覆盖是落地的主要摩擦点。',
+     m:['软件栈：CANN、MindSpore、MindIE'],
+     k:['昇腾','CANN']},
+
+    /* ===== 模型层 ===== */
+    {id:'p-model', label:'大模型', cat:'model', size:3,
+     d:'2026 年的模型层呈现「哑铃结构」：顶端是少数闭源旗舰，底端是性能接近前沿的开源权重模型，中间层的通用中型模型被快速挤压。',
+     m:['关键变化：开源权重追平上一代闭源旗舰','选型逻辑：从「最强」转向「够用 + 可控」'],
+     k:['LLM','基础模型']},
+    {id:'p-closed', label:'闭源旗舰', cat:'model', size:2,
+     d:'代表当前能力上限，主打复杂推理、长程任务与多模态融合。2026 下半年的明显变化是「旗舰 + 高性价比」分层，选型不再只看旗舰。',
+     m:['旗舰：GPT-6 Astra（09-03）· Claude Opus 5.5（09-22）· Gemini 4 Argon（10-14）',
+        '高性价比：GPT-6.1 Sol（09-29）· Sonnet 5.5（09-29）',
+        '版本核对至 2026-10-25，发版节奏快，以官方为准'],
+     k:['闭源','旗舰','版本']},
+    {id:'p-gpt6', label:'GPT-6 Astra', cat:'model', size:1,
+     d:'2026 年 9 月发布的旗舰，主打长程任务执行与工具调用稳定性，是 Agent 场景的常见基线。',
+     m:['发布：2026-09-03','同系：GPT-6.1 Sol（09-29，价格约为 Astra 五分之一）、GPT-6 Luna'],
+     k:['OpenAI','GPT-6']},
+    {id:'p-opus', label:'Claude Opus 5.5', cat:'model', size:1,
+     d:'代码、长文档与指令遵循表现稳定，Agent 编码与逆向工程能力突出，企业可控性是其差异化卖点。',
+     m:['发布：2026-09-22（版本号自 5.2 跳至 5.5）','同系：Sonnet 5.5（09-29，更快更便宜，部分代码任务反超 Opus）'],
+     k:['Anthropic','Claude','Opus']},
+    {id:'p-gemini', label:'Gemini 4 Argon', cat:'model', size:1,
+     d:'原生多模态见长，2026 年 10 月的新旗舰把重点放在复杂软件工程与长任务，而非单纯拉长上下文。',
+     m:['发布：2026-10-14','输入、思考与输出共享约 1M token 额度','生态：Gemini App、AI Studio、搜索 AI 模式'],
+     k:['Google','Gemini','Argon']},
+    {id:'p-cnd', label:'国产闭源', cat:'model', size:1,
+     d:'在中文、本土知识与合规场景具备优势，价格战使 API 成本显著低于海外旗舰。',
+     m:['代表（截至 2026-10）：豆包 Seed 2.1、文心 ERNIE 5、混元 Hy4','豆包 Seed 2.1 Pro/Turbo 于 2026-06-23 发布，256K 上下文'],
+     k:['国产','中文']},
+    {id:'p-open', label:'开源权重', cat:'model', size:2,
+     d:'2026 年最重要的结构性变化：开源权重模型在多数任务上追平上一代闭源旗舰，企业私有化部署成为现实选项。',
+     m:['架构共识：MoE 稀疏，总参百 B 至万亿级，仅激活少量参数','许可：Apache-2.0 / MIT 阵营扩大'],
+     k:['开源','私有化']},
+    {id:'p-qwen', label:'Qwen3.8', cat:'model', size:1,
+     d:'全球衍生模型数量最多的开源家族，覆盖 0.5B 到万亿级 MoE，多语言与中文能力领先。',
+     m:['2026-08-03 发布，08-13 开源权重（2.4T-A95B）','生态：衍生模型与下载量居开源前列'],
+     k:['阿里','Qwen']},
+    {id:'p-ds', label:'DeepSeek V4.1', cat:'model', size:1,
+     d:'以极致性价比著称，2026 年 9 月的 V4.1 Flash 进一步把价格下压，是成本敏感场景的首选之一。',
+     m:['2026-09-10 发布，552B MoE，10-17 更新 1017 版','采用峰谷定价，闲时价格约为高峰一半'],
+     k:['DeepSeek','性价比']},
+    {id:'p-kimi', label:'Kimi K3', cat:'model', size:1,
+     d:'主打超长上下文与开源权重，面向长文档、代码库级理解场景。',
+     m:['发布：2026-07-16，07-27 开源权重','2.8T 参数、1M 上下文、KDA 混合线性注意力'],
+     k:['月之暗面','长上下文']},
+    {id:'p-llama', label:'Llama 4 / GLM-5.3', cat:'model', size:1,
+     d:'国际与国产开放阵营的另外两支。GLM-5.3 在编程与 Agent 任务上表现突出，许可策略差异是商用前的必查项。',
+     m:['GLM-5.3：2026-08-14 发布，743B，另有 Flash/FlashX 开源线','许可差异：Llama 自定义社区协议 vs GLM 宽松许可'],
+     k:['Meta','智谱','GLM']},
+    {id:'p-arch', label:'架构演进', cat:'model', size:2,
+     d:'Transformer 仍是主干，但稀疏化与线性注意力在长序列场景持续渗透；多模态从「拼接」走向「原生」。',
+     m:['三条主线：稀疏化、高效注意力、原生多模态'],
+     k:['架构','MoE']},
+    {id:'p-moe', label:'MoE 稀疏', cat:'model', size:1,
+     d:'以总参数换能力、以激活参数控成本，已成为旗舰模型的默认架构。难点在路由稳定性与负载均衡。',
+     m:['典型：总参 500B~2.8T，激活 8B~95B'],
+     k:['MoE','稀疏']},
+    {id:'p-ssm', label:'线性注意力 / SSM', cat:'model', size:1,
+     d:'把注意力复杂度从平方降到线性，适合超长序列与端侧。混合架构（部分层用 SSM）是当前折中方案。',
+     m:['代表：Mamba 系、混合线性注意力'],
+     k:['SSM','长序列']},
+    {id:'p-native', label:'原生多模态', cat:'model', size:1,
+     d:'从训练第一天就混合文本、图像、音频、视频，而非事后拼接编码器，跨模态推理能力明显更强。',
+     m:['代表：Gemini 4 原生多模态、DeepSeek V4.1 视觉理解'],
+     k:['多模态','原生']},
+    {id:'p-mbase', label:'多模态基座', cat:'model', size:2,
+     d:'视觉与音频生成能力独立成体系，与语言模型形成「理解 + 生成」双引擎。',
+     m:['三条产品线：视频、语音、图像/3D'],
+     k:['生成','多模态']},
+    {id:'p-video', label:'视频生成', cat:'model', size:1,
+     d:'从「几秒片段」走向「分钟级可控叙事」，一致性与物理合理性仍是主要短板。',
+     m:['代表：可灵、Veo、混元视频、即梦'],
+     k:['视频','生成']},
+    {id:'p-voice', label:'实时语音', cat:'model', size:1,
+     d:'端到端语音模型把延迟压到数百毫秒，使语音成为 Agent 的默认交互方式之一。',
+     m:['关键：全双工、打断处理、情感韵律'],
+     k:['语音','实时']},
+    {id:'p-3d', label:'3D 与图像编辑', cat:'model', size:1,
+     d:'图像编辑已进入「指令级精修」阶段；3D 生成在游戏、电商、工业设计场景开始规模化。',
+     m:['代表：Qwen-Image-Edit、单图转 3D 管线'],
+     k:['3D','图像']},
+
+    /* ===== 能力层 ===== */
+    {id:'p-cap', label:'核心能力', cat:'cap', size:3,
+     d:'模型能力的主战场已从「知识问答」转向「长程任务执行」。评测重心随之从静态题库转向真实环境中的任务闭环率。',
+     m:['2026 关键词：推理、长上下文、工具使用、世界模型'],
+     k:['能力','评测']},
+    {id:'p-reason', label:'推理与规划', cat:'cap', size:2,
+     d:'推理能力通过「更长的思考」与「可验证的强化学习」两条路径提升，已成为复杂任务的基础能力而非卖点。',
+     m:['两条路径：推理时扩展 + RLVR'],
+     k:['推理','规划']},
+    {id:'p-ttc', label:'推理时扩展', cat:'cap', size:1,
+     d:'用更多测试时算力换准确率（长思维链、多次采样、自我校验），在数学、代码、科研场景收益显著。',
+     m:['代价：延迟与 token 成本线性上升'],
+     k:['Test-time','CoT']},
+    {id:'p-rlvr', label:'RLVR 强化学习', cat:'cap', size:1,
+     d:'以可自动验证的奖励（答案对错、测试通过）驱动强化学习，是 2025-2026 年推理能力跃升的主要引擎。',
+     m:['适用：数学、代码、形式化验证'],
+     k:['RLVR','强化学习']},
+    {id:'p-long', label:'长上下文', cat:'cap', size:2,
+     d:'百万级上下文已商用，但「能放进去」不等于「能用好」——中段信息丢失（lost in the middle）仍是难题。',
+     m:['2026 标配：200K~1M tokens','配套：上下文缓存、分段检索'],
+     k:['上下文','1M']},
+    {id:'p-1m', label:'百万上下文', cat:'cap', size:1,
+     d:'支持整库代码、整本合同、长视频输入，但有效利用率随长度下降，通常仍需检索配合。',
+     m:['代表：Kimi K3、Gemini 4 Argon、Qwen3.8'],
+     k:['1M','长文本']},
+    {id:'p-cache', label:'上下文缓存', cat:'cap', size:1,
+     d:'对重复前缀做缓存复用，可把长系统提示与知识库的调用成本降低一个数量级，是 Agent 降本的关键手段。',
+     m:['代表：Prompt Caching、KV 复用'],
+     k:['缓存','降本']},
+    {id:'p-tooluse', label:'工具与执行', cat:'cap', size:2,
+     d:'模型从「会说」到「会做」的分界线。工具调用成功率是 2026 年最被关注的工程指标之一。',
+     m:['形态：函数调用、计算机操作、代码执行'],
+     k:['工具','执行']},
+    {id:'p-fc', label:'Function Calling', cat:'cap', size:1,
+     d:'结构化工具调用已成基础设施，难点转向工具数量膨胀后的选择准确率与参数正确率。',
+     m:['2026 瓶颈：工具数 > 50 时选择准确率明显下降'],
+     k:['函数调用','工具']},
+    {id:'p-cu', label:'Computer Use', cat:'cap', size:1,
+     d:'通过截屏 + 鼠标键盘操作直接使用软件，绕过 API 缺失问题，但速度慢、稳定性差、安全风险高。',
+     m:['适用：无 API 的遗留系统','配套：沙箱、人机确认'],
+     k:['GUI','自动化']},
+    {id:'p-sandbox', label:'代码沙箱', cat:'cap', size:1,
+     d:'为 Agent 提供可安全执行代码的隔离环境，是数据分析、Coding Agent 的必备组件。',
+     m:['代表：E2B、Daytona、Firecracker 微虚机'],
+     k:['沙箱','执行']},
+    {id:'p-world', label:'世界模型', cat:'cap', size:2,
+     d:'2026 年最受关注的前沿方向：让模型学习物理世界的因果与动态，是具身智能与仿真训练的基础。',
+     m:['智源《2026 十大 AI 技术趋势》核心判断：从语言学习转向物理世界建模'],
+     k:['世界模型','物理']},
+    {id:'p-genie', label:'生成式世界模型', cat:'cap', size:1,
+     d:'可交互、可预测的虚拟环境生成，用于机器人训练与内容生产，代表 2026 年架构竞赛的新战场。',
+     m:['代表：Genie 3、混元 1.5、Marble、Gen-3C'],
+     k:['世界模型','仿真']},
+    {id:'p-vla', label:'VLA 具身模型', cat:'cap', size:1,
+     d:'视觉-语言-动作一体化模型，把自然语言指令直接映射为机器人动作，是通用操控的核心赛道。',
+     m:['形态：VLA、分层策略、仿真到现实迁移'],
+     k:['具身','机器人']},
+
+    /* ===== 工程层 ===== */
+    {id:'p-eng', label:'AI 工程', cat:'eng', size:3,
+     d:'2026 年竞争的主战场。模型能力趋于同质化后，决定产品上限的是上下文、记忆、检索与评测这些「工程手艺」。',
+     m:['范式迁移：提示词工程 → 上下文工程 → Harness / 协调工程'],
+     k:['工程化','LLMOps']},
+    {id:'p-ctx', label:'上下文工程', cat:'eng', size:2,
+     d:'取代提示词工程成为核心学科：不再研究「怎么问」，而是研究「往模型眼前递什么」。方法论可概括为写、选、压、隔。',
+     m:['四字诀：写（外部化）、选（检索）、压（摘要）、隔（隔离子任务）','2026 延伸：Harness Engineering、协调工程、循环工程'],
+     k:['Context','上下文']},
+    {id:'p-wsc', label:'写选压隔', cat:'eng', size:1,
+     d:'写：把规则与状态外化为文件；选：只取相关片段；压：摘要与结构化；隔：用子智能体隔离上下文。',
+     m:['目标：对抗上下文腐烂与意图漂移'],
+     k:['上下文','方法论']},
+    {id:'p-harness', label:'Harness 与协调工程', cat:'eng', size:1,
+     d:'Harness 指围绕模型搭建的运行骨架（工具、循环、校验）；协调工程研究多智能体如何分工与交接。',
+     m:['2026 新词：Harness Engineering（年初）、Coordination Engineering（4 月）、Loop Engineering（6 月）'],
+     k:['Harness','多智能体']},
+    {id:'p-rag', label:'检索增强 RAG', cat:'eng', size:2,
+     d:'RAG 已从「向量检索 + 生成」的静态管线，演化为由 Agent 驱动的动态认知系统。',
+     m:['四代演进：Naive → Advanced → GraphRAG → Agentic RAG'],
+     k:['RAG','检索']},
+    {id:'p-arag', label:'Agentic RAG', cat:'eng', size:1,
+     d:'由模型自主决定是否检索、检索什么、何时停止，把检索变成行动循环的一部分，而非固定前置步骤。',
+     m:['优势：复杂多跳问题；代价：延迟与不确定性上升'],
+     k:['Agentic','检索']},
+    {id:'p-graphrag', label:'GraphRAG 轻量化', cat:'eng', size:1,
+     d:'用知识图谱做多跳推理，早期版本索引成本极高；2026 年 LightRAG、nano-GraphRAG、KAG 等把成本压到可落地水平。',
+     m:['适用：强实体关系的领域（风控、医疗、供应链）'],
+     k:['GraphRAG','知识图谱']},
+    {id:'p-mem', label:'记忆系统', cat:'eng', size:2,
+     d:'长程任务的头号瓶颈。研究显示多数 Agent 失败与上下文丢失相关，记忆工程因此独立成层。',
+     m:['结构：工作记忆 / 长期记忆 / 记忆治理','能力：写入、召回、压缩、遗忘'],
+     k:['Memory','长期记忆']},
+    {id:'p-l0', label:'分层记忆', cat:'eng', size:1,
+     d:'按 L0-L3 分级存储（原始对话 → 摘要 → 事实 → 画像），按需召回，在 token 成本与信息精度间取平衡。',
+     m:['配套：向量 + BM25 混合检索、重排'],
+     k:['分层','召回']},
+    {id:'p-forget', label:'主动遗忘', cat:'eng', size:1,
+     d:'遗忘不是缺陷而是能力：过期信息、错误记忆、隐私数据都需要主动清理策略。',
+     m:['策略：时效衰减、冲突消解、合规删除'],
+     k:['遗忘','治理']},
+    {id:'p-train', label:'训练与适配', cat:'eng', size:2,
+     d:'企业侧的主流不是预训练，而是后训练与轻量适配：用少量高质量数据把通用模型调到业务可用。',
+     m:['路径：SFT → 偏好对齐 → 蒸馏 → 量化部署'],
+     k:['微调','后训练']},
+    {id:'p-rlhf', label:'SFT / RLHF', cat:'eng', size:1,
+     d:'监督微调定行为基线，偏好对齐调风格与安全性。2026 年更多使用可验证奖励替代人工偏好。',
+     m:['演进：RLHF → RLAIF → RLVR'],
+     k:['SFT','对齐']},
+    {id:'p-lora', label:'LoRA 与蒸馏', cat:'eng', size:1,
+     d:'低成本适配与能力压缩的标准工具，使 10B-70B 中型模型在垂直场景可超过通用大模型。',
+     m:['2026 共识：精调后的中型模型在垂直场景性价比最高'],
+     k:['LoRA','蒸馏']},
+    {id:'p-syn', label:'合成数据', cat:'eng', size:1,
+     d:'高质量真实数据接近枯竭后，合成数据成为训练主粮，但需防范模型坍缩与分布漂移。',
+     m:['手段：自我博弈、环境反馈、程序化生成'],
+     k:['合成数据','Self-play']},
+    {id:'p-eval', label:'评测与可观测', cat:'eng', size:2,
+     d:'从「跑分」转向「生产监控」。缺乏评估体系是 Agent 项目跨不过生产鸿沟的首要原因。',
+     m:['行业共识：缺可观测与评估是 Agent 试点难以进入生产的主因'],
+     k:['Eval','可观测']},
+    {id:'p-bench', label:'基准测试', cat:'eng', size:1,
+     d:'静态题库快速饱和，评测重心转向真实环境任务（代码修复、网页操作、多轮工具调用）。',
+     m:['代表：SWE-bench、GAIA、τ-bench、WebArena、OSWorld'],
+     k:['Benchmark','评测']},
+    {id:'p-judge', label:'LLM-as-Judge', cat:'eng', size:1,
+     d:'用模型做评分员，解决开放式输出难以自动评估的问题，但需校准位置偏见与自我偏好。',
+     m:['配套：评分量表、双盲、人工抽检'],
+     k:['Judge','评估']},
+    {id:'p-trace', label:'Trace 追踪', cat:'eng', size:1,
+     d:'记录每一步的输入、工具调用、耗时与成本，是排查 Agent 故障的唯一可靠手段。',
+     m:['代表：Langfuse、LangSmith、Braintrust、Arize Phoenix'],
+     k:['Trace','LLMOps']},
+
+    /* ===== 应用层 ===== */
+    {id:'p-app', label:'应用场景', cat:'app', size:3,
+     d:'2026 年的落地排序很清晰：编程与知识工作最先跑通，客服与营销次之，重流程行业仍在攻坚。',
+     m:['共同特征：任务可验证、错误可回滚、人工可接管'],
+     k:['落地','场景']},
+    {id:'p-code', label:'AI 编程', cat:'app', size:2,
+     d:'渗透率最高、ROI 最明确的场景。已从「补全」演进到「端到端完成 issue」。',
+     m:['形态：IDE 补全 → 对话式改码 → 自主 Coding Agent'],
+     k:['Coding','编程']},
+    {id:'p-coder', label:'Coding Agent', cat:'app', size:1,
+     d:'能读仓库、改多文件、跑测试、提 PR 的自主智能体，正在改变团队的分工结构。',
+     m:['代表：Claude Code、Codex、Cursor Agent、通义灵码'],
+     k:['Agent','代码']},
+    {id:'p-ide', label:'IDE 与评审', cat:'app', size:1,
+     d:'AI 代码评审成为标配环节，重点从「找语法错」转向「找逻辑与安全缺陷」。',
+     m:['形态：内联建议、PR 自动评审、测试生成'],
+     k:['IDE','评审']},
+    {id:'p-agent', label:'智能体', cat:'app', size:2,
+     d:'从「聊天机器人」升级为「数字员工」：能理解复杂指令、操作多个业务系统、完成长链路闭环。',
+     m:['核心指标：任务闭环率、人工接管率'],
+     k:['Agent','数字员工']},
+    {id:'p-general', label:'通用 Agent', cat:'app', size:1,
+     d:'面向个人与团队的通用助手，主打研究、办公、浏览等开放任务，能力广但深度有限。',
+     m:['代表：Deep Research 类产品、通用助理'],
+     k:['通用','助手']},
+    {id:'p-vertical', label:'垂直 Agent', cat:'app', size:1,
+     d:'深耕单一流程（客服、招聘、法务、运维），靠行业知识与系统集成建立壁垒。',
+     m:['壁垒：数据、系统对接、责任边界'],
+     k:['垂直','行业']},
+    {id:'p-create', label:'内容与创意', cat:'app', size:2,
+     d:'生成成本趋近于零后，竞争点转移到「选题、品味与分发」而非产能。',
+     m:['形态：图文、短视频、音乐、设计'],
+     k:['AIGC','创意']},
+    {id:'p-gen', label:'生成式创作', cat:'app', size:1,
+     d:'营销素材、短视频、电商图是变现最快的方向，批量生产 + 人工精选成为标准工作流。',
+     m:['工作流：批量生成 → 自动筛选 → 人工精修'],
+     k:['创作','营销']},
+    {id:'p-search', label:'AI 搜索', cat:'app', size:1,
+     d:'从「给链接」变为「给答案」，并逐渐与 Agent 融合成「搜索即执行」。',
+     m:['形态：答案引擎、深度研究、任务式搜索'],
+     k:['搜索','答案']},
+    {id:'p-industry', label:'行业落地', cat:'app', size:2,
+     d:'金融与医疗走在前列（数据密集、付费能力强），制造与教育受制于系统改造与责任界定。',
+     m:['共性难点：数据孤岛、合规审计、错误代价高'],
+     k:['行业','落地']},
+    {id:'p-fin', label:'金融 / 医疗 / 法律', cat:'app', size:1,
+     d:'高价值、高合规门槛。核心不是模型能力，而是可追溯的证据链与人工复核流程。',
+     m:['典型：投研助手、病历结构化、合同审查'],
+     k:['金融','医疗','法律']},
+    {id:'p-mfg', label:'制造 / 教育', cat:'app', size:1,
+     d:'制造侧与视觉质检、排产、设备运维结合；教育侧聚焦个性化辅导与教师减负。',
+     m:['形态：多模态质检、智能排产、AI 助教'],
+     k:['制造','教育']},
+
+    /* ===== 前沿与治理 ===== */
+    {id:'p-edge', label:'前沿与治理', cat:'edge', size:3,
+     d:'技术之外的第二战场。协议决定互操作成本，监管决定可售边界，安全决定能否上线。',
+     m:['2026 标志：协议分层收敛 + 国标落地'],
+     k:['协议','监管','安全']},
+    {id:'p-proto', label:'协议标准', cat:'edge', size:2,
+     d:'Agent 时代的「HTTP 时刻」。2026 年形成分层共识：MCP 管工具，A2A 管智能体互通，AG-UI 管前端渲染。',
+     m:['MCP 已成为工具接入的事实标准','A2A 由 Google 提出并捐赠至开源基金会'],
+     k:['协议','互操作']},
+    {id:'p-mcp', label:'MCP', cat:'edge', size:1,
+     d:'模型与工具/数据源之间的标准连接协议，已成为事实上的行业基础设施，不支持即难以接入生态。',
+     m:['主导：Anthropic（2024-11 提出）','2026：企业侧普遍部署 MCP Gateway 做统一管控'],
+     k:['MCP','工具']},
+    {id:'p-a2a', label:'A2A', cat:'edge', size:1,
+     d:'智能体之间的通信与协作协议，解决跨框架、跨组织的 Agent 互调问题。',
+     m:['主导：Google 于 2025-04 提出，后移交开源基金会治理'],
+     k:['A2A','协作']},
+    {id:'p-agui', label:'AG-UI / A2UI', cat:'edge', size:1,
+     d:'面向「智能体 ↔ 用户界面」的协议：把 Agent 的状态与产物以标准方式渲染到前端。',
+     m:['解决：流式状态、生成式 UI、人机确认'],
+     k:['AG-UI','前端']},
+    {id:'p-aip', label:'AIP 与国标', cat:'edge', size:1,
+     d:'中国的智能体互联标准体系。GB/Z 185-2026 于 2026 年 5 月发布，标志标准层进入国家规范阶段。',
+     m:['GB/Z 185-2026《人工智能 智能体互联》2026-05-22 发布','配套：ACP、ANP、AIP 等协议'],
+     k:['国标','AIP']},
+    {id:'p-oss', label:'开源生态', cat:'edge', size:2,
+     d:'开源成为模型能力扩散的主通道，中国实验室在开源权重与多语言能力上处于领先位置。',
+     m:['格局：Qwen 衍生生态最大，DeepSeek 主打性价比，Llama 生态趋缓'],
+     k:['开源','社区']},
+    {id:'p-hf', label:'HuggingFace 生态', cat:'edge', size:1,
+     d:'模型分发与微调社区的中心，也是企业寻找垂直模型的默认入口。',
+     m:['形态：模型库、数据集、Spaces、推理端点'],
+     k:['HuggingFace','社区']},
+    {id:'p-lic', label:'许可分化', cat:'edge', size:1,
+     d:'许可证成为选型硬约束：Apache-2.0 / MIT 可放心商用，自定义协议需逐条确认限制条款。',
+     m:['两极：宽松许可阵营 vs 自定义社区协议'],
+     k:['License','合规']},
+    {id:'p-reg', label:'监管合规', cat:'edge', size:2,
+     d:'合规从「上线前检查」变为「设计时内嵌」。高风险场景要求可解释、可审计、可追溯。',
+     m:['关键：分级分类、备案、内容标识、数据出境'],
+     k:['合规','监管']},
+    {id:'p-act', label:'EU AI Act', cat:'edge', size:1,
+     d:'全球最具约束力的 AI 法规，按风险分级设定义务，对通用模型提供商另有专门条款。',
+     m:['影响：进入欧洲市场的准入条件'],
+     k:['欧盟','法规']},
+    {id:'p-label', label:'内容标识与备案', cat:'edge', size:1,
+     d:'生成内容需可识别来源（水印/元数据），面向公众的服务需完成算法与安全评估备案。',
+     m:['要求：显式标识 + 隐式水印 + 备案编号'],
+     k:['水印','备案']},
+    {id:'p-sec', label:'安全攻防', cat:'edge', size:2,
+     d:'Agent 接入企业系统后，安全边界从「内容风险」扩展到「操作风险」——它能做的事，就是攻击面。',
+     m:['OWASP LLM Top 10 将提示注入列为首要风险'],
+     k:['安全','攻防']},
+    {id:'p-inject', label:'Prompt 注入', cat:'edge', size:1,
+     d:'通过网页、文档、邮件等外部内容劫持 Agent 指令，是当前最难根治的漏洞类型。',
+     m:['防御：内容隔离、指令/数据分离、能力白名单'],
+     k:['注入','攻击']},
+    {id:'p-red', label:'红队与投毒', cat:'edge', size:1,
+     d:'上线前对抗测试与训练数据投毒检测，正在成为企业 AI 的常规流程。',
+     m:['手段：自动化越狱、供应链审计、行为基线'],
+     k:['红队','投毒']}
+  ],
+  links: [
+    ['p-root','p-base'],['p-root','p-model'],['p-root','p-cap'],
+    ['p-root','p-eng'],['p-root','p-app'],['p-root','p-edge'],
+
+    ['p-base','p-chip'],['p-base','p-dc'],['p-base','p-inf'],['p-base','p-domestic'],
+    ['p-chip','p-hbm'],['p-chip','p-asic'],
+    ['p-dc','p-wan'],['p-dc','p-cool'],['p-dc','p-rent'],
+    ['p-inf','p-quant'],['p-inf','p-pd'],
+    ['p-domestic','p-ascend'],
+
+    ['p-model','p-closed'],['p-model','p-open'],['p-model','p-arch'],['p-model','p-mbase'],
+    ['p-closed','p-gpt6'],['p-closed','p-opus'],['p-closed','p-gemini'],['p-closed','p-cnd'],
+    ['p-open','p-qwen'],['p-open','p-ds'],['p-open','p-kimi'],['p-open','p-llama'],
+    ['p-arch','p-moe'],['p-arch','p-ssm'],['p-arch','p-native'],
+    ['p-mbase','p-video'],['p-mbase','p-voice'],['p-mbase','p-3d'],
+
+    ['p-cap','p-reason'],['p-cap','p-long'],['p-cap','p-tooluse'],['p-cap','p-world'],
+    ['p-reason','p-ttc'],['p-reason','p-rlvr'],
+    ['p-long','p-1m'],['p-long','p-cache'],
+    ['p-tooluse','p-fc'],['p-tooluse','p-cu'],['p-tooluse','p-sandbox'],
+    ['p-world','p-genie'],['p-world','p-vla'],
+
+    ['p-eng','p-ctx'],['p-eng','p-rag'],['p-eng','p-mem'],['p-eng','p-train'],['p-eng','p-eval'],
+    ['p-ctx','p-wsc'],['p-ctx','p-harness'],
+    ['p-rag','p-arag'],['p-rag','p-graphrag'],
+    ['p-mem','p-l0'],['p-mem','p-forget'],
+    ['p-train','p-rlhf'],['p-train','p-lora'],['p-train','p-syn'],
+    ['p-eval','p-bench'],['p-eval','p-judge'],['p-eval','p-trace'],
+
+    ['p-app','p-code'],['p-app','p-agent'],['p-app','p-create'],['p-app','p-industry'],
+    ['p-code','p-coder'],['p-code','p-ide'],
+    ['p-agent','p-general'],['p-agent','p-vertical'],
+    ['p-create','p-gen'],['p-create','p-search'],
+    ['p-industry','p-fin'],['p-industry','p-mfg'],
+
+    ['p-edge','p-proto'],['p-edge','p-oss'],['p-edge','p-reg'],['p-edge','p-sec'],
+    ['p-proto','p-mcp'],['p-proto','p-a2a'],['p-proto','p-agui'],['p-proto','p-aip'],
+    ['p-oss','p-hf'],['p-oss','p-lic'],
+    ['p-reg','p-act'],['p-reg','p-label'],
+    ['p-sec','p-inject'],['p-sec','p-red'],
+
+    /* 跨层耦合 */
+    ['p-moe','p-inf'],['p-moe','p-open'],
+    ['p-quant','p-open'],['p-hbm','p-wan'],
+    ['p-1m','p-cache'],['p-cache','p-ctx'],
+    ['p-mcp','p-tooluse'],['p-mcp','p-agent'],
+    ['p-a2a','p-harness'],['p-agui','p-agent'],
+    ['p-arag','p-graphrag'],['p-graphrag','p-mem'],
+    ['p-ctx','p-mem'],['p-l0','p-ctx'],
+    ['p-sandbox','p-coder'],['p-cu','p-agent'],
+    ['p-trace','p-agent'],['p-bench','p-coder'],
+    ['p-lora','p-open'],['p-syn','p-rlvr'],
+    ['p-rlvr','p-ttc'],
+    ['p-genie','p-vla'],['p-vla','p-mfg'],
+    ['p-inject','p-cu'],['p-inject','p-rag'],
+    ['p-act','p-cnd'],['p-label','p-gen'],
+    ['p-ds','p-inf'],['p-qwen','p-oss'],
+    ['p-ascend','p-lic'],['p-cnd','p-reg'],
+    ['p-vertical','p-fin'],['p-general','p-search']
+  ]
+};
+GRAPHS.agent = {
+  tab: 'AI Agent',
+  title: 'AI Agent 知识图谱',
+  subtitle: '从认知范式到工程落地：Agent = 模型 + 上下文 + 工具 + 循环。2026 年的关键变化是协议层收敛、记忆独立成层、评测从「答对」转向「做完」。',
+  layout: 'radial',
+  cats: [
+    {id:'paradigm', name:'认知范式',     color:'#4f46e5'},
+    {id:'memory',   name:'记忆与上下文', color:'#0ea5e9'},
+    {id:'tool',     name:'工具与执行',   color:'#14b8a6'},
+    {id:'proto',    name:'协议与互操作', color:'#a855f7'},
+    {id:'fw',       name:'框架与平台',   color:'#f59e0b'},
+    {id:'ops',      name:'评测与安全',   color:'#ef4444'}
+  ],
+  nodes: [
+    {id:'a-root', label:'AI Agent', cat:'paradigm', root:true, size:3,
+     d:'Agent 的本质是一个闭环：观察 → 思考 → 行动 → 再观察。2026 年的分水岭不在于模型多强，而在于这个闭环能否在真实系统里稳定跑完长任务。',
+     m:['公式：Agent = 模型 + 上下文 + 工具 + 循环','核心指标：任务闭环率、人工接管率'],
+     k:['Agent','智能体']},
+
+    /* ===== 认知范式 ===== */
+    {id:'a-paradigm', label:'认知范式', cat:'paradigm', size:3,
+     d:'决定 Agent「怎么想」的部分。范式选择直接影响成本、延迟与可调试性，而不是越复杂越好。',
+     m:['选型原则：能用单循环解决，就不要上多智能体'],
+     k:['范式','推理']},
+    {id:'a-loop', label:'基础循环', cat:'paradigm', size:2,
+     d:'ReAct 仍是绝大多数生产 Agent 的骨架：思考一步、调一次工具、看结果、再思考。简单、可观测、易调试。',
+     m:['优势：每一步都可追踪','短板：长任务容易跑偏、token 消耗线性增长'],
+     k:['ReAct','循环']},
+    {id:'a-react', label:'ReAct', cat:'paradigm', size:1,
+     d:'推理与行动交替进行，是工具型 Agent 的默认范式，2026 年仍是基线方案。',
+     m:['变体：ReWOO（先规划后执行）、Reflexion（带反思）'],
+     k:['ReAct','基线']},
+    {id:'a-pae', label:'Plan-and-Execute', cat:'paradigm', size:1,
+     d:'先出完整计划再逐步执行，减少重复思考开销，但计划质量决定上限，需支持重规划。',
+     m:['适用：步骤明确、可预先分解的任务'],
+     k:['规划','执行']},
+    {id:'a-plan', label:'规划范式', cat:'paradigm', size:2,
+     d:'把模糊目标拆成可执行步骤。2026 年的进展主要在「动态重规划」——执行中发现偏差时能自我修正。',
+     m:['难点：分解粒度、依赖顺序、失败回退'],
+     k:['规划','分解']},
+    {id:'a-decomp', label:'任务分解', cat:'paradigm', size:1,
+     d:'层级化拆解（目标 → 子目标 → 动作），配合待办清单外化，可显著降低长任务的迷失率。',
+     m:['实践：Todo 列表外化、子任务独立上下文'],
+     k:['分解','TODO']},
+    {id:'a-tot', label:'树搜索 / 多路采样', cat:'paradigm', size:1,
+     d:'同时展开多条推理路径并按评分剪枝，用算力换正确率，适合高价值决策场景。',
+     m:['代表：ToT、MCTS 结合、Best-of-N'],
+     k:['搜索','采样']},
+    {id:'a-multi', label:'多智能体编排', cat:'paradigm', size:2,
+     d:'2026 年从「单体 Agent」向「协同集群」演进。但多智能体不是免费的性能提升，协调开销常被低估。',
+     m:['主流拓扑：Supervisor、Handoff、Swarm','风险：token 成本翻倍、错误级联'],
+     k:['多智能体','编排']},
+    {id:'a-supervisor', label:'Supervisor', cat:'paradigm', size:1,
+     d:'一个主控 Agent 负责分派与汇总，子 Agent 各司其职。可控性最好，是生产环境的首选拓扑。',
+     m:['配套：显式路由、子任务超时、结果校验'],
+     k:['Supervisor','中心化']},
+    {id:'a-handoff', label:'Handoff', cat:'paradigm', size:1,
+     d:'把控制权连同上下文交给另一个 Agent，适合客服分流等场景，但容易丢失全局状态。',
+     m:['关键：上下文交接协议、责任边界'],
+     k:['Handoff','转交']},
+    {id:'a-swarm', label:'Swarm', cat:'paradigm', size:1,
+     d:'去中心化协作，Agent 之间直接传递任务。灵活但难以调试，生产环境慎用。',
+     m:['适用：探索性任务、开放式研究'],
+     k:['Swarm','去中心']},
+    {id:'a-reflect', label:'反思与修正', cat:'paradigm', size:2,
+     d:'让 Agent 检查自己的输出并改进。2026 年的实践更强调「外部验证器」而非自我反思——模型自查的可靠性有限。',
+     m:['有效形式：跑测试、查事实、交叉评审'],
+     k:['Reflection','校验']},
+    {id:'a-selfreflex', label:'自我反思', cat:'paradigm', size:1,
+     d:'对失败轨迹做归因并调整策略，配合记忆写入可形成经验积累。',
+     m:['风险：自我确认偏差，需外部信号校准'],
+     k:['反思','经验']},
+    {id:'a-verifier', label:'验证器', cat:'paradigm', size:1,
+     d:'用确定性手段（单元测试、类型检查、规则引擎）验证结果，比让模型自评可靠得多。',
+     m:['原则：能自动验证的，绝不靠模型判断'],
+     k:['验证','测试']},
+
+    /* ===== 记忆与上下文 ===== */
+    {id:'a-memory', label:'记忆与上下文', cat:'memory', size:3,
+     d:'Agent 失败的第一大来源。模型像「只有短时记忆的天才」，能否发挥能力七成取决于眼前递了什么材料。',
+     m:['研究：多数长任务失败与上下文丢失直接相关'],
+     k:['Memory','Context']},
+    {id:'a-ctx', label:'上下文工程', cat:'memory', size:2,
+     d:'管理「模型当前能看到什么」：系统规则、任务状态、检索结果、工具返回，都需要精心编排而非一股脑塞入。',
+     m:['四字诀：写、选、压、隔','对抗：上下文腐烂、意图漂移、中段遗忘'],
+     k:['Context','上下文']},
+    {id:'a-wsc', label:'写选压隔', cat:'memory', size:1,
+     d:'写：规则与状态落成文件；选：只检索相关片段；压：摘要与结构化；隔：子 Agent 隔离脏上下文。',
+     m:['核心：让主上下文保持「短而准」'],
+     k:['方法论','上下文']},
+    {id:'a-compact', label:'压缩与摘要', cat:'memory', size:1,
+     d:'上下文逼近上限时触发压缩：保留决策与结论，丢弃中间过程。压缩策略直接决定长任务能否跑完。',
+     m:['策略：滚动摘要、结构化笔记、关键事实抽取'],
+     k:['压缩','摘要']},
+    {id:'a-mem', label:'记忆分层', cat:'memory', size:2,
+     d:'把记忆按生命周期分层：工作记忆（当前任务）、情景记忆（历史对话）、语义记忆（事实知识）、程序记忆（做事方法）。',
+     m:['实现：L0 原始 → L1 摘要 → L2 事实 → L3 画像'],
+     k:['分层','长期记忆']},
+    {id:'a-l0', label:'L0-L3 存储', cat:'memory', size:1,
+     d:'按需召回不同粒度的记忆，在 token 成本与信息精度之间取平衡，避免每次都把全部历史塞进去。',
+     m:['配套：向量 + 关键词混合检索、重排'],
+     k:['分级','召回']},
+    {id:'a-forget', label:'遗忘治理', cat:'memory', size:1,
+     d:'过期信息、错误记忆、隐私数据必须能被主动清理，否则记忆会变成负债。',
+     m:['策略：时效衰减、冲突消解、合规删除'],
+     k:['遗忘','治理']},
+    {id:'a-rag', label:'检索增强', cat:'memory', size:2,
+     d:'Agent 的外部知识入口。2026 年已从固定管线变为「按需检索」——模型自己决定何时查、查什么。',
+     m:['演进：Naive → Advanced → GraphRAG → Agentic RAG'],
+     k:['RAG','检索']},
+    {id:'a-arag', label:'Agentic RAG', cat:'memory', size:1,
+     d:'检索成为行动循环的一环，支持多轮查询改写与多跳推理，适合复杂研究型任务。',
+     m:['代价：延迟与不确定性上升，需设迭代上限'],
+     k:['Agentic','多跳']},
+    {id:'a-graphrag', label:'GraphRAG', cat:'memory', size:1,
+     d:'用实体关系图支撑多跳问答，轻量化方案（LightRAG、KAG）已把索引成本降到可接受范围。',
+     m:['适用：风控、医疗、供应链等强关系领域'],
+     k:['图谱','多跳']},
+    {id:'a-state', label:'状态与长任务', cat:'memory', size:2,
+     d:'长任务的可靠性来自「可恢复」：状态外化、检查点、失败续跑，而不是指望模型一次跑对。',
+     m:['模式：持久化执行（Durable Execution）'],
+     k:['状态','长任务']},
+    {id:'a-checkpoint', label:'检查点', cat:'memory', size:1,
+     d:'每步落盘，失败时从最近状态恢复，是长流程 Agent 的必备能力。',
+     m:['代表：LangGraph Checkpointer、Temporal'],
+     k:['Checkpoint','恢复']},
+    {id:'a-durable', label:'持久化执行', cat:'memory', size:1,
+     d:'把 Agent 循环当作工作流引擎来跑，获得重试、超时、补偿等成熟能力。',
+     m:['价值：把「AI 的不确定性」关进「工程的确定性」里'],
+     k:['工作流','可靠性']},
+
+    /* ===== 工具与执行 ===== */
+    {id:'a-tool', label:'工具与执行', cat:'tool', size:3,
+     d:'Agent 与真实世界的手。2026 年工具调用成功率已成为比模型跑分更能预测落地效果的指标。',
+     m:['关键指标：工具选择准确率、参数正确率、调用成功率'],
+     k:['Tool','执行']},
+    {id:'a-fc', label:'函数调用', cat:'tool', size:2,
+     d:'最基础也最可靠的执行方式：结构化参数 + 明确返回。工具设计的质量往往比模型选择更影响成功率。',
+     m:['设计原则：单一职责、参数扁平、错误可读'],
+     k:['Function','工具']},
+    {id:'a-schema', label:'工具 Schema 设计', cat:'tool', size:1,
+     d:'名称、描述、参数说明共同构成模型的「使用说明书」。描述含糊是工具调用失败的头号原因。',
+     m:['实践：动词开头命名、给出示例、限制枚举值'],
+     k:['Schema','设计']},
+    {id:'a-select', label:'工具选择', cat:'tool', size:1,
+     d:'工具数量膨胀后，选择准确率显著下降。生产系统通常需要工具分组、路由或两阶段筛选。',
+     m:['经验：单次暴露工具宜控制在 20-50 个以内'],
+     k:['选择','路由']},
+    {id:'a-mcp', label:'MCP 工具层', cat:'tool', size:2,
+     d:'用统一协议把文件、数据库、SaaS API 包装成标准工具，模型侧按协议发现与调用，是 2026 年的行业基础设施。',
+     m:['生态：工具接入的事实标准，Server 数量快速增长'],
+     k:['MCP','工具层']},
+    {id:'a-mcpserver', label:'MCP Server', cat:'tool', size:1,
+     d:'对外暴露资源、提示与工具的服务端点。企业通常自建内网 Server 连接内部系统。',
+     m:['传输：stdio（本地）、Streamable HTTP（远程）'],
+     k:['Server','接入']},
+    {id:'a-gateway', label:'MCP Gateway', cat:'tool', size:1,
+     d:'统一管控所有 MCP 流量的网关：鉴权、审计、限流、工具白名单，是企业落地的必备组件。',
+     m:['2026 企业实践：LLM 流量走 AI Gateway，MCP 流量走 MCP Gateway，代码走沙箱'],
+     k:['Gateway','管控']},
+    {id:'a-code', label:'代码执行', cat:'tool', size:2,
+     d:'让 Agent 写代码来解决问题，比堆工具更通用——代码是「可组合的工具」。',
+     m:['场景：数据分析、批量处理、格式转换'],
+     k:['Code','执行']},
+    {id:'a-sandbox', label:'代码沙箱', cat:'tool', size:1,
+     d:'隔离执行环境，限制网络、文件与资源。没有沙箱的代码执行等于把服务器交出去。',
+     m:['代表：E2B、Daytona、Firecracker、gVisor'],
+     k:['沙箱','隔离']},
+    {id:'a-notebook', label:'数据分析', cat:'tool', size:1,
+     d:'在沙箱中跑 Python 做统计与绘图，是 Agent 在办公与投研场景最高频的能力。',
+     m:['形态：Notebook 式多轮分析、图表产出'],
+     k:['数据','分析']},
+    {id:'a-computer', label:'计算机操作', cat:'tool', size:2,
+     d:'通过截屏理解界面、用鼠标键盘操作软件，绕过 API 缺失，但慢且脆弱。',
+     m:['适用：无 API 的遗留系统、跨软件流程'],
+     k:['Computer Use','GUI']},
+    {id:'a-gui', label:'截屏与操作', cat:'tool', size:1,
+     d:'视觉定位 + 动作执行的循环，难点在元素定位稳定性与异常界面处理。',
+     m:['优化：可访问性树、坐标缓存、失败重试'],
+     k:['GUI','视觉']},
+    {id:'a-rpa', label:'RPA 集成', cat:'tool', size:1,
+     d:'与传统 RPA 结合，用确定性脚本处理固定步骤，只在判断环节调用模型，兼顾稳定与灵活。',
+     m:['模式：RPA 打底 + LLM 决策'],
+     k:['RPA','混合']},
+    {id:'a-browser', label:'浏览器自动化', cat:'tool', size:2,
+     d:'2026 年最活跃的 Agent 品类之一，从「抓取网页」升级到「完成网页任务」。',
+     m:['场景：比价、表单填写、后台操作、深度调研'],
+     k:['Browser','自动化']},
+    {id:'a-playwright', label:'浏览器驱动', cat:'tool', size:1,
+     d:'通过 CDP/Playwright 控制真实浏览器，比纯视觉方案更快更稳。',
+     m:['要点：登录态管理、反爬应对、并发隔离'],
+     k:['Playwright','CDP']},
+    {id:'a-extract', label:'网页抽取', cat:'tool', size:1,
+     d:'把页面转成结构化信息（正文、表格、链接），是研究型 Agent 的基础能力。',
+     m:['难点：动态渲染、反爬、长页面截断'],
+     k:['抽取','解析']},
+
+    /* ===== 协议与互操作 ===== */
+    {id:'a-proto', label:'协议与互操作', cat:'proto', size:3,
+     d:'2026 年 Agent 领域的「TCP/IP 时刻」。协议分层已收敛，选型不再是路线之争，而是接入方式之争。',
+     m:['分层共识：MCP 连工具，A2A 连 Agent，AG-UI 连界面'],
+     k:['协议','标准']},
+    {id:'a-mcpp', label:'MCP', cat:'proto', size:2,
+     d:'Agent 与工具/数据之间的连接标准，由 Anthropic 于 2024 年 11 月提出，2026 年成为事实基础设施。',
+     m:['地位：不支持 MCP 的工具基本无法进入主流生态'],
+     k:['MCP','Anthropic']},
+    {id:'a-discovery', label:'能力发现', cat:'proto', size:1,
+     d:'客户端可动态查询 Server 提供哪些工具与资源，实现「即插即用」，无需预先硬编码。',
+     m:['机制：list_tools / list_resources'],
+     k:['发现','动态']},
+    {id:'a-auth', label:'授权与鉴权', cat:'proto', size:1,
+     d:'远程 MCP 需要 OAuth 等标准授权，把「用户授权范围」传递给工具，是最容易出安全问题的环节。',
+     m:['要点：最小范围授权、令牌隔离、审计留痕'],
+     k:['OAuth','鉴权']},
+    {id:'a-a2a', label:'A2A', cat:'proto', size:2,
+     d:'Agent 之间的通信协作协议，解决跨框架、跨组织的 Agent 互调与任务委派。',
+     m:['主导：Google（2025-04 提出）','场景：跨厂商 Agent 协作、企业内多团队 Agent 互通'],
+     k:['A2A','协作']},
+    {id:'a-card', label:'Agent Card', cat:'proto', size:1,
+     d:'用标准描述声明一个 Agent 的能力、输入输出与鉴权方式，是互操作的前提。',
+     m:['内容：技能清单、端点、认证方案'],
+     k:['Agent Card','描述']},
+    {id:'a-task', label:'任务委派', cat:'proto', size:1,
+     d:'把子任务连同上下文交给远端 Agent，并跟踪其状态直到完成，需处理超时与部分失败。',
+     m:['状态机：submitted → working → completed/failed'],
+     k:['委派','任务']},
+    {id:'a-ui', label:'AG-UI / A2UI', cat:'proto', size:2,
+     d:'解决「Agent 状态如何呈现给用户」：流式输出、工具执行可视化、生成式 UI、人机确认。',
+     m:['价值：把黑盒 Agent 变成用户可理解、可干预的过程'],
+     k:['AG-UI','前端']},
+    {id:'a-stream', label:'流式状态', cat:'proto', size:1,
+     d:'把思考、工具调用、中间产物实时推给前端，既改善体验也便于人工及时打断。',
+     m:['实现：SSE、WebSocket、事件流'],
+     k:['流式','SSE']},
+    {id:'a-genui', label:'生成式 UI', cat:'proto', size:1,
+     d:'由 Agent 决定返回表格、表单还是图表，而非固定文本气泡，显著提升信息密度。',
+     m:['形态：结构化组件协议、可交互卡片'],
+     k:['Generative UI','组件']},
+    {id:'a-cn', label:'中国标准', cat:'proto', size:2,
+     d:'国内形成独立的标准体系，并与国际协议保持映射关系，政务与金融项目通常有明确要求。',
+     m:['GB/Z 185-2026《人工智能 智能体互联》2026-05-22 发布'],
+     k:['国标','AIP']},
+    {id:'a-gbz', label:'GB/Z 185-2026', cat:'proto', size:1,
+     d:'智能体互联系列国家标准，规范标识、交互与协同，是政企招标中的常见合规项。',
+     m:['发布：2026-05-22','配套：开放原子基金会开源实现'],
+     k:['国标','合规']},
+    {id:'a-aip', label:'AIP / ACP / ANP', cat:'proto', size:1,
+     d:'国内多元协议探索的集合，逐步向分层技术栈收敛，与国际协议形成互补而非替代。',
+     m:['ACP（AgentUnion，2025-05）、AIP（首版 2025-10）'],
+     k:['AIP','协议']},
+
+    /* ===== 框架与平台 ===== */
+    {id:'a-fw', label:'框架与平台', cat:'fw', size:3,
+     d:'2026 年框架竞争已从「功能多少」转向「生产可用性」：持久化、可观测、人工介入、成本控制。',
+     m:['共识：框架只是脚手架，架构设计才是核心资产'],
+     k:['Framework','平台']},
+    {id:'a-graph', label:'图编排框架', cat:'fw', size:2,
+     d:'把 Agent 建模为状态图，节点是步骤、边是转移，天然支持分支、循环与中断恢复。',
+     m:['代表：LangGraph','优势：可控、可调试、易接入人工审核'],
+     k:['图编排','状态机']},
+    {id:'a-langgraph', label:'LangGraph', cat:'fw', size:1,
+     d:'当前生产环境使用最广的编排框架，生态完善，与 LangSmith 可观测打通。',
+     m:['特征：检查点、人机中断、子图嵌套'],
+     k:['LangChain','编排']},
+    {id:'a-temporal', label:'持久工作流', cat:'fw', size:1,
+     d:'把 Agent 运行在成熟的工作流引擎上，获得重试、超时、补偿与长周期任务能力。',
+     m:['代表：Temporal、Restate、AWS Step Functions'],
+     k:['Temporal','可靠']},
+    {id:'a-role', label:'角色协作框架', cat:'fw', size:2,
+     d:'用角色与 SOP 组织多个 Agent，上手快、语义直观，适合流程清晰的业务场景。',
+     m:['代表：CrewAI、AutoGen / AG2、MetaGPT'],
+     k:['多智能体','角色']},
+    {id:'a-crewai', label:'CrewAI', cat:'fw', size:1,
+     d:'以「团队 + 角色 + 任务」为核心抽象，业务人员也能读懂流程，落地速度快。',
+     m:['强项：业务流程建模','短板：复杂分支控制较弱'],
+     k:['CrewAI','角色']},
+    {id:'a-autogen', label:'AutoGen / AG2', cat:'fw', size:1,
+     d:'微软系多智能体框架，擅长对话式协作与代码执行，研究场景使用广泛。',
+     m:['模式：Group Chat、agents-as-tools'],
+     k:['AutoGen','对话']},
+    {id:'a-sdk', label:'厂商 SDK', cat:'fw', size:2,
+     d:'模型厂商官方 SDK，与自家模型深度适配，工具调用与缓存优化最好，但存在供应商绑定。',
+     m:['代表：OpenAI Agents SDK、Claude Agent SDK'],
+     k:['SDK','厂商']},
+    {id:'a-oai', label:'OpenAI Agents SDK', cat:'fw', size:1,
+     d:'轻量抽象（Agent / Handoff / Guardrail），配合 Responses API 提供内置工具与追踪。',
+     m:['优势：与 GPT 系模型贴合、上手快'],
+     k:['OpenAI','SDK']},
+    {id:'a-claude', label:'Claude Agent SDK', cat:'fw', size:1,
+     d:'面向长任务与代码场景设计，内置文件操作、子 Agent、上下文压缩等能力。',
+     m:['特征：长时任务、Skills 机制、MCP 原生'],
+     k:['Anthropic','SDK']},
+    {id:'a-lowcode', label:'低代码平台', cat:'fw', size:2,
+     d:'面向业务人员的可视化搭建，适合标准化流程，深度定制时往往会遇到天花板。',
+     m:['代表：Dify、Coze、n8n、阿里百炼'],
+     k:['低代码','可视化']},
+    {id:'a-dify', label:'Dify / Coze', cat:'fw', size:1,
+     d:'工作流 + 知识库 + 发布渠道一体化，是中小企业快速验证场景的主流选择。',
+     m:['优势：开箱即用、多模型接入','短板：复杂状态管理受限'],
+     k:['Dify','Coze']},
+    {id:'a-n8n', label:'n8n', cat:'fw', size:1,
+     d:'以集成见长的自动化平台，Agent 节点可嵌入既有数百个系统连接中。',
+     m:['场景：跨系统数据流转 + AI 决策'],
+     k:['n8n','自动化']},
+
+    /* ===== 评测与安全 ===== */
+    {id:'a-ops', label:'评测与安全', cat:'ops', size:3,
+     d:'决定 Agent 能否上生产的两道闸门。2026 年的共识：没有评估体系的 Agent 项目，无法规模化。',
+     m:['现实：多数团队只做离线评估，缺乏线上闭环'],
+     k:['Eval','安全']},
+    {id:'a-eval', label:'评测体系', cat:'ops', size:2,
+     d:'从「单轮问答准确率」转向「多步任务完成率」，需要可重复的环境与轨迹级判定。',
+     m:['三层：单元（工具调用）→ 轨迹（多步）→ 端到端（业务指标）'],
+     k:['Eval','评测']},
+    {id:'a-bench', label:'基准测试', cat:'ops', size:1,
+     d:'静态题库已饱和，真实环境基准成为主流：代码修复、网页操作、多轮工具调用。',
+     m:['代表：SWE-bench、GAIA、τ-bench、WebArena、OSWorld'],
+     k:['Benchmark','环境']},
+    {id:'a-judge', label:'LLM-Judge', cat:'ops', size:1,
+     d:'用模型做评分，适合开放式输出，但必须校准偏见并定期用人工标注对齐。',
+     m:['要点：评分量表、双盲、一致性检验'],
+     k:['Judge','评分']},
+    {id:'a-trajectory', label:'轨迹评估', cat:'ops', size:1,
+     d:'不只看最终答案，还看路径是否合理、是否有多余步骤、是否触发风险操作。',
+     m:['指标：步数效率、工具误用率、重复调用率'],
+     k:['轨迹','过程']},
+    {id:'a-obs', label:'可观测', cat:'ops', size:2,
+     d:'Agent 的故障方式与传统软件不同：同一输入可能走出完全不同的路径，没有 Trace 就无法排查。',
+     m:['四件套：Trace、成本、延迟、失败归因'],
+     k:['Observability','Trace']},
+    {id:'a-trace', label:'全链路 Trace', cat:'ops', size:1,
+     d:'记录每一步的输入、工具调用、返回、耗时与 token，是定位问题的唯一可靠手段。',
+     m:['代表：Langfuse、LangSmith、Braintrust、Arize Phoenix'],
+     k:['Trace','追踪']},
+    {id:'a-cost', label:'成本监控', cat:'ops', size:1,
+     d:'Agent 的 token 消耗是普通对话的数十倍，需按会话/任务/用户维度做预算与告警。',
+     m:['手段：模型分级路由、上下文缓存、步数上限'],
+     k:['成本','预算']},
+    {id:'a-guard', label:'安全护栏', cat:'ops', size:2,
+     d:'Agent 的安全边界从「内容风险」扩展到「操作风险」：它能调用什么，就能破坏什么。',
+     m:['OWASP LLM Top 10 将提示注入列为首要风险'],
+     k:['Guardrail','安全']},
+    {id:'a-inject', label:'注入防御', cat:'ops', size:1,
+     d:'外部内容（网页、邮件、文档）可能携带恶意指令，需做指令与数据的严格隔离。',
+     m:['手段：内容标记、双模型校验、能力白名单'],
+     k:['注入','防御']},
+    {id:'a-perm', label:'最小权限', cat:'ops', size:1,
+     d:'显式声明 Agent 能做什么，未声明的一律拒绝；高风险操作强制人工确认。',
+     m:['实践：能力清单 JSON、按场景发临时凭证'],
+     k:['权限','最小化']},
+    {id:'a-hitl', label:'人在回路', cat:'ops', size:2,
+     d:'不是能力不足的补丁，而是生产系统的标准设计：关键节点必须有人确认与兜底。',
+     m:['设计：审批卡点、可打断、可回滚'],
+     k:['HITL','人工']},
+    {id:'a-approve', label:'审批卡点', cat:'ops', size:1,
+     d:'在付款、删除、对外发送等不可逆动作前插入确认，是风险控制最有效的一招。',
+     m:['形态：确认卡片、二次校验、额度阈值'],
+     k:['审批','风控']},
+    {id:'a-rollback', label:'回滚与补偿', cat:'ops', size:1,
+     d:'为每个写操作设计逆向操作，失败时能恢复原状，比「保证不出错」更现实。',
+     m:['模式：Saga、事务补偿、快照'],
+     k:['回滚','补偿']}
+  ],
+  links: [
+    ['a-root','a-paradigm'],['a-root','a-memory'],['a-root','a-tool'],
+    ['a-root','a-proto'],['a-root','a-fw'],['a-root','a-ops'],
+
+    ['a-paradigm','a-loop'],['a-paradigm','a-plan'],['a-paradigm','a-multi'],['a-paradigm','a-reflect'],
+    ['a-loop','a-react'],['a-loop','a-pae'],
+    ['a-plan','a-decomp'],['a-plan','a-tot'],
+    ['a-multi','a-supervisor'],['a-multi','a-handoff'],['a-multi','a-swarm'],
+    ['a-reflect','a-selfreflex'],['a-reflect','a-verifier'],
+
+    ['a-memory','a-ctx'],['a-memory','a-mem'],['a-memory','a-rag'],['a-memory','a-state'],
+    ['a-ctx','a-wsc'],['a-ctx','a-compact'],
+    ['a-mem','a-l0'],['a-mem','a-forget'],
+    ['a-rag','a-arag'],['a-rag','a-graphrag'],
+    ['a-state','a-checkpoint'],['a-state','a-durable'],
+
+    ['a-tool','a-fc'],['a-tool','a-mcp'],['a-tool','a-code'],['a-tool','a-computer'],['a-tool','a-browser'],
+    ['a-fc','a-schema'],['a-fc','a-select'],
+    ['a-mcp','a-mcpserver'],['a-mcp','a-gateway'],
+    ['a-code','a-sandbox'],['a-code','a-notebook'],
+    ['a-computer','a-gui'],['a-computer','a-rpa'],
+    ['a-browser','a-playwright'],['a-browser','a-extract'],
+
+    ['a-proto','a-mcpp'],['a-proto','a-a2a'],['a-proto','a-ui'],['a-proto','a-cn'],
+    ['a-mcpp','a-discovery'],['a-mcpp','a-auth'],
+    ['a-a2a','a-card'],['a-a2a','a-task'],
+    ['a-ui','a-stream'],['a-ui','a-genui'],
+    ['a-cn','a-gbz'],['a-cn','a-aip'],
+
+    ['a-fw','a-graph'],['a-fw','a-role'],['a-fw','a-sdk'],['a-fw','a-lowcode'],
+    ['a-graph','a-langgraph'],['a-graph','a-temporal'],
+    ['a-role','a-crewai'],['a-role','a-autogen'],
+    ['a-sdk','a-oai'],['a-sdk','a-claude'],
+    ['a-lowcode','a-dify'],['a-lowcode','a-n8n'],
+
+    ['a-ops','a-eval'],['a-ops','a-obs'],['a-ops','a-guard'],['a-ops','a-hitl'],
+    ['a-eval','a-bench'],['a-eval','a-judge'],['a-eval','a-trajectory'],
+    ['a-obs','a-trace'],['a-obs','a-cost'],
+    ['a-guard','a-inject'],['a-guard','a-perm'],
+    ['a-hitl','a-approve'],['a-hitl','a-rollback'],
+
+    /* 跨域关联 */
+    ['a-gateway','a-auth'],
+    ['a-a2a','a-supervisor'],['a-a2a','a-handoff'],
+    ['a-mcpp','a-mcp'],['a-gbz','a-aip'],
+    ['a-mem','a-ctx'],
+    ['a-arag','a-graphrag'],['a-rag','a-mem'],
+    ['a-sandbox','a-perm'],
+    ['a-inject','a-computer'],['a-inject','a-browser'],
+    ['a-verifier','a-eval'],['a-trajectory','a-trace'],
+    ['a-langgraph','a-checkpoint'],['a-temporal','a-durable'],
+    ['a-claude','a-mcpp'],['a-oai','a-guard'],
+    ['a-crewai','a-supervisor'],['a-autogen','a-swarm'],
+    ['a-dify','a-rag'],['a-n8n','a-tool'],
+    ['a-cost','a-ctx'],['a-approve','a-perm'],
+    ['a-decomp','a-wsc'],['a-tot','a-verifier'],
+    ['a-multi','a-cost'],['a-react','a-fc']
+  ]
+};
+GRAPHS.enterprise = {
+  tab: '企业级架构',
+  title: '企业级 AI Agent 参考架构',
+  subtitle: '从左到右是请求链路，灰色是横切治理。2026 年的落地共识：模型-技能-执行三层解耦，LLM / MCP / 代码三条流量各自独立管控。',
+  layout: 'layered',
+  cats: [
+    {id:'l1',  name:'L1 交互层',   color:'#4f46e5'},
+    {id:'l2',  name:'L2 接入层',   color:'#0ea5e9'},
+    {id:'l3',  name:'L3 编排层',   color:'#14b8a6'},
+    {id:'l4',  name:'L4 能力层',   color:'#f59e0b'},
+    {id:'l5',  name:'L5 执行层',   color:'#ef4444'},
+    {id:'l6',  name:'L6 数据层',   color:'#a855f7'},
+    {id:'gov', name:'横切 · 治理', color:'#64748b'}
+  ],
+  nodes: [
+    /* L1 */
+    {id:'e-web', label:'Web / 门户', cat:'l1', size:1,
+     d:'企业内部统一入口。2026 年的形态不再是独立聊天页，而是嵌入业务系统的任务面板。',
+     m:['要点：会话隔离、权限继承、结果可导出'],
+     k:['门户','入口']},
+    {id:'e-im', label:'IM 与邮箱', cat:'l1', size:1,
+     d:'企业微信、钉钉、Slack、邮件是最自然的入口——员工不用改变工作习惯。',
+     m:['要点：消息签名、群聊边界、@触发策略'],
+     k:['IM','入口']},
+    {id:'e-voice', label:'语音入口', cat:'l1', size:1,
+     d:'电话客服与现场作业场景的刚需，端到端语音模型把延迟压到可对话水平。',
+     m:['要点：打断处理、身份核验、录音留痕'],
+     k:['语音','呼叫']},
+    {id:'e-copilot', label:'嵌入式 Copilot', cat:'l1', size:1,
+     d:'直接长在 ERP / CRM / 办公套件里，以侧边栏形式提供「当前上下文相关」的帮助。',
+     m:['要点：读取当前单据、操作受限于本页权限'],
+     k:['Copilot','嵌入']},
+    {id:'e-agui', label:'AG-UI 渲染', cat:'l1', size:1,
+     d:'用标准协议把 Agent 的思考过程、工具调用与产物渲染成可交互组件，而非纯文本。',
+     m:['价值：可理解、可打断、可确认'],
+     k:['AG-UI','渲染']},
+
+    /* L2 */
+    {id:'e-aigw', label:'AI Gateway', cat:'l2', size:2,
+     d:'所有 LLM 流量的唯一出入口：多模型路由、配额、缓存、降级、内容审查都在这里做。',
+     m:['能力：模型路由、语义缓存、失败重试、Token 计量','价值：换模型不改业务代码'],
+     k:['Gateway','路由']},
+    {id:'e-mcpgw', label:'MCP Gateway', cat:'l2', size:2,
+     d:'统一管控 MCP 流量：工具白名单、鉴权、审计、限流。避免每个 Agent 直连内部系统。',
+     m:['2026 企业实践：MCP 流量必须经过网关，禁止直连'],
+     k:['MCP','管控']},
+    {id:'e-iam', label:'身份与授权', cat:'l2', size:2,
+     d:'Agent 需要独立身份，并代表用户行事（On-behalf-of）。权限继承与最小化是安全的地基。',
+     m:['协议：SSO、OAuth 2.1、SPIFFE、短期凭证'],
+     k:['IAM','OAuth']},
+    {id:'e-apim', label:'API 与连接管理', cat:'l2', size:1,
+     d:'统一管理内外部 API 的注册、版本与配额，为工具化提供稳定底座。',
+     m:['要点：契约版本化、SLA、熔断'],
+     k:['API','集成']},
+    {id:'e-ratelimit', label:'限流与配额', cat:'l2', size:1,
+     d:'按用户、团队、任务维度设配额，防止单个 Agent 拖垮整体服务或烧穿预算。',
+     m:['维度：并发、QPS、日 token 上限'],
+     k:['限流','配额']},
+
+    /* L3 */
+    {id:'e-supervisor', label:'Supervisor 路由', cat:'l3', size:2,
+     d:'主控 Agent 负责意图识别与任务分派，是生产环境最可控的多智能体拓扑。',
+     m:['要点：显式路由规则、子任务超时、结果校验'],
+     k:['Supervisor','编排']},
+    {id:'e-workflow', label:'工作流引擎', cat:'l3', size:2,
+     d:'确定性流程用工作流，不确定环节才交给模型。这种混合模式是 2026 年企业落地的主流形态。',
+     m:['代表：Temporal、LangGraph、Camunda','原则：能用规则就别用模型'],
+     k:['Workflow','混合']},
+    {id:'e-state', label:'状态与检查点', cat:'l3', size:1,
+     d:'每步落盘，支持断点续跑与人工介入后恢复，是长任务可靠性的来源。',
+     m:['要点：幂等、可重放、状态版本'],
+     k:['State','恢复']},
+    {id:'e-hitl', label:'人工审批', cat:'l3', size:2,
+     d:'在不可逆动作（付款、删除、对外发送）前强制确认，是风险控制的最后一道闸。',
+     m:['设计：审批卡、超时升级、批量审批'],
+     k:['HITL','审批']},
+    {id:'e-queue', label:'任务队列', cat:'l3', size:1,
+     d:'长任务异步化，避免阻塞会话；配合优先级与并发控制保障 SLA。',
+     m:['要点：优先级、死信队列、幂等消费'],
+     k:['队列','异步']},
+    {id:'e-policy', label:'策略引擎', cat:'l3', size:1,
+     d:'把「谁能做什么、在什么条件下」写成可执行策略，与模型判断解耦。',
+     m:['形态：规则 DSL、OPA、额度阈值'],
+     k:['Policy','规则']},
+
+    /* L4 */
+    {id:'e-router', label:'模型路由', cat:'l4', size:2,
+     d:'按任务难度、成本与合规要求分级选模型：简单任务走小模型，敏感数据走私有化模型。',
+     m:['策略：难度分级、成本上限、数据驻留'],
+     k:['路由','多模型']},
+    {id:'e-skills', label:'技能库', cat:'l4', size:2,
+     d:'把业务能力封装成可复用的工具/技能，是「模型-技能-执行」三层解耦的中间层。',
+     m:['形态：MCP Server、函数、Skill 包','治理：版本、归属、评测基线'],
+     k:['Skills','工具']},
+    {id:'e-kb', label:'企业知识库', cat:'l4', size:2,
+     d:'RAG 与 GraphRAG 的知识底座，质量取决于切片策略、元数据与权限过滤，而非向量库选型。',
+     m:['要点：文档权限继承、增量更新、引用可追溯'],
+     k:['RAG','知识库']},
+    {id:'e-mem', label:'记忆服务', cat:'l4', size:1,
+     d:'跨会话的用户偏好与任务历史，需支持分级存储、主动遗忘与合规删除。',
+     m:['要点：租户隔离、TTL、可解释召回'],
+     k:['Memory','记忆']},
+    {id:'e-prompt', label:'Prompt 与版本', cat:'l4', size:1,
+     d:'系统提示是核心资产，需要像代码一样做版本管理、灰度发布与回归测试。',
+     m:['要点：版本树、A/B、回滚、变更审计'],
+     k:['Prompt','版本']},
+    {id:'e-finetune', label:'精调模型', cat:'l4', size:1,
+     d:'垂直场景用 10B-70B 精调模型，往往比通用大模型更准、更便宜、更可控。',
+     m:['2026 共识：垂直场景精调中型模型性价比最高'],
+     k:['微调','垂直']},
+
+    /* L5 */
+    {id:'e-sandbox', label:'代码沙箱', cat:'l5', size:2,
+     d:'所有代码执行必须在隔离环境中：无外网、只读挂载、资源限额、执行即销毁。',
+     m:['代表：Firecracker 微虚机、gVisor、E2B'],
+     k:['沙箱','隔离']},
+    {id:'e-connector', label:'系统连接器', cat:'l5', size:2,
+     d:'对接 ERP / CRM / OA / 工单的适配层，是企业 Agent 真正「能干活」的关键。',
+     m:['要点：写操作幂等、字段映射、失败补偿'],
+     k:['Connector','ERP']},
+    {id:'e-rpa', label:'RPA 桥接', cat:'l5', size:1,
+     d:'为没有 API 的老系统提供通道，用确定性脚本打底，只在判断环节调用模型。',
+     m:['模式：RPA 执行 + LLM 决策'],
+     k:['RPA','遗留系统']},
+    {id:'e-browser', label:'浏览器自动化', cat:'l5', size:1,
+     d:'处理外部网站与 SaaS 后台，需独立的账号池、网络出口与行为审计。',
+     m:['风险：登录态泄露、反爬、越权操作'],
+     k:['Browser','自动化']},
+    {id:'e-bus', label:'消息总线', cat:'l5', size:1,
+     d:'系统间异步解耦与事件驱动，让 Agent 能响应业务事件而不只是被动问答。',
+     m:['代表：Kafka、Pulsar、企业 MQ'],
+     k:['Event','总线']},
+
+    /* L6 */
+    {id:'e-vector', label:'向量库', cat:'l6', size:1,
+     d:'语义检索的基础设施，选型差异远小于数据治理质量带来的差异。',
+     m:['代表：Milvus、pgvector、Elasticsearch'],
+     k:['Vector','检索']},
+    {id:'e-graphdb', label:'图数据库', cat:'l6', size:1,
+     d:'支撑多跳关系推理与权限图谱，是 GraphRAG 与风控场景的基础。',
+     m:['代表：Neo4j、NebulaGraph、TigerGraph'],
+     k:['Graph','关系']},
+    {id:'e-lake', label:'数据湖 / 数仓', cat:'l6', size:1,
+     d:'结构化数据的统一底座，Agent 的分析能力最终受制于数据质量与口径一致性。',
+     m:['要点：指标口径统一、血缘、时效'],
+     k:['Lakehouse','数仓']},
+    {id:'e-govdata', label:'数据治理', cat:'l6', size:2,
+     d:'分级分类、脱敏、权限标签——决定 Agent 能看到什么，也是合规审计的依据。',
+     m:['要点：数据分级、行列级权限、脱敏规则'],
+     k:['治理','分级']},
+    {id:'e-audit', label:'审计日志', cat:'l6', size:2,
+     d:'记录「谁、通过哪个 Agent、做了什么操作、依据什么数据」，是不可篡改的责任链。',
+     m:['要求：完整、防篡改、可回溯到单步'],
+     k:['Audit','留痕']},
+
+    /* 横切治理 */
+    {id:'e-observe', label:'可观测', cat:'gov', size:2,
+     d:'全链路 Trace + 指标 + 归因。Agent 的故障路径不可复现，没有 Trace 就等于盲飞。',
+     m:['四件套：Trace、延迟、成本、失败归因','代表：Langfuse、LangSmith、Arize'],
+     k:['Observability','Trace']},
+    {id:'e-eval', label:'评估与回归', cat:'gov', size:2,
+     d:'上线前跑离线评测集，上线后做在线指标监控，每次 Prompt/模型变更都要回归。',
+     m:['三层：工具级 → 轨迹级 → 业务指标','评估缺失是试点难以进入生产的首要原因'],
+     k:['Eval','回归']},
+    {id:'e-cost', label:'成本治理', cat:'gov', size:1,
+     d:'按团队/场景分摊 token 成本，设置预算与告警，把 AI 支出变成可管理的科目。',
+     m:['手段：分级路由、缓存、步数上限、预算告警'],
+     k:['成本','FinOps']},
+    {id:'e-sec', label:'安全护栏', cat:'gov', size:2,
+     d:'输入侧防注入、输出侧防泄露、执行侧防越权。三层独立管控，任一不通过即拒绝。',
+     m:['OWASP：约 83% 的 Agent 系统存在注入漏洞'],
+     k:['Guardrail','安全']},
+    {id:'e-compliance', label:'合规与审计', cat:'gov', size:1,
+     d:'满足算法备案、数据出境、行业监管要求，并能向监管与内审提供证据。',
+     m:['要点：备案、留存期限、可解释性说明'],
+     k:['合规','监管']},
+    {id:'e-devops', label:'Agent DevOps', cat:'gov', size:1,
+     d:'Prompt、工具、模型的联合发布流水线：灰度、回滚、影子流量、变更追踪。',
+     m:['要点：配置即代码、可回滚、灰度比例控制'],
+     k:['DevOps','发布']},
+    {id:'e-coe', label:'AI COE 组织', cat:'gov', size:1,
+     d:'卓越中心负责标准、复用与培训。技术之外，组织适配往往是项目成败的真正变量。',
+     m:['职责：场景评审、资产复用、能力培训、度量'],
+     k:['COE','组织']}
+  ],
+  links: [
+    /* L1 → L2 */
+    ['e-web','e-aigw'],['e-im','e-aigw'],['e-voice','e-aigw'],
+    ['e-copilot','e-aigw'],['e-agui','e-aigw'],
+    ['e-aigw','e-iam'],['e-aigw','e-apim'],['e-aigw','e-ratelimit'],
+    ['e-apim','e-mcpgw'],['e-iam','e-mcpgw'],
+
+    /* L2 → L3 */
+    ['e-aigw','e-supervisor'],['e-mcpgw','e-supervisor'],
+    ['e-iam','e-policy'],['e-ratelimit','e-queue'],
+    ['e-supervisor','e-workflow'],['e-supervisor','e-policy'],
+    ['e-workflow','e-state'],['e-workflow','e-queue'],
+    ['e-policy','e-hitl'],['e-state','e-hitl'],
+
+    /* L3 → L4 */
+    ['e-supervisor','e-router'],['e-supervisor','e-skills'],
+    ['e-workflow','e-skills'],['e-state','e-mem'],
+    ['e-hitl','e-skills'],['e-router','e-prompt'],
+    ['e-router','e-finetune'],['e-skills','e-kb'],
+
+    /* L4 → L5 */
+    ['e-skills','e-sandbox'],['e-skills','e-connector'],
+    ['e-skills','e-browser'],['e-skills','e-rpa'],
+    ['e-kb','e-vector'],['e-mem','e-vector'],
+    ['e-connector','e-bus'],['e-rpa','e-bus'],
+    ['e-sandbox','e-audit'],['e-browser','e-audit'],
+
+    /* L5 → L6 */
+    ['e-bus','e-lake'],['e-connector','e-govdata'],
+    ['e-vector','e-lake'],['e-graphdb','e-lake'],
+    ['e-lake','e-govdata'],['e-govdata','e-audit'],
+    ['e-kb','e-graphdb'],
+
+    /* 治理横切 */
+    ['e-observe','e-supervisor'],['e-observe','e-aigw'],
+    ['e-eval','e-observe'],['e-eval','e-skills'],
+    ['e-cost','e-aigw'],['e-cost','e-router'],
+    ['e-sec','e-aigw'],['e-sec','e-sandbox'],['e-sec','e-mcpgw'],
+    ['e-compliance','e-audit'],['e-compliance','e-sec'],
+    ['e-devops','e-workflow'],['e-devops','e-prompt'],
+    ['e-coe','e-observe'],['e-coe','e-eval']
+  ]
+};
+
+
+/* ---------- state ---------- */
+let G = null, NODES = [], LINKS = [], MAP = new Map(), ADJ = new Map();
+let view = {s:1, x:0, y:0};
+let sel = null, hover = null, activeCats = new Set(), q = '';
+let nodeEls = new Map(), linkEls = [];
+
+/* ---------- helpers ---------- */
+function mk(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  if(attrs) for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function catOf(id){ return G.cats.find(c => c.id === id) || {name:'其他', color:'#94a3b8'}; }
+
+/* ---------- layout: radial (parent-anchored tree) ---------- */
+function layoutRadial(){
+  const root = NODES.find(n => n.root) || NODES[0];
+
+  // BFS: build spanning tree
+  NODES.forEach(n => { n.depth = Infinity; n.parent = null; n.ang = undefined; });
+  root.depth = 0;
+  const q = [root.id];
+  const seen = new Set([root.id]);
+  while(q.length){
+    const cur = MAP.get(q.shift());
+    const nbs = (ADJ.get(cur.id) || []).slice();
+    for(const nb of nbs){
+      const m = MAP.get(nb);
+      if(m && !seen.has(nb)){
+        seen.add(nb);
+        m.depth = cur.depth + 1;
+        m.parent = cur.id;
+        q.push(nb);
+      }
+    }
+  }
+  NODES.forEach(n => { if(!seen.has(n.id)){ n.depth = 2; n.parent = root.id; } });
+  root.x = 0; root.y = 0; root.ang = 0;
+
+  // depth-1 nodes: one angular sector per category
+  const cats = G.cats.map(c => c.id);
+  const span = Math.PI * 2 / cats.length;
+  const d1 = NODES.filter(n => n.depth === 1);
+  cats.forEach((cid, ci) => {
+    const arr = d1.filter(n => n.cat === cid);
+    arr.forEach((n, i) => {
+      const a = -Math.PI / 2 + ci * span + (((i + 0.5) / arr.length) - 0.5) * span * 0.82;
+      n.ang = a;
+      n.x = Math.cos(a) * 218;
+      n.y = Math.sin(a) * 218;
+    });
+  });
+  d1.forEach(n => { if(n.ang === undefined) n.ang = Math.atan2(n.y, n.x); });
+
+  // recursive: children fan out around their parent
+  function placeChildren(pid, guard){
+    if(guard > 8) return;
+    const kids = NODES.filter(n => n.parent === pid);
+    if(!kids.length) return;
+    const p = MAP.get(pid);
+    const baseAng = p.ang !== undefined ? p.ang : Math.atan2(p.y, p.x);
+    const spread = Math.min(1.75, 0.46 * kids.length);
+    const dist = p.depth === 0 ? 218 : (p.depth === 1 ? 176 : 156);
+    kids.forEach((k, i) => {
+      const t = kids.length === 1 ? 0.5 : i / (kids.length - 1);
+      const a = baseAng + (t - 0.5) * spread;
+      k.ang = a;
+      k.x = p.x + Math.cos(a) * dist;
+      k.y = p.y + Math.sin(a) * dist;
+    });
+    kids.forEach(k => placeChildren(k.id, guard + 1));
+  }
+  d1.forEach(n => placeChildren(n.id, 0));
+
+  // remember home positions, then relax gently so labels do not collide
+  NODES.forEach(n => { n.hx = n.x; n.hy = n.y; });
+  for(let it = 0; it < 130; it++){
+    for(let i = 0; i < NODES.length; i++){
+      for(let j = i + 1; j < NODES.length; j++){
+        const a = NODES[i], b = NODES[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d = Math.hypot(dx, dy) || .01;
+        const minD = 66;
+        if(d < minD){
+          const f = (minD - d) / d * 0.34;
+          const am = a.depth >= 2, bm = b.depth >= 2;
+          if(am && bm){
+            a.x -= dx * f; a.y -= dy * f;
+            b.x += dx * f; b.y += dy * f;
+          } else if(am){
+            a.x -= dx * f * 1.7; a.y -= dy * f * 1.7;
+          } else if(bm){
+            b.x += dx * f * 1.7; b.y += dy * f * 1.7;
+          }
+        }
+      }
+    }
+    for(const n of NODES){
+      if(n.depth < 2) continue;
+      n.x += (n.hx - n.x) * 0.16;
+      n.y += (n.hy - n.y) * 0.16;
+    }
+  }
+}
+
+/* ---------- layout: layered (architecture) ---------- */
+function layoutLayered(){
+  const order = G.cats.map(c => c.id);
+  const cols = order.map(c => NODES.filter(n => n.cat === c));
+  const maxN = Math.max(1, ...cols.map(c => c.length));
+  const colGap = 214;
+  const rowGap = Math.min(88, 800 / Math.max(maxN, 4));
+  const totalW = (order.length - 1) * colGap;
+  const maxSpan = maxN * rowGap;
+
+  cols.forEach((col, ci) => {
+    const x = -totalW / 2 + ci * colGap;
+    col.forEach((n, ri) => {
+      n.x = x;
+      n.y = (ri - (col.length - 1) / 2) * rowGap;
+      n.depth = 1;
+      n._col = ci;
+      n.fx = x; n.fy = n.y;
+    });
+  });
+  NODES.forEach(n => { if(n.root){ n.x = 0; n.y = -maxSpan / 2 - 90; n.fx = n.x; n.fy = n.y; } });
+
+  G._lay = {
+    cols: cols.map((col, ci) => ({x: -totalW / 2 + ci * colGap, cat: order[ci], n: col.length})),
+    top: -maxSpan / 2 - 26,
+    bottom: maxSpan / 2 + 26,
+    w: 176
+  };
+}
+
+/* keep labels from sitting on top of each other */
+function resolveLabelCollisions(){
+  const ctx = document.createElement('canvas').getContext('2d');
+  const items = [];
+  for(const n of NODES){
+    if(n.root) continue;
+    const fs = n.depth === 1 ? 12.5 : 11;
+    ctx.font = (n.depth === 1 ? '700 ' : '500 ') + fs + 'px sans-serif';
+    const w = ctx.measureText(n.label).width + 8;
+    const r = n.size === 3 ? 15 : n.size === 2 ? 11 : 8;
+    items.push({n, w, h: fs + 3, r, side: 1, lift: 0});
+  }
+  const boxOf = it => ({
+    x: it.n.x,
+    y: it.n.y + (it.side === 1 ? it.r + 14 + it.lift : -it.r - 6 - it.lift),
+    w: it.w, h: it.h
+  });
+  for(let pass = 0; pass < 8; pass++){
+    let moved = false;
+    for(let i = 0; i < items.length; i++){
+      for(let j = i + 1; j < items.length; j++){
+        const a = items[i], b = items[j];
+        const ba = boxOf(a), bb = boxOf(b);
+        if(Math.abs(ba.x - bb.x) < (ba.w + bb.w) / 2 + 2 &&
+           Math.abs(ba.y - bb.y) < (ba.h + bb.h) / 2 + 1){
+          const t = a.n.depth >= b.n.depth ? a : b;
+          if(t.side === 1 && t.lift === 0){ t.side = -1; }
+          else { t.lift += 15; }
+          moved = true;
+        }
+      }
+    }
+    if(!moved) break;
+  }
+  for(const it of items){
+    const o = nodeEls.get(it.n.id);
+    if(o) o.t.setAttribute('y', it.side === 1 ? it.r + 14 + it.lift : -it.r - 6 - it.lift);
+  }
+}
+
+/* ---------- render ---------- */
+let gLanes = null;
+
+function render(){
+  gLinks.innerHTML = ''; gNodes.innerHTML = '';
+  nodeEls.clear(); linkEls = [];
+
+  // swimlanes for layered layout
+  if(G.layout === 'layered' && G._lay){
+    if(!gLanes){ gLanes = mk('g', {'pointer-events':'none'}); vp.insertBefore(gLanes, gLinks); }
+    gLanes.innerHTML = '';
+    for(const c of G._lay.cols){
+      const cat = catOf(c.cat);
+      gLanes.appendChild(mk('rect', {
+        x: c.x - G._lay.w / 2, y: G._lay.top,
+        width: G._lay.w, height: G._lay.bottom - G._lay.top,
+        rx: 14, fill: cat.color, 'fill-opacity': .05,
+        stroke: cat.color, 'stroke-opacity': .18, 'stroke-width': 1
+      }));
+      const t = mk('text', {
+        x: c.x, y: G._lay.top - 13, 'text-anchor': 'middle',
+        'font-size': 12.5, 'font-weight': 700, fill: cat.color,
+        'font-family': 'inherit'
+      });
+      t.textContent = cat.name;
+      gLanes.appendChild(t);
+    }
+  } else if(gLanes){ gLanes.remove(); gLanes = null; }
+
+  // links
+  for(const [s, t] of LINKS){
+    const a = MAP.get(s), b = MAP.get(t);
+    if(!a || !b) continue;
+    const dc = (a._col !== undefined && b._col !== undefined) ? Math.abs(a._col - b._col) : 0;
+    const far = dc > 2;
+    const attrs = {
+      x1:a.x, y1:a.y, x2:b.x, y2:b.y,
+      stroke: far ? '#dde4f0' : '#cfd8e8', 'stroke-width':1.1, class:'link'
+    };
+    if(far) attrs['stroke-dasharray'] = '3 4';
+    const line = mk('line', attrs);
+    gLinks.appendChild(line);
+    linkEls.push({el:line, s, t});
+  }
+
+  // nodes
+  for(const n of NODES){
+    const cat = catOf(n.cat);
+    const r = n.root ? 26 : (n.size === 3 ? 15 : n.size === 2 ? 11 : 8);
+    const g = mk('g', {class:'node d' + (n.root ? 0 : Math.min(n.depth,3)), transform:`translate(${n.x},${n.y})`});
+    g.dataset.id = n.id;
+
+    const c = mk('circle', {
+      r: r,
+      fill: n.root ? '#0f172a' : cat.color,
+      'fill-opacity': n.root ? 1 : (n.depth === 3 ? .82 : 1),
+      stroke:'#ffffff', 'stroke-width': n.root ? 3 : 2
+    });
+    g.appendChild(c);
+
+    const label = n.label;
+    const ty = n.root ? 42 : r + 14;
+    const fs = n.root ? 15 : (n.depth === 1 ? 12.5 : 11);
+    const t = mk('text', {
+      x: 0, y: ty,
+      'text-anchor': 'middle',
+      'font-size': fs,
+      'font-weight': n.root ? 800 : (n.depth === 1 ? 700 : 500),
+      'font-family': '-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif',
+      fill: n.root ? '#0f172a' : (n.depth === 1 ? '#1e293b' : '#334155'),
+      'paint-order': 'stroke', stroke: '#fbfcff', 'stroke-width': 3.2, 'stroke-linejoin': 'round'
+    });
+    t.textContent = label;
+    g.appendChild(t);
+
+    gNodes.appendChild(g);
+    nodeEls.set(n.id, {g, c, t, n});
+  }
+  resolveLabelCollisions();
+  applyView();
+  updateHighlight();
+  updateZoomBadge();
+}
+
+/* ---------- view ---------- */
+function applyView(){
+  vp.setAttribute('transform', `translate(${view.x},${view.y}) scale(${view.s})`);
+  updateZoomBadge();
+}
+function updateZoomBadge(){
+  const zb = $('#zb'); if(zb) zb.textContent = Math.round(view.s * 100) + '%';
+}
+function fit(){
+  if(!NODES.length) return;
+  const padX = G.layout === 'layered' ? 100 : 72;
+  const padTop = G.layout === 'layered' ? 80 : 34;
+  const padBot = G.layout === 'layered' ? 80 : 40;
+  let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+  for(const n of NODES){
+    minX = Math.min(minX, n.x - padX); maxX = Math.max(maxX, n.x + padX);
+    minY = Math.min(minY, n.y - padTop); maxY = Math.max(maxY, n.y + padBot);
+  }
+  const W = svg.clientWidth, H = svg.clientHeight;
+  const s = Math.min(W / (maxX - minX), H / (maxY - minY)) * 0.94;
+  view.s = Math.max(.15, Math.min(2.2, s));
+  const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+  view.x = W / 2 - cx * view.s;
+  view.y = H / 2 - cy * view.s;
+  applyView();
+}
+
+/* ---------- highlight ---------- */
+function visible(n){
+  if(activeCats.size && !activeCats.has(n.cat) && !n.root) return false;
+  return true;
+}
+function updateHighlight(){
+  const focus = hover || sel;
+  const nb = new Set();
+  if(focus){
+    nb.add(focus);
+    for(const x of (ADJ.get(focus) || [])) nb.add(x);
+  }
+  const ql = q.trim().toLowerCase();
+  for(const [id, o] of nodeEls){
+    const n = o.n;
+    let dim = false;
+    if(!visible(n)) dim = true;
+    if(focus && !nb.has(id)) dim = true;
+    if(ql && !(n.label.toLowerCase().includes(ql) || (n.k || []).join(' ').toLowerCase().includes(ql))) dim = true;
+    o.g.setAttribute('opacity', dim ? .1 : 1);
+    o.g.classList.toggle('hit', !!ql && !dim && !focus);
+    o.g.classList.toggle('sel', sel === id);
+  }
+  for(const l of linkEls){
+    const on = focus ? (l.s === focus || l.t === focus) : true;
+    const vis = visible(MAP.get(l.s)) && visible(MAP.get(l.t));
+    l.el.setAttribute('opacity', on && vis ? 1 : (focus ? .08 : (vis ? .75 : .06)));
+    l.el.setAttribute('stroke', on && focus ? '#a5b4fc' : '#cfd8e8');
+    l.el.setAttribute('stroke-width', on && focus ? 1.9 : 1.1);
+  }
+}
+
+/* ---------- detail panel ---------- */
+const SHEETBAR = '<div class="sheet-bar"><span class="sheet-grip"></span><button class="sheet-close" type="button">收起</button></div>';
+function bindSheet(d){
+  const b = d.querySelector('.sheet-close');
+  if(b) b.onclick = () => { sel = null; document.body.classList.remove('sheet'); updateHighlight(); renderDetail(); };
+}
+
+function renderDetail(){
+  const d = $('#detail');
+  if(!sel){
+    const cats = G.cats.map(c => `${c.name} ${NODES.filter(n=>n.cat===c.id).length}`).join(' · ');
+    d.innerHTML = SHEETBAR + `
+      <div class="d-empty">
+        <h3>${esc(G.title)}</h3>
+        <p>${esc(G.subtitle)}</p>
+        <p style="font-size:11.5px;color:#94a3b8">${esc(cats)}</p>
+        <div class="rel-title">提示</div>
+        <p style="font-size:12px">点击任意节点查看定义、2026 年现状与关联脉络。左侧可切换图层，顶部搜索框支持关键词定位。</p>
+      </div>`;
+    bindSheet(d);
+    return;
+  }
+  const n = MAP.get(sel);
+  if(!n) return;
+  const cat = catOf(n.cat);
+  const rels = (ADJ.get(n.id) || []).map(id => MAP.get(id)).filter(Boolean);
+  d.innerHTML = SHEETBAR + `
+    <div class="badge" style="background:${cat.color}1a;color:${cat.color}"><i style="background:${cat.color}"></i>${esc(cat.name)}</div>
+    <div class="d-title">${esc(n.label)}</div>
+    <div class="d-desc">${esc(n.d || '')}</div>
+    ${n.m && n.m.length ? `<div class="d-meta">${n.m.map(x => '· ' + esc(x)).join('<br>')}</div>` : ''}
+    ${n.k && n.k.length ? `<div class="kw">${n.k.map(x => `<span>${esc(x)}</span>`).join('')}</div>` : ''}
+    <div class="rel-title">关联 ${rels.length}</div>
+    ${rels.map(r => {
+      const rc = catOf(r.cat);
+      return `<div class="rel" data-go="${r.id}"><i style="background:${rc.color}"></i>${esc(r.label)}<span class="dirmark">→</span></div>`;
+    }).join('')}
+  `;
+  d.querySelectorAll('[data-go]').forEach(x => {
+    x.onclick = () => { selectNode(x.dataset.go, true); };
+  });
+  bindSheet(d);
+}
+
+/* ---------- select ---------- */
+function selectNode(id, focusIt){
+  sel = (sel === id) ? null : id;
+  if(focusIt && sel){
+    const n = MAP.get(sel);
+    const W = svg.clientWidth, H = svg.clientHeight;
+    const target = Math.max(view.s, .85);
+    view.s = target;
+    view.x = W / 2 - n.x * target;
+    view.y = H / 2 - n.y * target;
+    applyView();
+  }
+  updateHighlight();
+  renderDetail();
+  document.body.classList.toggle('sheet', !!sel);
+}
+
+/* ---------- graph loading ---------- */
+function loadGraph(key){
+  G = GRAPHS[key];
+  NODES = G.nodes.map(n => ({...n}));
+  LINKS = G.links.map(l => [l[0], l[1]]);
+  MAP = new Map(NODES.map(n => [n.id, n]));
+  ADJ = new Map(NODES.map(n => [n.id, []]));
+  for(const [s, t] of LINKS){
+    if(ADJ.has(s) && ADJ.has(t)){ ADJ.get(s).push(t); ADJ.get(t).push(s); }
+  }
+  sel = null; hover = null; q = ''; $('#q').value = '';
+  activeCats = new Set();
+
+  if(G.layout === 'layered') layoutLayered(); else layoutRadial();
+
+  renderLegend(); renderStats(); renderTabs(); renderDetail();
+  render();
+  fit();
+}
+
+/* ---------- chrome ---------- */
+function renderTabs(){
+  const t = $('#tabs');
+  t.innerHTML = '';
+  Object.keys(GRAPHS).forEach((k, i) => {
+    const b = document.createElement('button');
+    b.textContent = (i + 1) + ' · ' + GRAPHS[k].tab;
+    b.className = (GRAPHS[k] === G) ? 'on' : '';
+    b.onclick = () => loadGraph(k);
+    t.appendChild(b);
+  });
+}
+function renderLegend(){
+  const boxes = [$('#legend'), $('#mlegend')].filter(Boolean);
+  boxes.forEach(b => { b.innerHTML = ''; });
+  for(const c of G.cats){
+    const count = NODES.filter(n => n.cat === c.id).length;
+    for(const box of boxes){
+      const row = document.createElement('div');
+      row.className = 'leg' + (activeCats.has(c.id) ? ' off' : '');
+      row.innerHTML = `<span class="dot" style="background:${c.color}"></span>
+        <span class="nm">${esc(c.name)}</span><span class="ct">${count}</span>`;
+      row.onclick = () => {
+        if(activeCats.has(c.id)) activeCats.delete(c.id); else activeCats.add(c.id);
+        renderLegend(); updateHighlight();
+      };
+      box.appendChild(row);
+    }
+  }
+}
+function renderStats(){
+  const st = $('#stats');
+  const d1 = NODES.filter(n => n.depth === 1).length;
+  st.innerHTML = `
+    <div class="stat"><span class="k">节点</span><span class="v">${NODES.length}</span></div>
+    <div class="stat"><span class="k">关系</span><span class="v">${LINKS.length}</span></div>
+    <div class="stat"><span class="k">图层</span><span class="v">${G.cats.length}</span></div>
+    <div class="stat"><span class="k">版本核对</span><span class="v">2026-10-25</span></div>`;
+}
+
+/* ---------- interaction ---------- */
+let drag = null;
+
+svg.addEventListener('pointerdown', e => {
+  const gEl = e.target.closest('.node');
+  if(gEl){
+    const id = gEl.dataset.id;
+    const n = MAP.get(id);
+    drag = {type:'node', id, n, moved:false};
+    gEl.parentNode.appendChild(gEl);
+    e.preventDefault();
+  } else {
+    drag = {type:'canvas', sx:e.clientX, sy:e.clientY, ox:view.x, oy:view.y};
+  }
+});
+
+window.addEventListener('pointermove', e => {
+  if(!drag) return;
+  if(drag.type === 'node'){
+    const rect = svg.getBoundingClientRect();
+    const mx = (e.clientX - rect.left - view.x) / view.s;
+    const my = (e.clientY - rect.top - view.y) / view.s;
+    drag.n.x = mx; drag.n.y = my;
+    drag.moved = true;
+    const o = nodeEls.get(drag.id);
+    if(o) o.g.setAttribute('transform', `translate(${mx},${my})`);
+    for(const l of linkEls){
+      if(l.s === drag.id){ l.el.setAttribute('x1', mx); l.el.setAttribute('y1', my); }
+      if(l.t === drag.id){ l.el.setAttribute('x2', mx); l.el.setAttribute('y2', my); }
+    }
+  } else {
+    view.x = drag.ox + (e.clientX - drag.sx);
+    view.y = drag.oy + (e.clientY - drag.sy);
+    applyView();
+  }
+});
+
+window.addEventListener('pointerup', e => {
+  if(drag && drag.type === 'node' && !drag.moved) selectNode(drag.id, false);
+  drag = null;
+});
+
+svg.addEventListener('dblclick', e => {
+  const gEl = e.target.closest('.node');
+  if(gEl) selectNode(gEl.dataset.id, true);
+});
+
+svg.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = svg.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+  const ns = Math.max(.12, Math.min(3.2, view.s * factor));
+  const k = ns / view.s;
+  view.x = mx - (mx - view.x) * k;
+  view.y = my - (my - view.y) * k;
+  view.s = ns;
+  applyView();
+}, {passive:false});
+
+// hover
+svg.addEventListener('pointerover', e => {
+  const gEl = e.target.closest('.node');
+  if(!gEl) return;
+  hover = gEl.dataset.id;
+  updateHighlight();
+});
+svg.addEventListener('pointerout', e => {
+  const gEl = e.target.closest('.node');
+  if(!gEl) return;
+  if(e.relatedTarget && gEl.contains(e.relatedTarget)) return;
+  hover = null;
+  updateHighlight();
+});
+
+// toolbar
+document.querySelectorAll('.toolbar button').forEach(b => {
+  b.onclick = () => {
+    if(b.dataset.act === 'fit') fit();
+    else { loadGraph(Object.keys(GRAPHS).find(k => GRAPHS[k] === G)); }
+  };
+});
+
+// search
+$('#q').addEventListener('input', e => {
+  q = e.target.value;
+  updateHighlight();
+});
+
+// keyboard
+window.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT') return;
+  const keys = Object.keys(GRAPHS);
+  const idx = keys.findIndex(k => GRAPHS[k] === G);
+  if(e.key === '1' && keys[0]) loadGraph(keys[0]);
+  if(e.key === '2' && keys[1]) loadGraph(keys[1]);
+  if(e.key === '3' && keys[2]) loadGraph(keys[2]);
+  if(e.key === 'f') fit();
+  if(e.key === 'Escape'){ sel = null; updateHighlight(); renderDetail(); }
+});
+
+// resize
+let rt;
+window.addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => { if(NODES.length) fit(); }, 160);
+});
+
+/* ---------- export png ---------- */
+$('#btnPng').onclick = () => {
+  // export the whole graph, not just the current viewport
+  const saved = {s:view.s, x:view.x, y:view.y};
+  fit();
+  const W = svg.clientWidth * 2, H = svg.clientHeight * 2;
+  const clone = svg.cloneNode(true);
+  clone.setAttribute('xmlns', NS);
+  clone.setAttribute('width', W);
+  clone.setAttribute('height', H);
+  clone.setAttribute('viewBox', `0 0 ${svg.clientWidth} ${svg.clientHeight}`);
+  const bg = mk('rect', {x:0, y:0, width:'100%', height:'100%', fill:'#fbfcff'});
+  clone.insertBefore(bg, clone.firstChild);
+
+  const str = new XMLSerializer().serializeToString(clone);
+  view.s = saved.s; view.x = saved.x; view.y = saved.y; applyView();
+  const img = new Image();
+  img.onload = () => {
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#fbfcff'; ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(img, 0, 0, W, H);
+    const a = document.createElement('a');
+    a.download = 'AI-KG-2026-' + G.tab + '.png';
+    a.href = cv.toDataURL('image/png');
+    a.click();
+  };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str);
+};
+
+/* ---------- mobile: move PNG export into the canvas toolbar ---------- */
+function placeExport(){
+  const btn = $('#btnPng');
+  if(!btn) return;
+  const bar = document.querySelector('.toolbar');
+  const small = window.matchMedia('(max-width: 880px)').matches;
+  const inBar = btn.parentNode && btn.parentNode.classList.contains('toolbar');
+  if(small && !inBar) bar.appendChild(btn);
+  else if(!small && inBar) document.querySelector('.topbar').appendChild(btn);
+}
+window.addEventListener('resize', placeExport);
+
+/* ---------- boot ---------- */
+(function(){
+  const sp = new URLSearchParams(location.search);
+  const p = sp.get('g');
+  loadGraph(p && GRAPHS[p] ? p : 'panorama');
+  placeExport();
+  const nid = sp.get('n');
+  if(nid && MAP.has(nid)) selectNode(nid, true);
+  if(sp.get('clean') === '1'){
+    document.body.classList.add('clean');
+    requestAnimationFrame(() => { fit(); setTimeout(fit, 120); });
+  }
+})();
+</script>
+</body>
+</html>
