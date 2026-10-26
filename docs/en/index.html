@@ -151,7 +151,8 @@
       margin: 0 0 18px 14px;
     }
 
-    .featured {
+    .featured,
+    .card-panel {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -177,13 +178,13 @@
       margin: 0 0 18px;
       font-size: 0.98rem;
     }
-    .featured ul.article-list {
+    .article-list {
       list-style: none;
       padding: 0;
       margin: 0 0 18px;
       border-top: 1px dashed var(--border);
     }
-    .featured ul.article-list li {
+    .article-list li {
       border-bottom: 1px dashed var(--border);
       padding: 12px 0;
       display: flex;
@@ -192,15 +193,15 @@
       align-items: baseline;
       flex-wrap: wrap;
     }
-    .featured ul.article-list li .title {
+    .article-list li .title {
       color: var(--text);
       font-size: 0.98rem;
     }
-    .featured ul.article-list li a.title:hover {
+    .article-list li a.title:hover {
       color: var(--accent);
       text-decoration: none;
     }
-    .featured ul.article-list li .status {
+    .article-list li .status {
       color: var(--muted);
       font-size: 0.8rem;
       background: #f3f4f6;
@@ -208,10 +209,11 @@
       border-radius: 8px;
       white-space: nowrap;
     }
-    .featured ul.article-list li .status.published {
+    .article-list li .status.published {
       color: #047857;
       background: #d1fae5;
     }
+    .card-panel .article-list { margin-bottom: 0; }
     .featured .cta-soon {
       color: var(--muted);
       font-size: 0.88rem;
@@ -352,6 +354,23 @@
           </li>
         </ul>
         <span class="cta-soon">Series index page coming soon</span>
+      </div>
+    </section>
+
+    <section id="latest">
+      <h3 class="section-title">Latest</h3>
+      <p class="section-hint">Standalone posts and maps, outside the main pillar.</p>
+      <div class="card-panel">
+        <ul class="article-list">
+          <li>
+            <a class="title" href="/en/posts/ai-stack-2026/">The AI Stack in Six Layers: A 2026 Map from the Ops Side</a>
+            <span class="status published">Published</span>
+          </li>
+          <li>
+            <a class="title" href="/en/graph/ai-2026/">AI Technology Landscape 2026 — interactive, 93 nodes</a>
+            <span class="status">Interactive map</span>
+          </li>
+        </ul>
       </div>
     </section>
 
