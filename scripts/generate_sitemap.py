@@ -26,8 +26,22 @@ def page_url(rel_dir):
 
 
 def last_modified(path):
-    """Prefer the last git commit date; fall back to file mtime."""
+    """Prefer the last git commit date; fall back to file mtime.
+
+    A page edited but not yet committed still reports its *previous* commit date
+    from `git log`, so a sitemap generated before the commit would understate
+    lastmod by one release. When the file has uncommitted changes, trust mtime
+    instead. A fresh clone has nothing uncommitted, so that case is unaffected.
+    """
     rel = os.path.relpath(path, ROOT).replace(os.sep, "/")
+    try:
+        dirty = subprocess.run(
+            ["git", "status", "--porcelain", "--", rel],
+            cwd=ROOT, capture_output=True, text=True, timeout=10).stdout.strip()
+        if dirty:
+            return datetime.date.fromtimestamp(os.path.getmtime(path)).isoformat()
+    except Exception:
+        pass
     try:
         out = subprocess.run(
             ["git", "log", "-1", "--format=%cs", "--", rel],
