@@ -8,6 +8,8 @@
 # Note: robots.txt is a voluntary signal, not a technical block. Cloudflare's
 # managed robots.txt must stay off (Bot Preference Sync disabled) or it will
 # prepend its own directives — which also listed Baiduspider — above this file.
+User-agent: Googlebot
+Allow: /ads.txt
 
 User-agent: GPTBot
 Disallow: /
@@ -27,8 +29,7 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
-User-agent: Google-Extended
-Disallow: /
+
 
 User-agent: Applebot-Extended
 Disallow: /
@@ -54,7 +55,6 @@ Disallow: /
 User-agent: *
 Allow: /
 
-User-agent: Googlebot
-Allow: /ads.txt
+
 
 Sitemap: https://ezaiops.com/sitemap.xml
