@@ -1,3 +1,18 @@
+# Google's advertising crawlers. AdsBot-Google also covers AdsBot-Google-Mobile
+# (robots.txt matches user-agent by prefix).
+#
+# These two are listed explicitly rather than relying on the "User-agent: *"
+# group below. The wildcard already allows them, but AdSense's own checks are
+# easier to reason about when the crawler that fetches pages for ad matching is
+# named. Do not narrow this to "Allow: /ads.txt" — ads.txt is not subject to
+# robots.txt anyway, and a path-scoped allow reads as if the rest of the site
+# were off limits.
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
 # AI training crawlers are disallowed. Search engines are not affected:
 # Baiduspider, Googlebot, Bingbot and friends fall through to the
 # "User-agent: *" group at the bottom and are allowed.
@@ -8,8 +23,6 @@
 # Note: robots.txt is a voluntary signal, not a technical block. Cloudflare's
 # managed robots.txt must stay off (Bot Preference Sync disabled) or it will
 # prepend its own directives — which also listed Baiduspider — above this file.
-User-agent: Googlebot
-Allow: /ads.txt
 
 User-agent: GPTBot
 Disallow: /
@@ -29,7 +42,8 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
-
+User-agent: Google-Extended
+Disallow: /
 
 User-agent: Applebot-Extended
 Disallow: /
@@ -54,7 +68,5 @@ Disallow: /
 
 User-agent: *
 Allow: /
-
-
 
 Sitemap: https://ezaiops.com/sitemap.xml
