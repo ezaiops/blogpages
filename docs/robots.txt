@@ -54,4 +54,7 @@ Disallow: /
 User-agent: *
 Allow: /
 
+User-agent: Googlebot
+Allow: /ads.txt
+
 Sitemap: https://ezaiops.com/sitemap.xml
