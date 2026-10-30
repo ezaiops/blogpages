@@ -32,18 +32,25 @@
 - **robots.txt 的历次提交**:`AdsBot-Google` / `Mediapartners-Google` 始终是 `Allow: /`,从未被禁;ads.txt 一般也不受 robots.txt 约束。时间点重合是巧合。
 - **文件本身**:`docs/ads.txt` 的 publisher ID(`pub-8810200627517885`)自 10-26 起没变过,内容格式正确。
 
-### 当前状态(已核实)
+### 当前状态(已核实 + 已修复)
 
 - `https://ezaiops.com/ads.txt` → 200,内容正确;`tools.ezaiops.com/ads.txt` → 200,同 publisher ID。
 - 各类 UA(AdsBot-Google / Mediapartners-Google / Googlebot / 普通)全部 200,无重定向、无 `cf-mitigated` 挑战头、`content-type: text/plain` 正确。
-- `https://ezaiops.com/robots.txt` 与仓库 `docs/robots.txt` 逐字节一致 → **Bot Preference Sync 现已关闭**。
+- `https://ezaiops.com/robots.txt` 与仓库 `docs/robots.txt` 逐字节一致 → Cloudflare 未接管 robots.txt。
 - DNS:`ezaiops.com` 走 Cloudflare 代理(橙云,172.67.x / 104.21.x)。
+- **Cloudflare API 复核(10-30,通过 `tools/cfkey` 里的 token 只读 + PUT)**:
+  - `bot_preference_sync_enabled` 一度为 `true`(10-28 遗留),**已通过 API PUT 显式写为 `false` 并钉死**;
+  - `is_robots_txt_managed = false`(托管 robots 不对外服务)、`cf_robots_variant = policy_only`;
+  - `fight_mode = false`、`enable_js = false`、AI 防护(ai_*_protection / ai_training 等)全部 `disabled`;
+  - 全部 zones rulesets 均为空(无 WAF 自定义规则、无重定向规则、无缓存规则)——这些假设全部排除;
+  - zone 设置:`ssl = full`、`always_use_https = on`(无害)、`security_level = medium`、`email_obfuscation = on`(仅影响 HTML mailto:,不影响 .txt)。
+  - 改动前配置备份在操作机的 `/tmp/opencode/bot_management.before.json`。
 
 ### 恢复动作(Google 侧)
 
-问题条件已解除,Google 报错是缓存结果,等待下次抓取或主动刷新:
+问题条件已解除(其中 Cloudflare 侧已实际修复),Google 报错是缓存结果,等待下次抓取或主动刷新:
 
-1. 保持 Cloudflare **Bot Preference Sync / 托管 robots.txt 关闭**(详见 §4 红线)。
+1. ~~保持 Bot Preference Sync / 托管 robots 关闭~~ → **已完成**:BPS 已显式置 `false`,托管 robots 不对外服务。
 2. Search Console → URL 检查 → `https://ezaiops.com/ads.txt` → **测试实时网址** → 请求编入索引;之后 ads.txt 报告 / AdSense 会更新为可用。
 3. 若 24~48 小时后仍报错:查 Cloudflare **安全 → 事件**日志,看 AdsBot/Mediapartners 请求是否被 challenge/block;并检查是否有针对 `.txt` 或 UA 的防火墙规则。
 
@@ -67,7 +74,7 @@ curl -A "Mozilla/5.0 (compatible; AdsBot-Google; +http://www.google.com/adsbot.h
 
 ## 4. 操作红线(务必遵守)
 
-1. **Cloudflare 托管 robots.txt / Bot Preference Sync 保持关闭。** 否则它会用自动生成文件覆盖源站,并已实证导致 Google 报 ads.txt 找不到。要拦 AI 爬虫就靠源站 `docs/robots.txt`。
+1. **Cloudflare 托管 robots.txt / Bot Preference Sync 保持关闭**(2026-10-30 已通过 API 将 `bot_preference_sync_enabled` 置 `false`,`is_robots_txt_managed` 为 `false`;改设置前务必复查,防止被再次打开)。否则它会用自动生成文件覆盖源站,并已实证导致 Google 报 ads.txt 找不到。要拦 AI 爬虫就靠源站 `docs/robots.txt`。
 2. **永远不要 Disallow `AdsBot-Google` / `Mediapartners-Google`,也不要用"仅允许 /ads.txt"的写法**(路径级 Allow 会被读成"其余全部禁止",这是 Google 明确提示的反模式;源文件注释里也有)。
 3. **两个域名各有独立 ads.txt**:改授权行要同时改 `blogpages/docs/ads.txt` 与 `tools/ads.txt`。
 4. robots.txt 改动后先用 §2 的自查命令确认广告爬虫视角,再等 Google 重新抓取。
