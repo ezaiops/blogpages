@@ -38,7 +38,7 @@
 - 各类 UA(AdsBot-Google / Mediapartners-Google / Googlebot / 普通)全部 200,无重定向、无 `cf-mitigated` 挑战头、`content-type: text/plain` 正确。
 - `https://ezaiops.com/robots.txt` 与仓库 `docs/robots.txt` 逐字节一致 → Cloudflare 未接管 robots.txt。
 - DNS:`ezaiops.com` 走 Cloudflare 代理(橙云,172.67.x / 104.21.x)。
-- **Cloudflare API 复核(10-30,通过 `tools/cfkey` 里的 token 只读 + PUT)**:
+- **Cloudflare API 复核(10-30,通过临时凭证文件 `tools/cfkey` 的 token 只读 + PUT;该文件事后已删除,从未进入任何提交)**:
   - `bot_preference_sync_enabled` 一度为 `true`(10-28 遗留),**已通过 API PUT 显式写为 `false` 并钉死**;
   - `is_robots_txt_managed = false`(托管 robots 不对外服务)、`cf_robots_variant = policy_only`;
   - `fight_mode = false`、`enable_js = false`、AI 防护(ai_*_protection / ai_training 等)全部 `disabled`;
@@ -70,14 +70,15 @@ curl -A "Mozilla/5.0 (compatible; AdsBot-Google; +http://www.google.com/adsbot.h
   - 顶部显式 `Allow: /` 给 `Mediapartners-Google` 与 `AdsBot-Google`;
   - 中部 Disallow AI 训练爬虫(GPTBot / ClaudeBot / CCBot / Bytespider / Google-Extended 等);
   - 底部 `User-agent: *` `Allow: /` + `Sitemap` 声明。
-  - 当前版本即最新提交 `fd9fce6`。
+  - 内容自 `fd9fce6`(10-30 11:14,启用 Google-Extended)起未再变更;仓库 HEAD 已推进到 `cca5761`,但后续提交只动本文档。
 
 ## 4. 操作红线(务必遵守)
 
 1. **Cloudflare 托管 robots.txt / Bot Preference Sync 保持关闭**(2026-10-30 已通过 API 将 `bot_preference_sync_enabled` 置 `false`,`is_robots_txt_managed` 为 `false`;改设置前务必复查,防止被再次打开)。否则它会用自动生成文件覆盖源站,并已实证导致 Google 报 ads.txt 找不到。要拦 AI 爬虫就靠源站 `docs/robots.txt`。
 2. **永远不要 Disallow `AdsBot-Google` / `Mediapartners-Google`,也不要用"仅允许 /ads.txt"的写法**(路径级 Allow 会被读成"其余全部禁止",这是 Google 明确提示的反模式;源文件注释里也有)。
 3. **两个域名各有独立 ads.txt**:改授权行要同时改 `blogpages/docs/ads.txt` 与 `tools/ads.txt`。
-4. robots.txt 改动后先用 §2 的自查命令确认广告爬虫视角,再等 Google 重新抓取。
+4. **两个域名也各有独立 robots.txt**(本仓库 `docs/robots.txt`、tools 仓库根 `robots.txt`),内容各自维护、互不影响;两份都保持「显式允许广告爬虫 + Disallow AI 训练爬虫 + 通配组 Allow」的同一结构。
+5. robots.txt 改动后先用 §2 的自查命令确认广告爬虫视角,再等 Google 重新抓取。
 
 ## 5. 已知遗留
 
@@ -86,4 +87,4 @@ curl -A "Mozilla/5.0 (compatible; AdsBot-Google; +http://www.google.com/adsbot.h
 
 ---
 
-*记录时间:2026-10-30。当前 `blog` 分支 @ fd9fce6。*
+*记录时间:2026-10-30;同日状态同步(robots.txt 内容锚点、凭证文件说明)。`blog` 分支的最新提交以 `git log -1 -- HANDOVER.md` 为准。*
