@@ -17,6 +17,9 @@ BASE = "https://ezaiops.com"
 POST = os.path.join(DOCS, "posts", "understanding-agent-traces", "index.html")
 
 STYLE = re.search(r"<style>.*?</style>", io.open(POST, encoding="utf-8").read(), re.S).group(0)
+ANALYTICS = """<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4bbeee48cff340fe9ae88884f763f334"}'></script>
+"""
+
 FAVICON = ('<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' '
            'viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' rx=\'6\' fill=\'%232c3e50\'/%3E'
            '%3Ctext x=\'50%25\' y=\'55%25\' fill=\'white\' font-size=\'14\' font-family=\'Arial,sans-serif\' '
@@ -146,10 +149,11 @@ def build(lang, page, title, desc, kicker, h1, body):
 
 {footer}
 
+{analytics}
 </body>
 </html>
 """.format(lang_attr=lang_attr, title=title, desc=desc, h1=h1, url=url,
-           alt_zh=alt_zh, alt_en=alt_en, favicon=FAVICON, ld=ld, style=STYLE,
+           alt_zh=alt_zh, alt_en=alt_en, favicon=FAVICON, ld=ld, style=STYLE, analytics=ANALYTICS,
            header=header(lang, page), kicker=kicker,
            date="2026 年 10 月 18 日" if lang == "zh" else "October 18, 2026",
            body=body, footer=footer(lang))
