@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EZ AI Ops Tips · AI Agent & LLMOps Field Notes</title>
-  <meta name="description" content="Field notes on getting AI Agents to production — starting with observability. DevSecOps / AIOps / LLMOps deep-dives.">
+  <meta name="description" content="Notes on AI tools, automation and production ops — agent observability, LLM serving, tool radar. DevSecOps / AIOps / LLMOps deep dives, plus a free browser-only tools site.">
   <meta property="og:title" content="EZ AI Ops Tips · AI Agent & LLMOps Field Notes">
-  <meta property="og:description" content="Field notes on getting AI Agents to production — starting with observability.">
+  <meta property="og:description" content="Notes on AI tools, automation and production ops — agent observability, LLM serving, tool radar.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ezaiops.com/en/">
   <link rel="canonical" href="https://ezaiops.com/en/">
@@ -124,6 +124,23 @@
       color: #4b5563;
       margin: 0;
       font-size: 1.02rem;
+    }
+    .hero .pill-row {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill-row .pill {
+      display: inline-block;
+      background: #eef4fc;
+      color: var(--accent);
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border: 1px solid #d5e5f8;
     }
 
     section { margin-bottom: 44px; }
@@ -307,18 +324,25 @@
   <main>
 
     <section class="hero">
-      <h2>Field notes on getting AI Agents to production — starting with observability.</h2>
-      <p class="hero-cn">Practical guides on making AI agents observable and operations reliable.</p>
+      <h2>From AI tools to production — written the way engineers actually think.</h2>
+      <p class="hero-cn">AI tool radar · automation practice · production ops — notes you can use.</p>
       <p class="hero-body">
-        This site sits at the intersection of AI × DevOps/SRE — using AI to run operations,
-        and running AI systems with operational rigor. Tool reviews, deployment guides,
-        incident retrospectives — every post aims to be immediately actionable.
+        Hey, welcome to EZ AI Ops — the intersection of AI and operations. This is where
+        we keep notes on choosing, signing up for and using AI tools, on automating real work,
+        and on running AI systems with operational rigor — using AI to run operations,
+        and running AI with ops discipline. Current focus: agent observability. We also maintain
+        a browser-only tools site and a model-pricing index.
       </p>
+      <div class="pill-row">
+        <span class="pill">BLOG · Deep dives + tool radar</span>
+        <span class="pill">TOOLS · 18 free tools</span>
+        <span class="pill">GRAPH · Interactive map</span>
+      </div>
     </section>
 
     <section id="featured">
       <h3 class="section-title">Current Focus</h3>
-      <p class="section-hint">The launch pillar — updated until it forms a complete map.</p>
+      <p class="section-hint">The main pillar — updated until it forms a complete map.</p>
       <div class="featured">
         <span class="tag">SPOTLIGHT</span>
         <h4>AI Agent Observability — A Practical Field Guide</h4>
@@ -403,13 +427,15 @@
       <div class="about">
         <p>
           <strong>Why this exists.</strong>
-          The intersection of AI Agents and LLMOps is under-documented in both Chinese and
-          English — this site aims to fill that gap with content engineers can actually use.
+          Deep content on AI agents and LLMOps is either too shallow or copy-pasted —
+          in English and Chinese alike. We want to fill that gap in a way engineers
+          can actually use.
         </p>
         <p>
           <strong>What we cover.</strong>
-          Tool reviews, deployment guides, real incident retrospectives, industry watch.
-          Not vendor whitepapers, not entry-level tutorials rehashed from docs.
+          Tool reviews, deployment guides, real incident retrospectives, industry watch,
+          plus hands-on guides to AI tools — signup, setup, pitfalls. Not rehashed
+          entry-level tutorials: anything hands-on gets run through before it's published.
         </p>
         <p>
           <strong>Content sourcing.</strong>

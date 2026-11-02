@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>轻松自动化笔记 · EZ AI Ops Tips</title>
-  <meta name="description" content="AI Agent 生产化路上的中文实战笔记 —— 从可观测性开始。DevSecOps / AIOps / LLMOps 深度内容。">
+  <meta name="description" content="AI 工具上手、自动化实践与生产运维笔记 —— Agent 可观测性、LLM 部署、AI 工具雷达。DevSecOps / AIOps / LLMOps 深度内容 + 免费工具站。">
   <meta property="og:title" content="轻松自动化笔记 · EZ AI Ops Tips">
-  <meta property="og:description" content="AI Agent 生产化路上的中文实战笔记 —— 从可观测性开始。">
+  <meta property="og:description" content="AI 工具上手、自动化实践与生产运维笔记 —— Agent 可观测性、LLM 部署、AI 工具雷达。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ezaiops.com/">
   <link rel="canonical" href="https://ezaiops.com/">
@@ -124,6 +124,23 @@
       color: #4b5563;
       margin: 0;
       font-size: 1.02rem;
+    }
+    .hero .pill-row {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill-row .pill {
+      display: inline-block;
+      background: #eef4fc;
+      color: var(--accent);
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border: 1px solid #d5e5f8;
     }
 
     section { margin-bottom: 44px; }
@@ -289,10 +306,10 @@
     <div class="site-header-inner">
       <div class="brand">
         <h1>轻松自动化笔记</h1>
-        <span class="brand-en">EZ AI Ops Tips</span>
+        <span class="brand-en">Notes · Tools · Pricing</span>
       </div>
       <nav class="top-nav">
-        <a href="#featured">当前专题</a>
+        <a href="#featured">当前主线</a>
         <a href="#topics">话题</a>
         <a href="#about">关于</a>
         <a href="https://tools.ezaiops.com/?lang=zh">工具</a>
@@ -307,17 +324,24 @@
   <main>
 
     <section class="hero">
-      <h2>AI Agent 生产化路上的中文实战笔记 —— 从可观测性开始。</h2>
-      <p class="hero-en">让 AI Agent 运行可见，让运维底座可靠。</p>
+      <h2>从 AI 工具到生产实战 —— 用工程师看得懂的方式。</h2>
+      <p class="hero-en">AI 工具雷达 · 自动化实践 · 生产运维 —— 随手能用的笔记。</p>
       <p class="hero-body">
-        本站聚焦 AI × DevOps/SRE 的交叉地带：用 AI 做运维，也用运维方法管理 AI。
-        写工具评测、写落地实录、写事故复盘，力求每一篇都是能上手的干货。
+        嗨，欢迎来到 EZ AI Ops。这里记 AI 工具怎么选、怎么注册、怎么用，
+        自动化怎么落地，以及生产环境里怎么把 AI 真正跑稳 ——
+        用 AI 做运维，也用运维方法管理 AI。当前主线：Agent 可观测性；
+        顺带维护着一个纯本地的免费工具站和模型价格速查。
       </p>
+      <div class="pill-row">
+        <span class="pill">BLOG · 深度 + 工具雷达</span>
+        <span class="pill">TOOLS · 18 个免费工具</span>
+        <span class="pill">GRAPH · 互动图谱</span>
+      </div>
     </section>
 
     <section id="featured">
-      <h3 class="section-title">当前专题</h3>
-      <p class="section-hint">冷启动阶段的主打方向，会持续更新到形成体系。</p>
+      <h3 class="section-title">当前主线</h3>
+      <p class="section-hint">主打方向，会持续更新到形成体系。</p>
       <div class="featured">
         <span class="tag">SPOTLIGHT</span>
         <h4>AI Agent 平台的可观测性：中文实战地图</h4>
@@ -401,14 +425,15 @@
       <p class="section-hint">编辑方针、内容来源、联系方式。</p>
       <div class="about">
         <p>
-          <strong>为什么存在。</strong>
-          AI Agent 与 LLMOps 的中文深度内容严重不足，
-          这个站的目标是补上这一块 —— 用工程师能看得懂、用得上的方式。
+          <strong>为什么做这个站。</strong>
+          中文互联网里，AI Agent 与 LLMOps 的深度内容要么太浅、要么直接搬。
+          我们想补上这块 —— 用工程师看得懂、用得上的方式。
         </p>
         <p>
           <strong>写什么、不写什么。</strong>
-          写工具评测、部署实战、真实事故复盘、行业观察；
-          不写培训机构式的入门教程，不写没实操过的转载。
+          写工具评测、部署实战、真实事故复盘、行业观察，以及 AI 工具的上手指南
+          （注册、配置、避坑）；不写空谈的入门教程 ——
+          凡操作、注册类内容，必须亲手跑通才发。
         </p>
         <p>
           <strong>内容来源。</strong>
