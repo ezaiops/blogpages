@@ -179,6 +179,14 @@
       font-size: 0.88rem;
       margin: 0 0 18px 14px;
     }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .section-head .more { font-size: 0.85rem; font-weight: 600; }
 
     .featured,
     .card-panel {
@@ -352,6 +360,7 @@
         <span class="brand-cn">轻松自动化笔记</span>
       </div>
       <nav class="top-nav">
+        <a href="/en/posts/">Articles</a>
         <a href="#featured">Focus</a>
         <a href="#topics">Topics</a>
         <a href="#about">About</a>
@@ -420,12 +429,14 @@
             <span class="status published">Published</span>
           </li>
         </ul>
-        <span class="cta-soon">Series index page coming soon</span>
       </div>
     </section>
 
     <section id="latest">
-      <h3 class="section-title">Latest</h3>
+      <div class="section-head">
+        <h3 class="section-title">Latest</h3>
+        <a class="more" href="/en/posts/">Browse all articles →</a>
+      </div>
       <p class="section-hint">Standalone posts and maps, outside the main pillar.</p>
       <div class="card-panel">
         <ul class="article-list">

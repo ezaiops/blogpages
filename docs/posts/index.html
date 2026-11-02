@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>全部文章 · EZ AI Ops Tips</title>
+  <meta name="description" content="EZ AI Ops Tips 全部文章索引：Agent 可观测性系列、AI 技术栈地图等，按发布时间倒序。">
+  <meta property="og:title" content="全部文章 · EZ AI Ops Tips">
+  <meta property="og:description" content="EZ AI Ops Tips 全部文章索引：Agent 可观测性系列、AI 技术栈地图等，按发布时间倒序。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ezaiops.com/posts/">
+  <link rel="canonical" href="https://ezaiops.com/posts/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <style>
+:root{--primary:#2c3e50;--accent:#4a90e2;--text:#24292f;--muted:#6b7280;--bg:#f6f8fa;--card-bg:#ffffff;--border:#e5e7eb}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{background:#fff;border-bottom:1px solid var(--border)}
+.site-header-inner{max-width:860px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.brand h1{margin:0;font-size:1.3rem;color:var(--primary);letter-spacing:-.01em}
+.brand .brand-sub{display:block;font-size:.75rem;color:var(--muted);font-weight:400;margin-top:2px;letter-spacing:.02em}
+nav.top-nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px}
+nav.top-nav a{margin-left:6px;padding:5px 11px;border-radius:8px;color:var(--text);font-size:.92rem}
+nav.top-nav a:first-child{margin-left:0}
+nav.top-nav a:hover{background:#f0f4f9;color:var(--primary);text-decoration:none}
+nav.top-nav a.active{background:var(--accent);color:#fff}
+nav.top-nav a.nav-ext{color:var(--accent);font-weight:600}
+.lang-switch{display:inline-flex;margin-left:14px;padding:2px;background:#f3f4f6;border-radius:12px;gap:2px}
+.lang-switch a{margin:0;padding:3px 12px;font-size:.78rem;font-weight:600;letter-spacing:.02em;color:var(--muted);border-radius:10px;line-height:1.5}
+.lang-switch a.active{background:var(--accent);color:#fff}
+.lang-switch a:hover:not(.active){color:var(--primary);background:#e8eaed;text-decoration:none}
+main{max-width:860px;margin:0 auto;padding:36px 24px 60px}
+.page-title{font-size:1.6rem;color:var(--primary);margin:0 0 8px;letter-spacing:-.01em}
+.page-hint{color:var(--muted);font-size:.88rem;margin:0 0 22px}
+.post-list{list-style:none;margin:0;padding:4px 26px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px}
+.post-list li{border-bottom:1px dashed var(--border);padding:16px 0}
+.post-list li:last-child{border-bottom:none}
+.post-title{font-size:1rem;color:var(--text);font-weight:600}
+.post-title:hover{color:var(--accent);text-decoration:none}
+.post-desc{color:var(--muted);font-size:.86rem;margin:4px 0 8px}
+.post-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted)}
+.post-meta .tag{background:#eef4fc;color:var(--accent);padding:2px 9px;border-radius:10px;font-weight:600;letter-spacing:.02em}
+.also{margin:20px 0 0;color:var(--muted);font-size:.9rem}
+footer{border-top:1px solid var(--border);background:#fff;color:var(--muted);font-size:.85rem}
+footer .footer-inner{max-width:860px;margin:0 auto;padding:20px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:600px){.site-header-inner{flex-direction:column;align-items:flex-start}main{padding:26px 18px 44px}.post-list{padding:4px 18px}}
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <h1>轻松自动化笔记</h1>
+        <span class="brand-sub">Notes · Tools · Pricing</span>
+      </div>
+      <nav class="top-nav">
+        <a href="/">首页</a>
+        <a class="active" href="/posts/" aria-current="page">文章</a>
+        <a href="/#topics">话题</a>
+        <a href="/about/">关于</a>
+        <a class="nav-ext" href="https://tools.ezaiops.com/?lang=zh">工具 <span aria-hidden="true">↗</span></a>
+        <div class="lang-switch">
+          <a href="/posts/" class="active" aria-current="page">中文</a>
+          <a href="/en/posts/" hreflang="en">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="page-title">全部文章</h2>
+    <p class="page-hint">共 7 篇 · 按发布时间倒序 · Agent 可观测性系列为主线</p>
+    <ul class="post-list">
+      <li>
+        <a class="post-title" href="/posts/ai-stack-2026/">AI 技术栈的六层结构:一份 2026 年的运维视角地图</a>
+        <p class="post-desc">把 2026 年的 AI 技术栈拆成六层——基础、模型、能力、工程、应用、治理,聊聊每层最可能在生产上坏在哪儿,以及我们在那一层能抓住点什么。附可交互全景图谱。</p>
+        <div class="post-meta"><span>2026-10-26</span><span class="tag">AI Infrastructure</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/posts/tool-selection-and-e2e-architecture/">AI Agent 可观测性（六）：工具选型版图与端到端落地架构</a>
+        <p class="post-desc">AI Agent 可观测性系列第 6 篇。带你探讨技术选型的版图，并给出一张真正能串联起全生命周期的端到端落地架构。</p>
+        <div class="post-meta"><span>2026-07-18</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/posts/catching-silent-failures/">如何抓住幻觉、死循环和成本失控：静悄悄的失败怎么报警</a>
+        <p class="post-desc">AI Agent 可观测性系列第 5 篇。Agent 没报错，不代表它没失控：三类静默失败的告警实战，把 LLM 监控嫁接回 SRE 经典体系。</p>
+        <div class="post-meta"><span>2026-07-15</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/posts/llm-as-a-judge-scoring-agents/">怎么给“对不对”打分：从规则到 LLM-as-a-Judge</a>
+        <p class="post-desc">AI Agent 可观测性系列第 4 篇。当 Agent 每天产生三万条 Trace 时，我们靠什么判断它做得对不对？一文讲透自动化打分的工程实践。</p>
+        <div class="post-meta"><span>2026-07-09</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/posts/understanding-agent-traces/">读懂一条 Agent Trace:OpenTelemetry GenAI 语义拆解</a>
+        <p class="post-desc">AI Agent 可观测性系列第 3 篇。当代码里混入大模型的自由意志,Debug 的第一步不再是看 Log,而是看 Trace。带你拆解一棵真实的 Agent 行为树。</p>
+        <div class="post-meta"><span>2026-07-06</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/posts/three-pillars-trace-metrics-evaluation/">AI Agent 可观测性的三大支柱:Trace、Metrics、Evaluation</a>
+        <p class="post-desc">AI Agent 可观测性系列第 2 篇。看见它做了什么,量化它跑得怎样,判断它做得对不对——Trace / Metrics / Evaluation 的分工与闭环。</p>
+        <div class="post-meta"><span>2026-07-04</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/posts/what-is-ai-agent-observability/">什么是 AI Agent 可观测性:为什么传统 APM 看不见"做错了"</a>
+        <p class="post-desc">AI Agent 可观测性系列第 1 篇。当软件开始"自己做决定",过去二十年那套监控系统的世界观,为什么突然不够用了。</p>
+        <div class="post-meta"><span>2026-07-03</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+    </ul>
+    <p class="also">另见：<a href="/graph/ai-2026/">AI 技术全景图谱 2026（可交互，93 个节点）</a></p>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span><a href="/about/">关于</a> · <a href="/contact/">联系</a> · <a href="/privacy/">隐私</a></span>
+      <span><a href="https://tools.ezaiops.com/?lang=zh">免费工具站 →</a></span>
+    </div>
+  </footer>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4bbeee48cff340fe9ae88884f763f334"}'></script>
+</body>
+</html>

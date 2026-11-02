@@ -9,12 +9,15 @@ Chinese at the root, English under `/en/`.
 docs/
   index.html                     Chinese home
   en/index.html                  English home
+  posts/index.html               All-posts index (generated)
   posts/<slug>/index.html        Chinese post
+  en/posts/index.html            All-posts index (generated)
   en/posts/<slug>/index.html     English post
   about/  contact/  privacy/     Static pages (both languages)
   sitemap.xml  robots.txt  ads.txt
 scripts/
   generate_sitemap.py            rebuilds docs/sitemap.xml
+  generate_posts_index.py        rebuilds both all-posts index pages
   build_static_pages.py          rebuilds about/contact/privacy
 ```
 
@@ -26,8 +29,15 @@ hreflang alternates.
 
 1. Create `docs/posts/<slug>/index.html` and `docs/en/posts/<slug>/index.html`,
    copying the head, header, article and footer from an existing post.
-2. Link both from the matching home page (`#featured` or `#topics`).
-3. Regenerate the sitemap:
+2. Regenerate the all-posts index pages. They read each post's title,
+   description, publish date and section from its own `<head>`, so a new post
+   shows up without editing any HTML by hand:
+   ```bash
+   python scripts/generate_posts_index.py
+   ```
+3. Optionally link the post from the matching home page (`#featured` or
+   `#latest`) — the index page already includes it.
+4. Regenerate the sitemap:
    ```bash
    python scripts/generate_sitemap.py
    ```

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All articles · EZ AI Ops Tips</title>
+  <meta name="description" content="Every article on EZ AI Ops Tips: the agent observability series, the AI stack map and more, newest first.">
+  <meta property="og:title" content="All articles · EZ AI Ops Tips">
+  <meta property="og:description" content="Every article on EZ AI Ops Tips: the agent observability series, the AI stack map and more, newest first.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ezaiops.com/en/posts/">
+  <link rel="canonical" href="https://ezaiops.com/en/posts/">
+  <link rel="alternate" hreflang="zh-CN" href="https://ezaiops.com/posts/">
+  <link rel="alternate" hreflang="en" href="https://ezaiops.com/en/posts/">
+  <link rel="alternate" hreflang="x-default" href="https://ezaiops.com/posts/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' fill='white' font-size='14' font-family='Arial,sans-serif' text-anchor='middle' dominant-baseline='middle' font-weight='700'%3EEZ%3C/text%3E%3C/svg%3E">
+  <style>
+:root{--primary:#2c3e50;--accent:#4a90e2;--text:#24292f;--muted:#6b7280;--bg:#f6f8fa;--card-bg:#ffffff;--border:#e5e7eb}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{background:#fff;border-bottom:1px solid var(--border)}
+.site-header-inner{max-width:860px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.brand h1{margin:0;font-size:1.3rem;color:var(--primary);letter-spacing:-.01em}
+.brand .brand-sub{display:block;font-size:.75rem;color:var(--muted);font-weight:400;margin-top:2px;letter-spacing:.02em}
+nav.top-nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px}
+nav.top-nav a{margin-left:6px;padding:5px 11px;border-radius:8px;color:var(--text);font-size:.92rem}
+nav.top-nav a:first-child{margin-left:0}
+nav.top-nav a:hover{background:#f0f4f9;color:var(--primary);text-decoration:none}
+nav.top-nav a.active{background:var(--accent);color:#fff}
+nav.top-nav a.nav-ext{color:var(--accent);font-weight:600}
+.lang-switch{display:inline-flex;margin-left:14px;padding:2px;background:#f3f4f6;border-radius:12px;gap:2px}
+.lang-switch a{margin:0;padding:3px 12px;font-size:.78rem;font-weight:600;letter-spacing:.02em;color:var(--muted);border-radius:10px;line-height:1.5}
+.lang-switch a.active{background:var(--accent);color:#fff}
+.lang-switch a:hover:not(.active){color:var(--primary);background:#e8eaed;text-decoration:none}
+main{max-width:860px;margin:0 auto;padding:36px 24px 60px}
+.page-title{font-size:1.6rem;color:var(--primary);margin:0 0 8px;letter-spacing:-.01em}
+.page-hint{color:var(--muted);font-size:.88rem;margin:0 0 22px}
+.post-list{list-style:none;margin:0;padding:4px 26px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px}
+.post-list li{border-bottom:1px dashed var(--border);padding:16px 0}
+.post-list li:last-child{border-bottom:none}
+.post-title{font-size:1rem;color:var(--text);font-weight:600}
+.post-title:hover{color:var(--accent);text-decoration:none}
+.post-desc{color:var(--muted);font-size:.86rem;margin:4px 0 8px}
+.post-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted)}
+.post-meta .tag{background:#eef4fc;color:var(--accent);padding:2px 9px;border-radius:10px;font-weight:600;letter-spacing:.02em}
+.also{margin:20px 0 0;color:var(--muted);font-size:.9rem}
+footer{border-top:1px solid var(--border);background:#fff;color:var(--muted);font-size:.85rem}
+footer .footer-inner{max-width:860px;margin:0 auto;padding:20px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:600px){.site-header-inner{flex-direction:column;align-items:flex-start}main{padding:26px 18px 44px}.post-list{padding:4px 18px}}
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <h1>EZ AI Ops Tips</h1>
+        <span class="brand-sub">轻松自动化笔记</span>
+      </div>
+      <nav class="top-nav">
+        <a href="/en/">Home</a>
+        <a class="active" href="/en/posts/" aria-current="page">Articles</a>
+        <a href="/en/#topics">Topics</a>
+        <a href="/en/about/">About</a>
+        <a class="nav-ext" href="https://tools.ezaiops.com/?lang=en">Tools <span aria-hidden="true">↗</span></a>
+        <div class="lang-switch">
+          <a href="/posts/" hreflang="zh-CN">中文</a>
+          <a href="/en/posts/" class="active" aria-current="page">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="page-title">All articles</h2>
+    <p class="page-hint">7 posts, newest first — the agent observability series is the main pillar</p>
+    <ul class="post-list">
+      <li>
+        <a class="post-title" href="/en/posts/ai-stack-2026/">The AI Stack in Six Layers: A 2026 Map from the Ops Side</a>
+        <p class="post-desc">Breaking the 2026 AI stack into six layers — infrastructure, models, capabilities, engineering, applications, governance — and talking about where each one breaks first in production, and what you can actually hold onto there. Includes an interactive map.</p>
+        <div class="post-meta"><span>2026-10-26</span><span class="tag">AI Infrastructure</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/en/posts/tool-selection-and-e2e-architecture/">AI Agent Observability (Part 6): Tool Selection Landscape and End-to-End Architecture</a>
+        <p class="post-desc">Part 6 of the AI Agent Observability series. Exploring the tool selection landscape and presenting an end-to-end reference architecture.</p>
+        <div class="post-meta"><span>2026-07-18</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/en/posts/catching-silent-failures/">Catching Hallucinations, Loops, and Cost Runaways: Alerting on Silent Failures</a>
+        <p class="post-desc">AI Agent Observability Part 5. Just because your agent didn't throw an error doesn't mean it hasn't gone off the rails. How to build real SRE alerts for LLMs.</p>
+        <div class="post-meta"><span>2026-07-15</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/en/posts/llm-as-a-judge-scoring-agents/">How to Score "Right vs. Wrong": From Rules to LLM-as-a-Judge</a>
+        <p class="post-desc">AI Agent Observability Part 4. When your agent generates 30,000 traces a day, how do you automate quality scoring? Navigating the pitfalls of LLM judges.</p>
+        <div class="post-meta"><span>2026-07-09</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/en/posts/understanding-agent-traces/">Understanding an Agent Trace: Decoding OpenTelemetry GenAI Semantics</a>
+        <p class="post-desc">Part 3 of the AI Agent Observability series. When LLM free will is injected into code, debugging starts with traces, not logs. Here's what a real agent behavior tree looks like.</p>
+        <div class="post-meta"><span>2026-07-06</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/en/posts/three-pillars-trace-metrics-evaluation/">The Three Pillars of AI Agent Observability: Trace, Metrics, Evaluation</a>
+        <p class="post-desc">Part 2 of the AI Agent Observability series. See what it did, quantify how it ran, judge whether it got things right — the division of labor across Trace, Metrics, and Evaluation.</p>
+        <div class="post-meta"><span>2026-07-04</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+      <li>
+        <a class="post-title" href="/en/posts/what-is-ai-agent-observability/">What Is AI Agent Observability?</a>
+        <p class="post-desc">Part 1 of the AI Agent Observability series. When software starts making its own decisions, why does the worldview behind two decades of monitoring suddenly stop being enough?</p>
+        <div class="post-meta"><span>2026-07-03</span><span class="tag">AI Agent Observability</span></div>
+      </li>
+    </ul>
+    <p class="also">See also: <a href="/en/graph/ai-2026/">AI Technology Landscape 2026 (interactive, 93 nodes)</a></p>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 EZ AI Ops Tips · 轻松自动化笔记</span>
+      <span><a href="/en/about/">About</a> · <a href="/en/contact/">Contact</a> · <a href="/en/privacy/">Privacy</a></span>
+      <span><a href="https://tools.ezaiops.com/?lang=en">Free tools →</a></span>
+    </div>
+  </footer>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4bbeee48cff340fe9ae88884f763f334"}'></script>
+</body>
+</html>

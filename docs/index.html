@@ -179,6 +179,14 @@
       font-size: 0.88rem;
       margin: 0 0 18px 14px;
     }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .section-head .more { font-size: 0.85rem; font-weight: 600; }
 
     .featured,
     .card-panel {
@@ -352,6 +360,7 @@
         <span class="brand-en">Notes · Tools · Pricing</span>
       </div>
       <nav class="top-nav">
+        <a href="/posts/">文章</a>
         <a href="#featured">当前主线</a>
         <a href="#topics">话题</a>
         <a href="#about">关于</a>
@@ -419,12 +428,14 @@
             <span class="status published">已发布</span>
           </li>
         </ul>
-        <span class="cta-soon">专题详情页建设中，敬请期待</span>
       </div>
     </section>
 
     <section id="latest">
-      <h3 class="section-title">最新发布</h3>
+      <div class="section-head">
+        <h3 class="section-title">最新发布</h3>
+        <a class="more" href="/posts/">浏览全部文章 →</a>
+      </div>
       <p class="section-hint">专题之外的单篇与图谱。</p>
       <div class="card-panel">
         <ul class="article-list">
