@@ -67,11 +67,23 @@
       letter-spacing: 0.02em;
     }
     nav.top-nav a {
-      margin-left: 18px;
+      margin-left: 6px;
+      padding: 5px 11px;
+      border-radius: 8px;
       color: var(--text);
       font-size: 0.92rem;
     }
     nav.top-nav a:first-child { margin-left: 0; }
+    nav.top-nav a:hover {
+      background: #f0f4f9;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    nav.top-nav a.nav-ext {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    nav.top-nav a.nav-ext:hover { background: #eef4fc; }
     .lang-switch {
       display: inline-flex;
       margin-left: 22px;
@@ -237,6 +249,37 @@
       font-style: italic;
     }
 
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
+      gap: 14px;
+    }
+    a.tool-card {
+      display: block;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    a.tool-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    a.tool-card h5 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+    a.tool-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .tools-more { margin: 12px 0 0; font-size: 0.9rem; font-weight: 600; }
+
     .topics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -312,7 +355,7 @@
         <a href="#featured">Focus</a>
         <a href="#topics">Topics</a>
         <a href="#about">About</a>
-        <a href="https://tools.ezaiops.com/?lang=en">Tools</a>
+        <a class="nav-ext" href="https://tools.ezaiops.com/?lang=en">Tools <span aria-hidden="true">↗</span></a>
         <div class="lang-switch">
           <a href="/" hreflang="zh-CN">中文</a>
           <a href="/en/" class="active" aria-current="page">EN</a>
@@ -335,7 +378,7 @@
       </p>
       <div class="pill-row">
         <span class="pill">BLOG · Deep dives + tool radar</span>
-        <span class="pill">TOOLS · 18 free tools</span>
+        <span class="pill">TOOLS · Free tools</span>
         <span class="pill">GRAPH · Interactive map</span>
       </div>
     </section>
@@ -396,6 +439,30 @@
           </li>
         </ul>
       </div>
+    </section>
+
+    <section id="tools">
+      <h3 class="section-title">Free tools</h3>
+      <p class="section-hint">Browser-only, nothing uploaded — plus a model pricing index.</p>
+      <div class="tools-grid">
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/token-counter.html">
+          <h5>LLM cost calculator</h5>
+          <p>Price a prompt per request, day or month, with cache and batch discounts.</p>
+        </a>
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/subnet-calculator.html">
+          <h5>Subnet &amp; CIDR calculator</h5>
+          <p>Network, broadcast and host range for any IPv4 block.</p>
+        </a>
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/cron-explainer.html">
+          <h5>Cron expression explainer</h5>
+          <p>Plain-English explanation and the next runs in your timezone.</p>
+        </a>
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/json-formatter.html">
+          <h5>JSON formatter &amp; validator</h5>
+          <p>Format, minify, validate — down to the first error's line and column.</p>
+        </a>
+      </div>
+      <p class="tools-more"><a href="https://tools.ezaiops.com/?lang=en">Browse all tools →</a></p>
     </section>
 
     <section id="topics">

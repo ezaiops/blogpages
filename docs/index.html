@@ -67,11 +67,23 @@
       letter-spacing: 0.02em;
     }
     nav.top-nav a {
-      margin-left: 18px;
+      margin-left: 6px;
+      padding: 5px 11px;
+      border-radius: 8px;
       color: var(--text);
       font-size: 0.92rem;
     }
     nav.top-nav a:first-child { margin-left: 0; }
+    nav.top-nav a:hover {
+      background: #f0f4f9;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    nav.top-nav a.nav-ext {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    nav.top-nav a.nav-ext:hover { background: #eef4fc; }
     .lang-switch {
       display: inline-flex;
       margin-left: 22px;
@@ -237,6 +249,37 @@
       font-style: italic;
     }
 
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
+      gap: 14px;
+    }
+    a.tool-card {
+      display: block;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    a.tool-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    a.tool-card h5 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+    a.tool-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .tools-more { margin: 12px 0 0; font-size: 0.9rem; font-weight: 600; }
+
     .topics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -312,7 +355,7 @@
         <a href="#featured">当前主线</a>
         <a href="#topics">话题</a>
         <a href="#about">关于</a>
-        <a href="https://tools.ezaiops.com/?lang=zh">工具</a>
+        <a class="nav-ext" href="https://tools.ezaiops.com/?lang=zh">工具 <span aria-hidden="true">↗</span></a>
         <div class="lang-switch">
           <a href="/" class="active" aria-current="page">中文</a>
           <a href="/en/" hreflang="en">EN</a>
@@ -334,7 +377,7 @@
       </p>
       <div class="pill-row">
         <span class="pill">BLOG · 深度 + 工具雷达</span>
-        <span class="pill">TOOLS · 18 个免费工具</span>
+        <span class="pill">TOOLS · 免费工具</span>
         <span class="pill">GRAPH · 互动图谱</span>
       </div>
     </section>
@@ -395,6 +438,30 @@
           </li>
         </ul>
       </div>
+    </section>
+
+    <section id="tools">
+      <h3 class="section-title">免费工具</h3>
+      <p class="section-hint">纯浏览器本地运行，不上传任何数据；另附模型价格速查。</p>
+      <div class="tools-grid">
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/token-counter.html?lang=zh">
+          <h5>LLM 成本计算器</h5>
+          <p>逐次、按天、按月给提示词估价，含缓存与批量折扣。</p>
+        </a>
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/subnet-calculator.html?lang=zh">
+          <h5>子网与 CIDR 计算器</h5>
+          <p>网络、广播、主机范围，附二进制视图。</p>
+        </a>
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/cron-explainer.html?lang=zh">
+          <h5>Cron 表达式解析</h5>
+          <p>翻译成大白话，给出接下来几次运行时间。</p>
+        </a>
+        <a class="tool-card" href="https://tools.ezaiops.com/tools/json-formatter.html?lang=zh">
+          <h5>JSON 格式化与校验</h5>
+          <p>精确定位到第一个错误的行列。</p>
+        </a>
+      </div>
+      <p class="tools-more"><a href="https://tools.ezaiops.com/?lang=zh">浏览全部工具 →</a></p>
     </section>
 
     <section id="topics">
